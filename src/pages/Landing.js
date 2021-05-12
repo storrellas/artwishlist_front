@@ -25,8 +25,6 @@ const Card = (props) => {
 
   
   const { painting } = props;
-  console.log("props ", props.painting)
-
   return (
     <div style={{ border: '1px solid #AAAAAA'}}>
       <div className="text-center font-weight-bold" 
@@ -38,19 +36,18 @@ const Card = (props) => {
       </div>
       <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'scroll'}}>
         <div>
-          <b>{painting.artist[0]}</b>
+          <b>{painting.artist}</b>
         </div>
         <div style={{ color: 'grey'}}>
-          <div>{painting.title[0]} (Version 'O'), {painting.year_v[0]}</div>
-          <div>114 x 146.4 cm (44.88 x 57.64 in)</div>
+          <div>{painting.title} (Version 'O'), {painting.year_of_work_a}</div>
+          <div>{painting.size_height} x {painting.size_width} cm (44.88 x 57.64 in)</div>
           <div>Paintings</div>
         </div>
         <div>
           <b>Nr. 345</b>
         </div>
         <div style={{ color: 'grey'}}>
-          Baer (1994) Picasso peintre-graveur.
-          Catalogue raisonné de l'oeuvre
+          {painting.collection}
         </div>
         <a href="/">Download PDF</a>
       </div>
@@ -69,6 +66,7 @@ class Landing extends React.Component {
       listShow: false,
       paintingList: []
     }
+    this.inputRef = React.createRef();
   }
 
   handleKeyDown(e){    
@@ -95,14 +93,60 @@ class Landing extends React.Component {
     }  
   }
 
+  handleDragLeave(event){
+    event.stopPropagation()
+    event.preventDefault()
+    // Bring the endzone back to normal, maybe?
+    console.log("handleDragLeave")
+    this.setState({ searchImage: upload})
+  };
+  handleDragOver(event){
+    event.stopPropagation()
+    event.preventDefault()
+    // Turn the endzone red, perhaps?
+    //console.log("handleDragOver")
+  };
+  handleDragEnter(event){
+    event.stopPropagation()
+    event.preventDefault()
+    // Play a little sound, possibly?
+    console.log("handleDrop")
+    this.setState({ searchImage: uploadHover})
+  };
+  async handleDrop(event){
+    event.stopPropagation()
+    event.preventDefault()
+    // Add a football image to the endzone, initiate a file upload,
+    // steal the user's credit card
+    console.log("handleDrop", event)
+
+    if (event.dataTransfer.items) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (var i = 0; i < event.dataTransfer.items.length; i++) {
+        // If dropped items aren't files, reject them
+        if (event.dataTransfer.items[i].kind === 'file') {
+          var file = event.dataTransfer.items[i].getAsFile();
+          console.log('123... file[' + i + '].name = ' + file.name);
+          const formData = new FormData();
+          formData.append('upload', file);
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+
+        }
+      }
+    } else {
+      // Use DataTransfer interface to access the file(s)
+      for (var i = 0; i < event.dataTransfer.files.length; i++) {
+        console.log('... file[' + i + '].name = ' + event.dataTransfer.files[i].name);
+      }
+    }
+
+  };
+
   render() {
     
     const { searchFull, listShow, searchImage, paintingList } = this.state;
     console.log("ReRender")
 
-
-    const cardList = new Array(10).fill(0);
-    console.log("cardList ", cardList )
     return (
       <Container>
         <Row style={{ marginTop: '3em'}}>
@@ -124,7 +168,7 @@ class Landing extends React.Component {
                 <InputGroup.Append >
                   <InputGroup.Text style={{ background: 'white', borderRadius: ' 0 10px 10px 0'}}>
                     <FontAwesomeIcon icon={faSearch}
-                            onClick={(e) => alert("Perform search")} />
+                            onClick={(e) => this.performSearch()} />
                   </InputGroup.Text>
                 </InputGroup.Append>
               </InputGroup>
@@ -140,10 +184,17 @@ class Landing extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-search"
           >
+            <div className="h-100"
+              onDragEnter={(e) => this.handleDragEnter(e)}
+              onDragLeave={(e) => this.handleDragLeave(e)}
+              onDragOver={(e) => this.handleDragOver(e)}
+              onDrop={(e) => this.handleDrop (e)}>
             <img className="h-100" alt="background" src={searchImage}
                             onMouseEnter={(e) => this.setState({ searchImage: uploadHover}) } 
                             onMouseLeave={(e) => this.setState({ searchImage: upload})}
-                            style={{ maxHeight: "300px" }}></img>
+                            style={{ maxHeight: "300px", cursor: 'pointer' }}
+                            ></img>
+              </div>
           </AnimateHeight>
 
 
