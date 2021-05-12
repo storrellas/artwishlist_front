@@ -23,6 +23,10 @@ import AnimateHeight from 'react-animate-height';
 const Card = (props) => {
   const dummyImageUrl = "http://www.artnet.com/WebServices/images/ll933731llgG4ECfDrCWBHBAD/pablo-picasso-television:-gymnastique-au-sol,-avec-spectateurs,-from-the-347-series.jpg"
 
+  
+  const { painting } = props;
+  console.log("props ", props.painting)
+
   return (
     <div style={{ border: '1px solid #AAAAAA'}}>
       <div className="text-center font-weight-bold" 
@@ -32,17 +36,17 @@ const Card = (props) => {
       <div style={{ padding: '1em 20% 1em 20%', background: '#DDDDDD'}}>
         <img className="w-100" alt="dummyImage" src={dummyImageUrl}></img>
       </div>
-      <div className="p-3" style={{ fontSize: '12px'}}>
+      <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'scroll'}}>
         <div>
-          <b>Pablo Picasso</b>
+          <b>{painting.artist[0]}</b>
         </div>
         <div style={{ color: 'grey'}}>
-          Les feemes d'Alger (Version 'O'), 1955
-          114 x 146.4 cm (44.88 x 57.64 in)
-          Paintings
+          <div>{painting.title[0]} (Version 'O'), {painting.year_v[0]}</div>
+          <div>114 x 146.4 cm (44.88 x 57.64 in)</div>
+          <div>Paintings</div>
         </div>
         <div>
-          Nr. 345
+          <b>Nr. 345</b>
         </div>
         <div style={{ color: 'grey'}}>
           Baer (1994) Picasso peintre-graveur.
@@ -61,8 +65,9 @@ class Landing extends React.Component {
     this.state = {
       qParameter: '',
       searchImage: upload,
-      searchFull: false,
-      listShow: true
+      searchFull: true,
+      listShow: false,
+      paintingList: []
     }
   }
 
@@ -73,19 +78,17 @@ class Landing extends React.Component {
 
   async performSearch(){
     try{
-      //
-      this.state.qParameter = 'picasso';
-      //
-
-
       const { qParameter, searchFull, listShow } = this.state;
 
       
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/aw_lots/_search?q=${qParameter}&size=10`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/aw_lots/_search?q=${qParameter}&size=10&offset=20`)
       console.log("repsonse ", response.data)
 
       
-      this.setState({searchFull: !searchFull, listShow: !listShow})
+      this.setState({
+          searchFull: false, 
+          listShow: true, 
+          paintingList: response.data.results})
     }catch(error){
       console.log("FAILED")
 
@@ -94,10 +97,9 @@ class Landing extends React.Component {
 
   render() {
     
-    const { searchFull, listShow, searchImage } = this.state;
+    const { searchFull, listShow, searchImage, paintingList } = this.state;
     console.log("ReRender")
 
-    const dummyImageUrl = "http://www.artnet.com/WebServices/images/ll933731llgG4ECfDrCWBHBAD/pablo-picasso-television:-gymnastique-au-sol,-avec-spectateurs,-from-the-347-series.jpg"
 
     const cardList = new Array(10).fill(0);
     console.log("cardList ", cardList )
@@ -155,9 +157,9 @@ class Landing extends React.Component {
               <div className="d-flex justify-content-center flex-wrap w-100 h-100 p-3" 
                 style={{ overflowY: 'scroll'}}>
 
-                {cardList.map( (item, id) => 
+                {paintingList.map( (item, id) => 
                   <div key={id} style={{ width: '20%', margin: '1em'}}>
-                    <Card />
+                    <Card painting={item} />
                   </div>
                 )}
               </div>
