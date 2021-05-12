@@ -1,0 +1,280 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/api/aw_lots/_simple_search": {
+            "get": {
+                "summary": "Simple Search Lots",
+                "operationId": "simple_search_lots_api_aw_lots__simple_search_get",
+                "parameters": [
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Offset",
+                            "type": "integer",
+                            "default": 0
+                        },
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Q",
+                            "type": "string"
+                        },
+                        "name": "q",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aw_lots/_search": {
+            "get": {
+                "summary": "Es Search Lots",
+                "operationId": "es_search_lots_api_aw_lots__search_get",
+                "parameters": [
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Offset",
+                            "type": "integer",
+                            "default": 0
+                        },
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Q",
+                            "type": "string"
+                        },
+                        "name": "q",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aw_lots/_image_search": {
+            "post": {
+                "summary": "Vuforia Search Lots",
+                "operationId": "vuforia_search_lots_api_aw_lots__image_search_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_vuforia_search_lots_api_aw_lots__image_search_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aw_lots/{pk}": {
+            "get": {
+                "summary": "Read Lot",
+                "operationId": "read_lot_api_aw_lots__pk__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Pk",
+                            "type": "integer"
+                        },
+                        "name": "pk",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aw_lots/image/{pk}": {
+            "get": {
+                "summary": "Get Image",
+                "operationId": "get_image_api_aw_lots_image__pk__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Pk",
+                            "type": "integer"
+                        },
+                        "name": "pk",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Redirect",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "name": "redirect",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body_vuforia_search_lots_api_aw_lots__image_search_post": {
+                "title": "Body_vuforia_search_lots_api_aw_lots__image_search_post",
+                "required": [
+                    "upload"
+                ],
+                "type": "object",
+                "properties": {
+                    "upload": {
+                        "title": "Upload",
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
