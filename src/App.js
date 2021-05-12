@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom'
 import Landing from './pages/Landing'
 import Detail from './pages/Detail'
 
-import logo from './logo.svg';
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
