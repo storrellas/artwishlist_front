@@ -20,6 +20,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import AnimateHeight from 'react-animate-height';
 
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+
+
+
 const Card = (props) => {
   const dummyImageUrl = "http://www.artnet.com/WebServices/images/ll933731llgG4ECfDrCWBHBAD/pablo-picasso-television:-gymnastique-au-sol,-avec-spectateurs,-from-the-347-series.jpg"
 
@@ -237,16 +242,15 @@ class Landing extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-list"
           >
-              <div className="d-flex justify-content-center flex-wrap w-100 h-100 p-3" 
-                style={{ overflowY: 'scroll'}}>
-
+            <PerfectScrollbar>
+              <div className="d-flex justify-content-center flex-wrap w-100 h-100 p-3">
                 {paintingList.map( (item, id) => 
                   <div key={id} style={{ width: '20%', margin: '1em'}}>
                     <Card painting={item} />
                   </div>
                 )}
               </div>
-            
+            </PerfectScrollbar>
           </AnimateHeight>
 
 
