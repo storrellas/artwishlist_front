@@ -50,3 +50,17 @@ $title-grey: #AAAAAA;
   background-color: $bg-grey;
   padding: 1em 20% 1em 20%;
 }
+
+.card-painting:hover{
+  background-color: $bg-grey;
+  padding: 1em 20% 1em 20%;
+  img {
+    border: 3px solid $title-grey;
+    cursor: pointer;
+  }
+}
+
+.painting {
+  background-color: $bg-grey;
+  border-radius: 10px;
+}

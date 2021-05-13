@@ -4,7 +4,7 @@ import { Redirect, Switch, Route } from "react-router-dom";
 import { withRouter } from 'react-router-dom'
 
 import Landing from './pages/Landing'
-import Detail from './pages/Detail'
+import Painting from './pages/Painting'
 
 import './App.css';
 
@@ -27,8 +27,8 @@ class App extends React.Component {
       <Switch>
         <Route path={`${this.props.match.path}`} exact
           render={(props) => (<Landing />)} />
-        <Route path={`${this.props.match.path}detail/`}
-          render={(props) => (<Detail />)} />
+        <Route path={`${this.props.match.path}detail/:id`}
+          render={(props) => (<Painting />)} />
         <Redirect to='/' />
       </Switch>
     );
