@@ -8,6 +8,8 @@ import Detail from './pages/Detail'
 
 import './App.css';
 
+// Import global css
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {

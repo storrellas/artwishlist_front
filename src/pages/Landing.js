@@ -20,7 +20,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import AnimateHeight from 'react-animate-height';
 
-import 'react-perfect-scrollbar/dist/css/styles.css';
+// Perfect scrollbar
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 
@@ -38,22 +38,24 @@ const Card = (props) => {
       <div style={{ padding: '1em 20% 1em 20%', background: '#DDDDDD'}}>
         <img className="w-100" alt="dummyImage" src={dummyImageUrl}></img>
       </div>
-      <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'scroll'}}>
+      <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'hidden'}}>
         <div>
           <b>{painting.artist}</b>
         </div>
-        <div style={{ color: 'grey'}}>
+        <div className="mt-2" style={{ color: 'grey'}}>
           <div>{painting.title} {painting.year_of_work_a}</div>
           <div>{painting.size_height} x {painting.size_width} {painting.size_unit}</div>
           <div>Paintings</div>
         </div>
-        <div>
+        <div className="mt-2">
           <b>Nr. 345</b>
         </div>
         <div style={{ color: 'grey'}}>
           {painting.collection}
         </div>
-        <a href="/">Download PDF</a>
+        <div className="text-center mt-3" >
+          <a href="/" className="font-weight-bold" style={{ color: 'grey'}}>Download PDF</a>
+        </div>
       </div>
     </div>
   )
@@ -242,14 +244,14 @@ class Landing extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-list"
           >
-            <PerfectScrollbar>
-              <div className="d-flex justify-content-center flex-wrap w-100 h-100 p-3">
+            <PerfectScrollbar style={{ padding: '0 1em 0 1em'}}>
+              <Row>
                 {paintingList.map( (item, id) => 
-                  <div key={id} style={{ width: '20%', margin: '1em'}}>
+                  <Col className="mt-3" key={id} md="3">
                     <Card painting={item} />
-                  </div>
+                  </Col>
                 )}
-              </div>
+              </Row>
             </PerfectScrollbar>
           </AnimateHeight>
 
