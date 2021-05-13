@@ -33,9 +33,9 @@ const Card = (props) => {
   return (
     <div className="card-container">
       <div className="text-center card-title font-weight-bold">
-          Catalogue Raisonne
+          {painting.source_type}
       </div>
-      <div style={{ padding: '1em 20% 1em 20%', background: '#DDDDDD'}}>
+      <div class="card-painting">
         <img className="w-100" alt="dummyImage" src={dummyImageUrl}></img>
       </div>
       <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'hidden'}}>
@@ -45,13 +45,17 @@ const Card = (props) => {
         <div className="mt-2" style={{ color: 'grey'}}>
           <div>{painting.title} {painting.year_of_work_a}</div>
           <div>{painting.size_height} x {painting.size_width} {painting.size_unit}</div>
-          <div>Paintings</div>
         </div>
+        <div className="mt-2" style={{ color: 'grey'}}>
+          <div>{painting.materials}</div>
+          <div>{painting.collection}</div>
+        </div>
+
         <div className="mt-2">
-          <b>Nr. 345</b>
-        </div>
-        <div style={{ color: 'grey'}}>
-          {painting.collection}
+          <b>{painting.catalogue_number?`Nr. ${painting.catalogue_number}`:''}</b>
+          <div style={{ color: 'grey'}}>
+            {painting.sales_prices}
+          </div>
         </div>
         <div className="text-center mt-3" >
           <a href="/" className="font-weight-bold" style={{ color: 'grey'}}>Download PDF</a>
