@@ -67,6 +67,7 @@ class Landing extends React.Component {
       paintingList: []
     }
     this.inputRef = React.createRef();
+    this.imgPreviewRef = React.createRef();
   }
 
   handleKeyDown(e){    
@@ -142,6 +143,12 @@ class Landing extends React.Component {
 
   };
 
+  handlePreviewImage(e){
+    const [file] = this.inputRef.current.files;
+    if(file)
+      this.imgPreviewRef.current.src = URL.createObjectURL(file)
+  }
+
   render() {
     
     const { searchFull, listShow, searchImage, paintingList } = this.state;
@@ -184,17 +191,25 @@ class Landing extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-search"
           >
-            <div className="h-100"
+
+            <img className="h-100" alt="background" src={searchImage}
+              onMouseEnter={(e) => this.setState({ searchImage: uploadHover}) } 
+              onMouseLeave={(e) => this.setState({ searchImage: upload})}
+              onClick={ (e) => this.inputRef.current.click()}
+              style={{ maxHeight: "300px", cursor: 'pointer' }}
+              
+
               onDragEnter={(e) => this.handleDragEnter(e)}
               onDragLeave={(e) => this.handleDragLeave(e)}
               onDragOver={(e) => this.handleDragOver(e)}
-              onDrop={(e) => this.handleDrop (e)}>
-            <img className="h-100" alt="background" src={searchImage}
-                            onMouseEnter={(e) => this.setState({ searchImage: uploadHover}) } 
-                            onMouseLeave={(e) => this.setState({ searchImage: upload})}
-                            style={{ maxHeight: "300px", cursor: 'pointer' }}
-                            ></img>
-              </div>
+              onDrop={(e) => this.handleDrop (e)} 
+              
+              ref={this.imgPreviewRef} />
+              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handlePreviewImage(e)}/>
+              {/* <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg" 
+                ref={this.imgPreviewRef} 
+                style={{ maxHeight: "300px", cursor: 'pointer' }} /> */}
+
           </AnimateHeight>
 
 
