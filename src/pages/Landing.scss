@@ -1,10 +1,13 @@
+$bg-grey: #DDDDDD;
+$title-grey: #AAAAAA;
+
 .animated-search {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1em;
-  background-color: #DDDDDD;
+  background-color: $bg-grey;
   width: 100%;
   border-radius: 10px;
   margin: 1em;
@@ -19,6 +22,26 @@
   padding: 1em;  
   width: 100%;
   border-radius: 10px;
-  border: 1px solid #DDDDDD;
+  border: 1px solid $bg-grey;
   overflow: hidden;
+}
+
+.img-painting-border{
+  border: 3px solid $title-grey;
+}
+.img-painting-container{
+  padding: 2px;
+}
+
+
+.card-title{
+  background: $title-grey;
+  color: white; 
+  padding: 0.5em 0 0.5em 0;
+  border-radius: 5px 5px 0 0;
+}
+
+.card-container{
+  border: 1px solid $title-grey;
+  border-radius: 5px;
 }

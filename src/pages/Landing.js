@@ -26,9 +26,8 @@ const Card = (props) => {
   
   const { painting } = props;
   return (
-    <div style={{ border: '1px solid #AAAAAA'}}>
-      <div className="text-center font-weight-bold" 
-        style={{ background: '#AAAAAA', color: 'white', padding: '0.5em 0 0.5em 0'}}>
+    <div className="card-container">
+      <div className="text-center card-title font-weight-bold">
           Catalogue Raisonne
       </div>
       <div style={{ padding: '1em 20% 1em 20%', background: '#DDDDDD'}}>
@@ -39,8 +38,8 @@ const Card = (props) => {
           <b>{painting.artist}</b>
         </div>
         <div style={{ color: 'grey'}}>
-          <div>{painting.title} (Version 'O'), {painting.year_of_work_a}</div>
-          <div>{painting.size_height} x {painting.size_width} cm (44.88 x 57.64 in)</div>
+          <div>{painting.title} {painting.year_of_work_a}</div>
+          <div>{painting.size_height} x {painting.size_width} {painting.size_unit}</div>
           <div>Paintings</div>
         </div>
         <div>
@@ -64,6 +63,7 @@ class Landing extends React.Component {
       searchImage: upload,
       searchFull: true,
       listShow: false,
+      imagePreviewHover: false,
       paintingList: []
     }
     this.inputRef = React.createRef();
@@ -77,13 +77,12 @@ class Landing extends React.Component {
 
   async performSearch(){
     try{
-      const { qParameter, searchFull, listShow } = this.state;
+      const { qParameter } = this.state;
 
-      
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/aw_lots/_search?q=${qParameter}&size=10&offset=20`)
-      console.log("repsonse ", response.data)
+      let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
+      url = `${url}q=${qParameter}&size=10&offset=20`; 
+      const response = await axios.get(url)
 
-      
       this.setState({
           searchFull: false, 
           listShow: true, 
@@ -121,37 +120,59 @@ class Landing extends React.Component {
     // steal the user's credit card
     console.log("handleDrop", event)
 
+    let i;
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < event.dataTransfer.items.length; i++) {
+      for (i = 0; i < event.dataTransfer.items.length; i++) {
         // If dropped items aren't files, reject them
         if (event.dataTransfer.items[i].kind === 'file') {
           var file = event.dataTransfer.items[i].getAsFile();
           console.log('123... file[' + i + '].name = ' + file.name);
           const formData = new FormData();
           formData.append('upload', file);
-          const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
-
+          await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < event.dataTransfer.files.length; i++) {
+      for (i = 0; i < event.dataTransfer.files.length; i++) {
         console.log('... file[' + i + '].name = ' + event.dataTransfer.files[i].name);
       }
     }
 
   };
 
-  handlePreviewImage(e){
+  handleImagePreview(e){
     const [file] = this.inputRef.current.files;
-    if(file)
+    if(file){
       this.imgPreviewRef.current.src = URL.createObjectURL(file)
+    }
+      
   }
+
+  handleImageMouseEnter(){
+    const [file] = this.inputRef.current.files;
+    if(file){
+      // Do nothing as file is selected
+      this.setState({ imagePreviewHover: true })
+    }else{
+      this.setState({ searchImage: uploadHover })
+    }
+  } 
+
+  handleImageMouseLeave(){
+    const [file] = this.inputRef.current.files;
+    if(file){
+      this.setState({ imagePreviewHover: false })
+    }else{
+      this.setState({ searchImage: upload})
+    }
+  } 
 
   render() {
     
-    const { searchFull, listShow, searchImage, paintingList } = this.state;
+    const { searchFull, listShow, paintingList } = this.state;
+    const { searchImage, imagePreviewHover } = this.state;
     console.log("ReRender")
 
     return (
@@ -173,7 +194,7 @@ class Landing extends React.Component {
                   onChange={e => this.setState({ qParameter: e.target.value })}
                   onKeyDown={e => this.handleKeyDown(e)} />
                 <InputGroup.Append >
-                  <InputGroup.Text style={{ background: 'white', borderRadius: ' 0 10px 10px 0'}}>
+                  <InputGroup.Text style={{ background: 'white', borderRadius: ' 0 10px 10px 0', cursor: 'pointer'}}>
                     <FontAwesomeIcon icon={faSearch}
                             onClick={(e) => this.performSearch()} />
                   </InputGroup.Text>
@@ -188,28 +209,24 @@ class Landing extends React.Component {
             id='example-panel'
             duration={ 500 }
             height={ searchFull? '100%': '20%' } // see props documentation below
-            className="d-flex flex-column justify-content-center align-items-center" 
+            className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search"
           >
-
-            <img className="h-100" alt="background" src={searchImage}
-              onMouseEnter={(e) => this.setState({ searchImage: uploadHover}) } 
-              onMouseLeave={(e) => this.setState({ searchImage: upload})}
-              onClick={ (e) => this.inputRef.current.click()}
-              style={{ maxHeight: "300px", cursor: 'pointer' }}
-              
-
-              onDragEnter={(e) => this.handleDragEnter(e)}
-              onDragLeave={(e) => this.handleDragLeave(e)}
-              onDragOver={(e) => this.handleDragOver(e)}
-              onDrop={(e) => this.handleDrop (e)} 
-              
-              ref={this.imgPreviewRef} />
-              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handlePreviewImage(e)}/>
-              {/* <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg" 
-                ref={this.imgPreviewRef} 
-                style={{ maxHeight: "300px", cursor: 'pointer' }} /> */}
-
+              <img className={imagePreviewHover?"h-100  img-painting-border":"h-100"}
+                alt="background" src={searchImage}                               
+                onMouseEnter={(e) => this.handleImageMouseEnter() } 
+                onMouseLeave={(e) => this.handleImageMouseLeave()}
+                onClick={ (e) => this.inputRef.current.click()}
+                style={{ maxHeight: "300px", cursor: 'pointer' }}
+                
+                // DnD
+                onDragEnter={(e) => this.handleDragEnter(e)}
+                onDragLeave={(e) => this.handleDragLeave(e)}
+                onDragOver={(e) => this.handleDragOver(e)}
+                onDrop={(e) => this.handleDrop (e)} 
+                
+                ref={this.imgPreviewRef} />
+              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview(e)}/>
           </AnimateHeight>
 
 
