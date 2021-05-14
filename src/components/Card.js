@@ -2,12 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom'
 
 // Redux
-import { setMode, MODE } from "../redux";
+import { showDetail, MODE } from "../redux";
 import { connect } from "react-redux";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      setMode: (payload) => dispatch(setMode(payload))
+      showDetail: (payload) => dispatch(showDetail(payload))
   };
 }
 
@@ -56,7 +56,9 @@ class Card extends React.Component {
         <div className="text-center card-title font-weight-bold">
             {source}
         </div>
-        <div className="card-painting" onClick={(e) => this.props.setMode({mode: MODE.DETAIL, paintingId: painting.pk})} style={{ height: '200px'}}>
+        <div className="card-painting" 
+          onClick={(e) => this.props.showDetail({mode: MODE.DETAIL, paintingId: painting.pk})} 
+          style={{ height: '200px'}}>
           <div className="h-100 d-flex justify-content-center align-items-center">            
             <img alt="dummyImage" src={imageUrl} style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
           </div>
