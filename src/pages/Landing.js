@@ -180,7 +180,7 @@ class Landing extends React.Component {
   render() {
     
     const { searchFull, listShow, paintingList } = this.state;
-    const { imagePreview, imagePreviewHover } = this.state;
+    const { imagePreview } = this.state;
     console.log("ReRender")
 
     return (
@@ -214,13 +214,12 @@ class Landing extends React.Component {
         </Row>
         <div style={{ height: '70vh'}}>
           <AnimateHeight
-            id='example-panel'
             duration={ 500 }
             height={ searchFull? '100%': '20%' } // see props documentation below
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search"
           >
-              <img className={imagePreviewHover?"h-100  img-painting-border":"h-100"}
+              <img className={this.isImageSearch?"h-100 img-painting-border":"h-100"}
                 alt="background" src={imagePreview}                               
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
                 onMouseLeave={(e) => this.handleImageMouseLeave()}
