@@ -44,10 +44,10 @@ class Landing extends React.Component {
 
   handleKeyDown(e){    
     if (e.keyCode === 13)
-      this.performSearch(e)
+      this.performSearchPattern(e)
   }
 
-  async performSearch(){
+  async performSearchPattern(){
     try{
       const { qParameter } = this.state;
 
@@ -65,6 +65,8 @@ class Landing extends React.Component {
     }  
   }
 
+  
+
   handleDragLeave(event){
     event.stopPropagation()
     event.preventDefault()
@@ -75,41 +77,46 @@ class Landing extends React.Component {
   handleDragOver(event){
     event.stopPropagation()
     event.preventDefault()
-    // Turn the endzone red, perhaps?
-    //console.log("handleDragOver")
   };
   handleDragEnter(event){
     event.stopPropagation()
     event.preventDefault()
-    // Play a little sound, possibly?
-    console.log("handleDrop")
     this.setState({ searchImage: uploadHover})
   };
+
   async handleDrop(event){
     event.stopPropagation()
     event.preventDefault()
-    // Add a football image to the endzone, initiate a file upload,
-    // steal the user's credit card
 
 
+    let fileList = []
     let i;
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (i = 0; i < event.dataTransfer.items.length; i++) {
-        // If dropped items aren't files, reject them
-        if (event.dataTransfer.items[i].kind === 'file') {
-          var file = event.dataTransfer.items[i].getAsFile();
-          console.log('123... file[' + i + '].name = ' + file.name);
-          const formData = new FormData();
-          formData.append('upload', file);
-          await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+      for(const item of event.dataTransfer.items){
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          fileList.push(file)
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (i = 0; i < event.dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + event.dataTransfer.files[i].name);
+      for(const file of event.dataTransfer.files ){
+        fileList.push(file)
       }
+    }
+
+    // Image search
+    if( fileList.length > 0 ){
+      const formData = new FormData();
+      formData.append('upload', fileList[0]);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+
+      // set PaintingList
+      this.setState({
+        searchFull: false, 
+        listShow: true, 
+        paintingList: response.data.results})
     }
 
   };
@@ -181,7 +188,7 @@ class Landing extends React.Component {
                 <InputGroup.Append >
                   <InputGroup.Text style={{ background: 'white', borderRadius: ' 0 10px 10px 0', cursor: 'pointer'}}>
                     <FontAwesomeIcon icon={faSearch}
-                            onClick={(e) => this.performSearch()} />
+                            onClick={(e) => this.performSearchPattern()} />
                   </InputGroup.Text>
                 </InputGroup.Append>
               </InputGroup>
