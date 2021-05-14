@@ -10,7 +10,12 @@ class Card extends React.Component {
     const noImageUrl = 
       "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 
-    const imageUrl = painting.images.length>0?painting.images[0].url:noImageUrl;
+    let imageUrl = noImageUrl;
+    if( painting.images ){
+      if( painting.images.length > 0 ){
+        imageUrl = painting.images[0].url
+      }
+    }
 
     // Devil's logic
     let source = ''
