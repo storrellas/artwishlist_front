@@ -41,7 +41,7 @@ class Landing extends React.Component {
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
 
-    this.isImageSearch = true;
+    this.isImageSearch = false;
   }
 
   handleKeyDown(e){    
@@ -69,13 +69,14 @@ class Landing extends React.Component {
 
   async performSearchImage(file){
     // Mark we are searching
-
+    this.isImageSearch = true;
 
     const formData = new FormData();
     formData.append('upload', file);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
 
     // set PaintingList
+    this.isImageSearch = false;
     this.setState({
       imagePreview: URL.createObjectURL(file),
       searchFull: false, 
@@ -87,7 +88,10 @@ class Landing extends React.Component {
     event.stopPropagation()
     event.preventDefault()
     // Bring the endzone back to normal, maybe?
-    //if( this.isImageSearch ) return;
+    if( this.isImageSearch ){      
+      console.log("skipping hover")
+      return;
+    } 
       
     
     //this.setState({ imagePreview: upload})
@@ -100,7 +104,10 @@ class Landing extends React.Component {
     event.stopPropagation()
     event.preventDefault()
 
-    //if( this.isImageSearch ) return;
+    if( this.isImageSearch ){
+      console.log("skipping hover")
+      return;
+    } 
     this.setState({ imagePreview: uploadHover})
   };
 
