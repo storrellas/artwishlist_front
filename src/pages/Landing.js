@@ -90,7 +90,7 @@ class Landing extends React.Component {
     event.preventDefault()
     // Add a football image to the endzone, initiate a file upload,
     // steal the user's credit card
-    console.log("handleDrop", event)
+
 
     let i;
     if (event.dataTransfer.items) {
@@ -114,10 +114,23 @@ class Landing extends React.Component {
 
   };
 
-  handleImagePreview(e){
+  async handleImagePreview(e){
     const [file] = this.inputRef.current.files;
     if(file){
       this.imgPreviewRef.current.src = URL.createObjectURL(file)
+
+      // Send image to service
+      const formData = new FormData();
+      formData.append('upload', file);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+      console.log("response ", response.data)
+
+      // set PaintingList
+      this.setState({
+        searchFull: false, 
+        listShow: true, 
+        paintingList: response.data.results})
+
     }
       
   }
@@ -209,7 +222,7 @@ class Landing extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-list"
           >
-            <PerfectScrollbar style={{ padding: '0 1em 0 1em'}}>
+            <PerfectScrollbar className="w-100" style={{ padding: '0 1em 0 1em'}}>
               <Row>
                 {paintingList.map( (item, id) => 
                   <Col className="mt-3" key={id} md="3">
