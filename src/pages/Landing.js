@@ -76,7 +76,7 @@ class Landing extends React.Component {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
 
     // set PaintingList
-    this.isImageSearch = false;
+    //this.isImageSearch = false;
     this.setState({
       imagePreview: URL.createObjectURL(file),
       searchFull: false, 
@@ -87,14 +87,12 @@ class Landing extends React.Component {
   handleDragLeave(event){
     event.stopPropagation()
     event.preventDefault()
-    // Bring the endzone back to normal, maybe?
-    if( this.isImageSearch ){      
-      console.log("skipping hover")
-      return;
-    } 
+    console.log("handle handleDragLeave")
+    // If we have an image do not proceed
+    if( this.isImageSearch ) return;
       
-    
-    //this.setState({ imagePreview: upload})
+    // Set upload back to normal
+    this.setState({ imagePreview: upload})
   };
   handleDragOver(event){
     event.stopPropagation()
@@ -104,10 +102,10 @@ class Landing extends React.Component {
     event.stopPropagation()
     event.preventDefault()
 
-    if( this.isImageSearch ){
-      console.log("skipping hover")
-      return;
-    } 
+    // If we have an image do not proceed
+    if( this.isImageSearch ) return;
+    
+    // Set upload hover
     this.setState({ imagePreview: uploadHover})
   };
 
@@ -117,7 +115,6 @@ class Landing extends React.Component {
 
 
     let fileList = []
-    let i;
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
       for(const item of event.dataTransfer.items){
@@ -156,6 +153,9 @@ class Landing extends React.Component {
   }
 
   handleImageMouseEnter(){
+    // If we have an image do not proceed
+    if( this.isImageSearch ) return;
+
     const [file] = this.inputRef.current.files;
     if(file){
       // Do nothing as file is selected
@@ -166,6 +166,9 @@ class Landing extends React.Component {
   } 
 
   handleImageMouseLeave(){
+    // If we have an image do not proceed
+    if( this.isImageSearch ) return;
+
     const [file] = this.inputRef.current.files;
     if(file){
       this.setState({ imagePreviewHover: false })
@@ -179,8 +182,6 @@ class Landing extends React.Component {
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview, imagePreviewHover } = this.state;
     console.log("ReRender")
-
-    console.log("imagePreview ", imagePreview)
 
     return (
       <Container>
