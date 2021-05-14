@@ -32,7 +32,7 @@ class Landing extends React.Component {
     super(props)
     this.state = {
       qParameter: '',
-      searchImage: upload,
+      imagePreview: upload,
       searchFull: true,
       listShow: false,
       imagePreviewHover: false,
@@ -40,6 +40,8 @@ class Landing extends React.Component {
     }
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
+
+    this.isImageSearch = true;
   }
 
   handleKeyDown(e){    
@@ -65,14 +67,30 @@ class Landing extends React.Component {
     }  
   }
 
-  
+  async performSearchImage(file){
+    // Mark we are searching
+
+
+    const formData = new FormData();
+    formData.append('upload', file);
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+
+    // set PaintingList
+    this.setState({
+      imagePreview: URL.createObjectURL(file),
+      searchFull: false, 
+      listShow: true, 
+      paintingList: response.data.results})
+  }
 
   handleDragLeave(event){
     event.stopPropagation()
     event.preventDefault()
     // Bring the endzone back to normal, maybe?
-    console.log("handleDragLeave")
-    this.setState({ searchImage: upload})
+    //if( this.isImageSearch ) return;
+      
+    
+    //this.setState({ imagePreview: upload})
   };
   handleDragOver(event){
     event.stopPropagation()
@@ -81,7 +99,9 @@ class Landing extends React.Component {
   handleDragEnter(event){
     event.stopPropagation()
     event.preventDefault()
-    this.setState({ searchImage: uploadHover})
+
+    //if( this.isImageSearch ) return;
+    this.setState({ imagePreview: uploadHover})
   };
 
   async handleDrop(event){
@@ -108,16 +128,12 @@ class Landing extends React.Component {
 
     // Image search
     if( fileList.length > 0 ){
-      const formData = new FormData();
-      formData.append('upload', fileList[0]);
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
-
-      // set PaintingList
-      this.setState({
-        searchFull: false, 
-        listShow: true, 
-        paintingList: response.data.results})
+      const file = fileList[0]      
+      this.imgPreviewRef.current.src = URL.createObjectURL(file)
+      this.performSearchImage(file)
     }
+      
+    
 
   };
 
@@ -127,17 +143,7 @@ class Landing extends React.Component {
       this.imgPreviewRef.current.src = URL.createObjectURL(file)
 
       // Send image to service
-      const formData = new FormData();
-      formData.append('upload', file);
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
-      console.log("response ", response.data)
-
-      // set PaintingList
-      this.setState({
-        searchFull: false, 
-        listShow: true, 
-        paintingList: response.data.results})
-
+      this.performSearchImage(file)
     }
       
   }
@@ -148,7 +154,7 @@ class Landing extends React.Component {
       // Do nothing as file is selected
       this.setState({ imagePreviewHover: true })
     }else{
-      this.setState({ searchImage: uploadHover })
+      this.setState({ imagePreview: uploadHover })
     }
   } 
 
@@ -157,15 +163,17 @@ class Landing extends React.Component {
     if(file){
       this.setState({ imagePreviewHover: false })
     }else{
-      this.setState({ searchImage: upload})
+      this.setState({ imagePreview: upload})
     }
   } 
 
   render() {
     
     const { searchFull, listShow, paintingList } = this.state;
-    const { searchImage, imagePreviewHover } = this.state;
+    const { imagePreview, imagePreviewHover } = this.state;
     console.log("ReRender")
+
+    console.log("imagePreview ", imagePreview)
 
     return (
       <Container>
@@ -205,7 +213,7 @@ class Landing extends React.Component {
             contentClassName="animated-search"
           >
               <img className={imagePreviewHover?"h-100  img-painting-border":"h-100"}
-                alt="background" src={searchImage}                               
+                alt="background" src={imagePreview}                               
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
                 onMouseLeave={(e) => this.handleImageMouseLeave()}
                 onClick={ (e) => this.inputRef.current.click()}
