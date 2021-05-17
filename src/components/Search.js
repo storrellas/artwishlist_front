@@ -227,8 +227,7 @@ class Search extends React.Component {
             duration={ 500 }
             height={ searchFull? '100%': '20%' } // see props documentation below
             className="d-flex justify-content-center align-items-center" 
-            contentClassName="animated-search"
-          >
+            contentClassName="animated-search">
               <img className={imgClass}
                 alt="background" src={imagePreview}                               
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
