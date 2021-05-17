@@ -31,20 +31,18 @@ class Card extends React.Component {
 
   onLoadImageError(){
     this.imageSource = this.imageSource + 1
+    this.forceUpdate()
   }
 
   getImageUrl(image){
     let imageUrl = ''
     if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
-      console.log("thumbnail ...")
       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
       this.imageSource = IMAGE_SOURCE.THUMBNAIL
     }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
-      console.log("path ...")
       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
       this.imageSource = IMAGE_SOURCE.PATH
     }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
-      console.log("url ...")
       imageUrl = image.url
       this.imageSource = IMAGE_SOURCE.URL
     }else{
@@ -57,32 +55,12 @@ class Card extends React.Component {
     const { painting } = this.props;
 
 
-
-    // Here get thumbnail (with base_url https://awdb-images.nyc3.digitaloceanspaces.com/)
-
+    // Thumbnail
     let imageUrl = noImageUrl;
-    // if( painting.images ){
-    //   if( painting.images.length > 0 ){
-    //     imageUrl = painting.images[0].url
-    //   }
-    // }
-
     if( painting.images ){
       if( painting.images.length > 0 ){
         const image = painting.images[0]
-        //imageUrl = this.getImageUrl(image)
-        // if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
-        //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
-        //   imageSource = IMAGE_SOURCE.THUMBNAIL
-        // }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
-        //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
-        //   imageSource = IMAGE_SOURCE.PATH
-        // }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
-        //   imageUrl = image.url
-        //   imageSource = IMAGE_SOURCE.URL
-        // }else{
-        //   imageUrl = noImageUrl;
-        // } 
+        imageUrl = this.getImageUrl(image)
       }
     }
 
@@ -124,7 +102,8 @@ class Card extends React.Component {
           style={{ height: '200px'}}>
           <div className="h-100 d-flex justify-content-center align-items-center">            
             <img alt="dummyImage" 
-                  src={imageUrl?imageUrl:noImageUrl} 
+                  src={imageUrl} 
+                  onError={(e) => this.onLoadImageError()}
                   style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
           </div>
         </div>

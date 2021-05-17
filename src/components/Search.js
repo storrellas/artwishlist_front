@@ -50,7 +50,7 @@ class Search extends React.Component {
     this.scrollTopMax = 0;
 
     this.offset = 0;
-    this.size = 1;
+    this.size = 8;
   }
 
 

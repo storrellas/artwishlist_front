@@ -60,16 +60,12 @@ class Landing extends React.Component {
   }
 
   componentDidUpdate(prevState, prevProps){
-
     if( prevProps.mode !== this.props.mode){
           this.setState({
             paintingId: this.props.paintingId,
             mode: this.props.mode
           })
     }
-    
-
-
   }
 
   componentDidMount(){
