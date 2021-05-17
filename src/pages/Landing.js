@@ -106,7 +106,7 @@ class Landing extends React.Component {
           </Col>
         </Row>
         <div style={{ height: '70vh'}}>
-          {mode==MODE.SEARCH?
+          {mode === MODE.SEARCH?
           <Search />
           :
           <PaintingDetail paintingId={7122497} />

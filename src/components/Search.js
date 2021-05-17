@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 // Redux
-import { setMode, MODE } from "../redux";
 import { connect } from "react-redux";
 
 // Assets
