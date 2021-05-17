@@ -15,13 +15,13 @@ const mapDispatchToProps = (dispatch) => {
 
 const noImageUrl = 
   "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
+export const IMAGE_SOURCE = { THUMBNAIL: 1, PATH: 2, URL: 3 }  
 class Card extends React.Component {
 
   constructor(props){
     super(props)
-    this.state = {
-      imageUrl: noImageUrl
-    }
+    this.state = {}    
+    this.imageSource = IMAGE_SOURCE.THUMBNAIL
   }
 
   onClick(paintingId){
@@ -29,6 +29,29 @@ class Card extends React.Component {
     window.open(`/${paintingId}`)
   }
 
+  onLoadImageError(){
+    this.imageSource = this.imageSource + 1
+  }
+
+  getImageUrl(image){
+    let imageUrl = ''
+    if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
+      console.log("thumbnail ...")
+      imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
+      this.imageSource = IMAGE_SOURCE.THUMBNAIL
+    }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
+      console.log("path ...")
+      imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
+      this.imageSource = IMAGE_SOURCE.PATH
+    }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
+      console.log("url ...")
+      imageUrl = image.url
+      this.imageSource = IMAGE_SOURCE.URL
+    }else{
+      this.imageUrl = noImageUrl;
+    }
+    return imageUrl
+  }
 
   render(){
     const { painting } = this.props;
@@ -44,17 +67,24 @@ class Card extends React.Component {
     //   }
     // }
 
-    // if( painting.images ){
-    //   if( painting.images.length > 0 ){
-    //     const image = painting.images[0]
-    //     if( image.thumbnail )
-    //       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
-    //     else if(image.path)
-    //       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
-    //     else if(image.url)
-    //       imageUrl = image.url
-    //   }
-    // }
+    if( painting.images ){
+      if( painting.images.length > 0 ){
+        const image = painting.images[0]
+        //imageUrl = this.getImageUrl(image)
+        // if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
+        //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
+        //   imageSource = IMAGE_SOURCE.THUMBNAIL
+        // }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
+        //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
+        //   imageSource = IMAGE_SOURCE.PATH
+        // }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
+        //   imageUrl = image.url
+        //   imageSource = IMAGE_SOURCE.URL
+        // }else{
+        //   imageUrl = noImageUrl;
+        // } 
+      }
+    }
 
 
     
@@ -93,7 +123,9 @@ class Card extends React.Component {
           onClick={(e) => this.onClick(painting.pk)} 
           style={{ height: '200px'}}>
           <div className="h-100 d-flex justify-content-center align-items-center">            
-            <img alt="dummyImage" src={imageUrl} style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
+            <img alt="dummyImage" 
+                  src={imageUrl?imageUrl:noImageUrl} 
+                  style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
           </div>
         </div>
         <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'hidden'}}>

@@ -31,7 +31,6 @@ export function rootReducer(state = initialState, action) {
             paintingId: 0
           };    
   }
-  console.log("action ", action)
   if (action.type === SHOW_DETAIL) {
     return { 
             ...state, 

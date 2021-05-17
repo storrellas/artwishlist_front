@@ -50,9 +50,8 @@ class Landing extends React.Component {
   }
 
   handleKeyDown(e){    
-    if (e.keyCode === 13){
-      this.performSearch()
-    }      
+    if (e.keyCode === 13)
+      this.performSearch()    
   }
 
   performSearch(){
@@ -78,9 +77,9 @@ class Landing extends React.Component {
     // Grab ME oid
     const { match: { params } } = this.props;
     const paintingId = params.id;
-    if( paintingId !== undefined ){
+    if( paintingId !== undefined )
       this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
-    }
+    
 
   }
 

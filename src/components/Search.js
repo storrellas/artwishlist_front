@@ -24,7 +24,7 @@ import Card from '../components/Card';
 
 
 const mapStateToProps = (state) => {
-  return {
+  return {    
     searchPattern: state.searchPattern,
   };
 }
@@ -40,8 +40,6 @@ class Search extends React.Component {
       listShow: false,
       imagePreviewHover: false,
       paintingList: [],
-      offset: 0,
-      size: 8
     }
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
@@ -52,7 +50,7 @@ class Search extends React.Component {
     this.scrollTopMax = 0;
 
     this.offset = 0;
-    this.size = 8;
+    this.size = 1;
   }
 
 
@@ -64,12 +62,12 @@ class Search extends React.Component {
       url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
       const response = await axios.get(url)
 
+
       // Append to existing paintingList
       const paintingList = this.state.paintingList.concat(response.data.results)
       // Set offset for the next time
       this.offset = this.offset + this.size;
       this.setState({
-          searchPattern: this.props.searchPattern,
           searchFull: false, 
           listShow: true, 
           paintingList: paintingList})
@@ -183,7 +181,7 @@ class Search extends React.Component {
     }
   } 
 
-  componentDidUpdate(prevState, prevProps){
+  componentDidUpdate(prevProps, prevState){
     if( prevProps.searchPattern !== this.props.searchPattern){
       this.offset = 0
       this.performSearchPattern()
@@ -199,6 +197,7 @@ class Search extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
+      console.log("launching this")
       this.performSearchPattern() 
     }
   }
