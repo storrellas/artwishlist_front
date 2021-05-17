@@ -39,36 +39,42 @@ class Search extends React.Component {
       searchFull: true,
       listShow: false,
       imagePreviewHover: false,
-      paintingList: []
+      paintingList: [],
+      offset: 0,
+      size: 8
     }
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
 
+    this.scrollRef = React.createRef();
+
     this.isImageSearch = false;
+    this.scrollTopMax = 0;
+
+    this.offset = 0;
+    this.size = 8;
   }
 
-  handleKeyDown(e){    
-    if (e.keyCode === 13)
-      this.performSearchPattern(e)
-  }
 
   async performSearchPattern(){
     try{
       const searchPattern = this.props.searchPattern;
-      
 
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
-      url = `${url}q=${searchPattern}&size=10&offset=20`; 
+      url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
       const response = await axios.get(url)
 
+      // Append to existing paintingList
+      const paintingList = this.state.paintingList.concat(response.data.results)
+      // Set offset for the next time
+      this.offset = this.offset + this.size;
       this.setState({
           searchPattern: this.props.searchPattern,
           searchFull: false, 
           listShow: true, 
-          paintingList: response.data.results})
+          paintingList: paintingList})
     }catch(error){
-      console.log("FAILED")
-
+      console.log("FAILED", error)
     }  
   }
 
@@ -80,8 +86,7 @@ class Search extends React.Component {
     formData.append('upload', file);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
 
-    // set PaintingList
-    //this.isImageSearch = false;
+    // Set PaintingList
     this.setState({
       imagePreview: URL.createObjectURL(file),
       searchFull: false, 
@@ -180,15 +185,29 @@ class Search extends React.Component {
 
   componentDidUpdate(prevState, prevProps){
     if( prevProps.searchPattern !== this.props.searchPattern){
+      this.offset = 0
       this.performSearchPattern()
     }
     
+  }
+
+  onYReachEnd(){
+    // const scrollTop = this.scrollRef.scrollTop;
+    // let docHeight = this.scrollRef.scrollHeight;
+    // let clientHeight = this.scrollRef.clientHeight;
+    // let scrollPercent = scrollTop *100 / (docHeight - clientHeight);
+
+    // Grab next page
+    if( this.scrollRef.scrollTop > 0){
+      this.performSearchPattern() 
+    }
   }
 
   render() {
     
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview } = this.state;
+
 
     return (
         <>
@@ -223,7 +242,11 @@ class Search extends React.Component {
             className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-list"
           >
-            <PerfectScrollbar className="w-100" style={{ padding: '0 1em 0 1em'}}>
+            <PerfectScrollbar 
+              className="w-100" 
+              onYReachEnd={(e) => this.onYReachEnd()}
+              style={{ padding: '0 1em 0 1em'}}
+              containerRef={(ref) => this.scrollRef= ref} >
               <Row>
                 {paintingList.map( (item, id) => 
                   <Col className="mt-3" key={id} md="3">

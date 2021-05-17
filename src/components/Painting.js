@@ -24,9 +24,7 @@ class Painting extends React.Component {
   async componentDidMount(){
 
     try{
-      // Grab ME oid
-      // const { match: { params } } = this.props;
-      // const id = params.id;
+      // Grab paintingId
       const id = this.props.paintingId;
 
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/${id}`;
@@ -59,11 +57,6 @@ class Painting extends React.Component {
 
   render() {
     const { image } = this.state;
-
-    console.log("ReRender")
-
-    console.log("ReRender", this.state.painting)
-
 
     return (
 
