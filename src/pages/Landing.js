@@ -21,7 +21,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 // Project imports
 import Search from '../components/Search'
-import PaintingDetail from '../components/PaintingDetail';
+import Painting from '../components/Painting';
 
 const mapStateToProps = (state) => {
   return {
@@ -109,7 +109,7 @@ class Landing extends React.Component {
           {mode === MODE.SEARCH?
           <Search />
           :
-          <PaintingDetail paintingId={7122497} />
+          <Painting paintingId={7122497} />
           }
         </div>
       </Container>
