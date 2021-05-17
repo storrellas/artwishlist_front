@@ -8,7 +8,7 @@ import './Landing.scss';
 
 
 // Redux
-import { performSearch, MODE } from "../redux";
+import { performSearch, MODE, showDetail } from "../redux";
 import { connect } from "react-redux";
 
 // Assets
@@ -26,13 +26,15 @@ import Painting from '../components/Painting';
 const mapStateToProps = (state) => {
   return {
     mode: state.mode,
+    paintingId: state.paintingId
   };
 }
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      performSearch: (payload) => dispatch(performSearch(payload))
+      performSearch: (payload) => dispatch(performSearch(payload)),
+      showDetail: (payload) => dispatch(showDetail(payload))
   };
 }
 
@@ -60,18 +62,30 @@ class Landing extends React.Component {
 
   componentDidUpdate(prevState, prevProps){
 
-    if( prevProps.paintingId !== this.props.paintingId ||
-        prevProps.mode !== this.props.mode){
+    if( prevProps.mode !== this.props.mode){
           this.setState({
             paintingId: this.props.paintingId,
             mode: this.props.mode
           })
     }
     
+
+
+  }
+
+  componentDidMount(){
+
+    // Grab ME oid
+    const { match: { params } } = this.props;
+    const paintingId = params.id;
+    if( paintingId !== undefined ){
+      this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
+    }
+
   }
 
   render() {
-    const { mode } = this.state;
+    const { mode, paintingId } = this.state;
     console.log("ReRender")
 
     return (
@@ -107,7 +121,7 @@ class Landing extends React.Component {
           {mode === MODE.SEARCH?
           <Search />
           :
-          <Painting paintingId={7122497} />
+          <Painting paintingId={paintingId} />
           }
         </div>
       </Container>

@@ -2,7 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom'
 
 // Redux
-import { showDetail, MODE } from "../redux";
+import { showDetail } from "../redux";
+//import { MODE } from "../redux";
 import { connect } from "react-redux";
 
 const mapDispatchToProps = (dispatch) => {
@@ -12,6 +13,11 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Card extends React.Component {
+
+  onClick(paintingId){
+    //this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
+    window.open(`/${paintingId}`)
+  }
 
   render(){
     const { painting } = this.props;
@@ -57,7 +63,7 @@ class Card extends React.Component {
             {source}
         </div>
         <div className="card-painting" 
-          onClick={(e) => this.props.showDetail({mode: MODE.DETAIL, paintingId: painting.pk})} 
+          onClick={(e) => this.onClick(painting.pk)} 
           style={{ height: '200px'}}>
           <div className="h-100 d-flex justify-content-center align-items-center">            
             <img alt="dummyImage" src={imageUrl} style={{ maxWidth: '100%', maxHeight: '100%'}}></img>

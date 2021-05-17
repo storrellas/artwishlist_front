@@ -24,8 +24,11 @@ class App extends React.Component {
     console.log("ReRender")
     return (
       <Switch>
-        <Route path={`${this.props.match.path}`} exact
+        <Route path={`${this.props.match.path}:id`} 
           render={(props) => (<Landing />)} />
+        <Route path={`${this.props.match.path}`} 
+          render={(props) => (<Landing />)} />
+
         <Redirect to='/' />
       </Switch>
     );

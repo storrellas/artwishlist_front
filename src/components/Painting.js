@@ -5,6 +5,15 @@ import { withRouter } from 'react-router-dom';
 // Axios
 import axios from 'axios';
 
+// Redux
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    paintingId: state.paintingId,
+  };
+}
+
 class Painting extends React.Component {
 
   constructor(props) {
@@ -31,7 +40,6 @@ class Painting extends React.Component {
       const response = await axios.get(url)
       const data = response.data;
 
-      console.log("data ", response.data)
       let image = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
       if(data.images.length >0 ){
         image = data.images[0].url; 
@@ -49,7 +57,7 @@ class Painting extends React.Component {
         description: data.description
       })
     }catch(error){
-      console.log("FAILED")
+      console.log("FAILED", error)
 
     }  
   }
@@ -101,4 +109,4 @@ class Painting extends React.Component {
 }
 
 
-export default withRouter(Painting);
+export default connect(mapStateToProps, null)(withRouter(Painting));

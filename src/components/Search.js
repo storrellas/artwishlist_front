@@ -247,7 +247,6 @@ class Search extends React.Component {
 
 
           <AnimateHeight
-            id='example-panel'
             duration={ 500 }
             height={ listShow? '80%': '0%' } // see props documentation below
             className="d-flex flex-column justify-content-center align-items-center" 
