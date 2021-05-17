@@ -23,7 +23,6 @@ const initialState = {
 };
 
 export function rootReducer(state = initialState, action) {
-  console.log("firing action ", action)
   if (action.type === PERFORM_SEARCH) {
     return { 
             ...state, 

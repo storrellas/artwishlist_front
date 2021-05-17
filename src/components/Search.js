@@ -92,7 +92,6 @@ class Search extends React.Component {
   handleDragLeave(event){
     event.stopPropagation()
     event.preventDefault()
-    console.log("handle handleDragLeave")
     // If we have an image do not proceed
     if( this.isImageSearch ) return;
       
@@ -179,9 +178,8 @@ class Search extends React.Component {
     }
   } 
 
-  componentDidUpdate(){
-    if( this.state.searchPattern !== this.props.searchPattern){
-      console.log("performSearch", this.props)
+  componentDidUpdate(prevState, prevProps){
+    if( prevProps.searchPattern !== this.props.searchPattern){
       this.performSearchPattern()
     }
     
@@ -191,7 +189,6 @@ class Search extends React.Component {
     
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview } = this.state;
-    console.log("ReRender")
 
     return (
         <>

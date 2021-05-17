@@ -11,6 +11,8 @@ import './App.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { MODE } from './redux'
+
 class App extends React.Component {
 
   constructor(props) {

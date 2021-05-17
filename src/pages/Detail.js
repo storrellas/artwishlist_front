@@ -19,7 +19,7 @@ class Detail extends React.Component {
 
 
   render() {
-    console.log("ReRender")
+    console.log("ReRender - Detail")
     return (
       <Container>
         <Row style={{ marginTop: '3em'}}>

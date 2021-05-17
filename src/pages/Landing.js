@@ -26,7 +26,6 @@ import Painting from '../components/Painting';
 const mapStateToProps = (state) => {
   return {
     mode: state.mode,
-    paintingId: state.paintingId,
   };
 }
 
@@ -59,11 +58,10 @@ class Landing extends React.Component {
     this.props.performSearch({mode: MODE.SEARCH, searchPattern: qParameter})
   }
 
-  componentDidUpdate(){
-    
-    if( this.state.paintingId !== this.props.paintingId ||
-        this.state.mode !== this.props.mode){
-          console.log("component did update - Landing", this.props.mode, this.props.paintingId)
+  componentDidUpdate(prevState, prevProps){
+
+    if( prevProps.paintingId !== this.props.paintingId ||
+        prevProps.mode !== this.props.mode){
           this.setState({
             paintingId: this.props.paintingId,
             mode: this.props.mode
@@ -74,7 +72,7 @@ class Landing extends React.Component {
 
   render() {
     const { mode } = this.state;
-    console.log("ReRender", mode)
+    console.log("ReRender")
 
     return (
       <Container>
