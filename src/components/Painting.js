@@ -40,6 +40,7 @@ class Painting extends React.Component {
       const response = await axios.get(url)
       const data = response.data;
 
+      // Here get path or get /api/aw_lots/image/{image_pk}
       let image = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
       if(data.images.length >0 ){
         image = data.images[0].url; 

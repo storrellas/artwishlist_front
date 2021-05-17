@@ -6,41 +6,68 @@ import { showDetail } from "../redux";
 //import { MODE } from "../redux";
 import { connect } from "react-redux";
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
       showDetail: (payload) => dispatch(showDetail(payload))
   };
 }
 
+const noImageUrl = 
+  "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 class Card extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      imageUrl: noImageUrl
+    }
+  }
 
   onClick(paintingId){
     //this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
     window.open(`/${paintingId}`)
   }
 
+
   render(){
     const { painting } = this.props;
 
-    const noImageUrl = 
-      "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
+
+
+    // Here get thumbnail (with base_url https://awdb-images.nyc3.digitaloceanspaces.com/)
 
     let imageUrl = noImageUrl;
-    if( painting.images ){
-      if( painting.images.length > 0 ){
-        imageUrl = painting.images[0].url
-      }
-    }
+    // if( painting.images ){
+    //   if( painting.images.length > 0 ){
+    //     imageUrl = painting.images[0].url
+    //   }
+    // }
+
+    // if( painting.images ){
+    //   if( painting.images.length > 0 ){
+    //     const image = painting.images[0]
+    //     if( image.thumbnail )
+    //       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
+    //     else if(image.path)
+    //       imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
+    //     else if(image.url)
+    //       imageUrl = image.url
+    //   }
+    // }
+
+
+    
 
     // Devil's logic
     let source = ''
 
     // Auction
-    if( ['A', 'P'].includes(painting.source_type) ) source = 'AUCTION';
+    if( ['A', 'P', 'YY', 'NN'].includes(painting.source_type) ) source = 'AUCTION';
 
     // CatRais
     const catRaisList1 = ['K', 'L', 'B', 'E', 'R', 'G', 'J', 'C', ]
-    const catRaisList2 = ['O', 'U', 'H', 'I', 'S', 'W', 'M', '0', 'Z', 'JB', 'GL']
+    const catRaisList2 = ['O', 'U', 'H', 'I', 'S', 'W', 'M', '0', 'Z', 'JB', 'GL', 'CR']
     const catRaisList = [...catRaisList1, ...catRaisList2]
     if( catRaisList.includes(painting.source_type) ) source = 'CAT RAIS';
     
