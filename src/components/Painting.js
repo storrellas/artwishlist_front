@@ -59,8 +59,9 @@ class Painting extends React.Component {
       const response = await axios.get(url)
       const data = response.data;
 
+
       // Get Image from API
-      let image = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${id}`
+      let image = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${data.images[0].pk}`
       const size = `${data.size_height} x ${data.size_width} (${data.size_unit})`
       this.setState({ 
         title: data.title,

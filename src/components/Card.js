@@ -65,9 +65,7 @@ class Card extends React.Component {
       }
     }
 
-
-    
-
+  
     // Devil's logic
     let source = ''
 
