@@ -59,12 +59,12 @@ class Landing extends React.Component {
     this.props.performSearch({mode: MODE.SEARCH, searchPattern: qParameter})
   }
 
-  componentDidUpdate(prevState, prevProps){
+  componentDidUpdate(prevProps, prevState){
     if( prevProps.mode !== this.props.mode){
-          this.setState({
-            paintingId: this.props.paintingId,
-            mode: this.props.mode
-          })
+      this.setState({
+        paintingId: this.props.paintingId,
+        mode: this.props.mode
+      })
     }
   }
 

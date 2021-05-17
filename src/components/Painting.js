@@ -30,6 +30,25 @@ class Painting extends React.Component {
     }
   }
 
+  async getImageUrl(image){
+
+    // let imageUrl = ''
+    // if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
+    //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
+    //   this.imageSource = IMAGE_SOURCE.THUMBNAIL
+    // }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
+    //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
+    //   this.imageSource = IMAGE_SOURCE.PATH
+    // }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
+    //   imageUrl = image.url
+    //   this.imageSource = IMAGE_SOURCE.URL
+    // }else{
+    //   this.imageUrl = noImageUrl;
+    // }
+    // return imageUrl
+  }
+
+
   async componentDidMount(){
 
     try{
@@ -40,11 +59,8 @@ class Painting extends React.Component {
       const response = await axios.get(url)
       const data = response.data;
 
-      // Here get path or get /api/aw_lots/image/{image_pk}
-      let image = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-      if(data.images.length >0 ){
-        image = data.images[0].url; 
-      }
+      // Get Image from API
+      let image = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${id}`
       const size = `${data.size_height} x ${data.size_width} (${data.size_unit})`
       this.setState({ 
         title: data.title,
