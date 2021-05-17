@@ -26,6 +26,15 @@ $title-grey: #AAAAAA;
   overflow: hidden;
 }
 
+.img-search{
+  margin: 0 50% 0 50%;
+}
+
+.img-search-left{
+  margin: 0 85% 0 0;
+  transition: all 0.5s linear;
+}
+
 .img-painting-border{
   border: 0 solid $title-grey;
 }

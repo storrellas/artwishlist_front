@@ -208,6 +208,18 @@ class Search extends React.Component {
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview } = this.state;
 
+    // Classes to move icon
+    let imgClass = "";
+    if( this.isImageSearch ){
+      imgClass = "h-100 img-painting-border img-search-left"
+    }else{
+      if( searchFull ){
+        imgClass = "h-100 img-search"
+      }else{
+        imgClass = "h-100 img-search img-search-left"
+      }
+      
+    }
 
     return (
         <>
@@ -217,7 +229,7 @@ class Search extends React.Component {
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search"
           >
-              <img className={this.isImageSearch?"h-100 img-painting-border":"h-100"}
+              <img className={imgClass}
                 alt="background" src={imagePreview}                               
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
                 onMouseLeave={(e) => this.handleImageMouseLeave()}
