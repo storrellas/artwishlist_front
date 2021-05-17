@@ -30,6 +30,7 @@ class Card extends React.Component {
   }
 
   onLoadImageError(){
+    
     this.imageSource = this.imageSource + 1
     this.forceUpdate()
   }
@@ -46,7 +47,7 @@ class Card extends React.Component {
       imageUrl = image.url
       this.imageSource = IMAGE_SOURCE.URL
     }else{
-      this.imageUrl = noImageUrl;
+      imageUrl = noImageUrl;
     }
     return imageUrl
   }
