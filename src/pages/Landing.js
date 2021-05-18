@@ -28,7 +28,7 @@ import Painting from '../components/Painting';
 const mapStateToProps = (state) => {
   return {
     mode: state.mode,
-    paintingId: state.paintingId
+    paintingId: state.paintingId,
   };
 }
 
@@ -49,7 +49,9 @@ class Landing extends React.Component {
       mode: MODE.SEARCH,
       paintingId: 0,
       isLoadingArtist: false,
-      artistOptions: []
+      artistOptions: [],
+      searchInputBackground: '#DDDDDD',
+      searchInputBorder: '0px solid #DDDDDD'
     }
     this.typingTimeout = undefined
   }
@@ -90,6 +92,9 @@ class Landing extends React.Component {
   async fillArtist(searchPattern){
   
     try{
+      if(searchPattern.length == 0){
+        return
+      }
       this.setState({isLoadingArtist: true})
 
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_artist_search?q=${searchPattern}`;
@@ -110,6 +115,13 @@ class Landing extends React.Component {
   onInputChangeArtist(searchPattern){
     const that = this;
 
+    if(searchPattern.length > 0 ){
+      this.setState({searchInputBackground: 'white', searchInputBorder: '1px solid #DDDDDD'})
+    }else{
+      this.setState({searchInputBackground: '#DDDDDD', searchInputBorder: '0px solid #DDDDDD'})
+    }
+    
+
     // Clear timeout
     if ( this.typingTimeout ) {
       clearTimeout(this.typingTimeout);
@@ -119,8 +131,8 @@ class Landing extends React.Component {
   }
 
   render() {
-    const { mode, paintingId, artistOptions } = this.state;
-    console.log("ReRender")
+    const { mode, paintingId, artistOptions, searchInputBackground, searchInputBorder } = this.state;
+    console.log("ReRender", searchInputBackground)
 
     return (
       <Container>
@@ -132,18 +144,20 @@ class Landing extends React.Component {
           <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
 
             <div className="w-100">
-            <Select isLoading={this.state.isLoadingArtist} isClearable 
+            <Select isLoading={this.state.isLoadingArtist} 
+                isClearable 
                 isSearchable options={artistOptions} 
                 onInputChange={(e) => this.onInputChangeArtist(e)} 
                 onChange={ (e) => this.performSearchArtist(e) }
-                placeholder={'Search by Artist'}
-                style={{ width: '100%'}}
+                placeholder={'Search by Artist'}                
                 styles={{      
                   container: (provided) => ({
                     ...provided,
                   }),
                   control: (provided) => ({ 
-                    ...provided, border: 0, borderRadius: '20px', background: '#DDDDDD',
+                    ...provided, border: 0, borderRadius: '20px', background: searchInputBackground, border: searchInputBorder,
+                    outline: "none !important",
+                    boxShadow: "none !important",
                     "&:focus" :{
                       border: '1px solid black',
                       outline: 'none'
