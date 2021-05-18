@@ -102,7 +102,7 @@ class Landing extends React.Component {
           </Col>
         </Row>
 
-        <div style={{ height: '80vh'}}>
+        <div style={{ height: '75vh'}}>
           {mode === MODE.SEARCH?
           <Search />
           :
