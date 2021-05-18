@@ -1,20 +1,22 @@
 .filtering{
   color: grey;
   .title{
-    height: 40px;
     display: flex;
     justify-content: start;
     align-items: center;
+
+    margin-right: 10px;
   }
   select{
+    width: 100%;
     color: grey;
-    background: #DDDDDD;
+    background: white;
     border-radius: 20px 20px 20px 20px;
     height: 40px;
-    width: 140px;
     padding-left: 5px;
-    border: 0;
-    color: 'grey'
+    border: 1px solid grey;
+    margin-right: 10px;
+
   }
 
   .filtering-input{
@@ -22,26 +24,31 @@
     display: flex;    
     height: 40px;
     div{
-      padding: 0 1em 0 1em;
-      background: #DDDDDD;
+      padding: 0 0.5em 0 0.5em;
+      //background: #DDDDDD;
       border-radius: 20px 0 0 20px;
+      border: 1px solid grey;
+      border-width: 1px 0 1px 1px;      
       display: flex;
       align-items: center;
     }
   
     input{
+      width: 100%;
       color: grey;
       flex-grow: 1; 
-      background: #DDDDDD; 
+      //background: #DDDDDD; 
       border: 0;
       border-radius: 0 20px 20px 0;
+      border: 1px solid grey;
+      border-width: 1px 1px 1px 0;
     }
     input:focus{
       outline: none;
     }
   }
   
-  .detail-painting-img {
-    padding: 0;
+  .sorting-input{
+    margin-right: 10px;
   }
 }

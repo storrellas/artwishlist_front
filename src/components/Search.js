@@ -259,10 +259,13 @@ class Search extends React.Component {
             height={ listShow? '80%': '0%' } // see props documentation below
             contentClassName="animated-list"
           >
-            <Row className="filtering" style={{ padding: '15px'}}>
-              <Col className="mt-3" md={1}>
+            <Row className="filtering" style={{ padding: '0 15px 0 15px'}}>
+              <Col>
                 <div className="title w-100 text-left">Filters</div>
               </Col>
+            </Row>
+            <Row className="filtering" style={{ padding: '0 15px 0 15px'}}>
+
               <Col className="mt-3" md={2}>
                 <select>
                   <option>Category</option>
@@ -311,7 +314,6 @@ class Search extends React.Component {
 
               <Col className="mt-3" md={2}>
                 <div className="w-100 d-flex">
-                  <div>Sort by</div>
                   <select>
                     <option>Price (High to Low)</option>
                     <option>Price (Low to High)</option>
@@ -321,6 +323,58 @@ class Search extends React.Component {
 
 
             </Row>
+
+            {/* <Row className="filtering" style={{ padding: '15px'}}>
+              <Col className="mt-3 d-flex flex-wrap">
+                <div className="title text-left">Filters</div>
+                <select>
+                  <option>Category</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+                <select>
+                  <option>Source Type</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+                <select>
+                  <option>Auction Sales</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+                <select>
+                  <option>Other</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+
+                <div className="filtering-input">
+                  <div>
+                    <FontAwesomeIcon icon={faSearch}
+                                  onClick={(e) => this.performSearch()} />
+                  </div>
+                  <input type="text" 
+                      placeholder="Search by artist"
+                      onChange={e => this.setState({ searchPattern: e.target.value })}
+                      onKeyDown={e => this.handleKeyDown(e)} />
+                </div>
+
+                <div className="d-flex filtering-sorting-input">
+                  <div className="title text-left">Sort by</div>
+                  <select>
+                    <option>Price (High to Low)</option>
+                    <option>Price (Low to High)</option>
+                  </select>
+                </div>
+              </Col>
+
+
+            </Row> */}
+
             <div className="h-100">
               <PerfectScrollbar 
                 className="w-100" 
