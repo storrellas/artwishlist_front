@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const noImageUrl = 
   "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
-export const IMAGE_SOURCE = { THUMBNAIL: 1, PATH: 2, URL: 3 }  
+export const IMAGE_SOURCE = { THUMBNAIL: 1, PATH: 2, API: 3 }  
 class Card extends React.Component {
 
   constructor(props){
@@ -44,9 +44,9 @@ class Card extends React.Component {
     }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
       imageUrl = `${imagesBaseUrl}${image.path}`
       this.imageSource = IMAGE_SOURCE.PATH
-    }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
-      imageUrl = image.url
-      this.imageSource = IMAGE_SOURCE.URL
+    }else if(image.url && this.imageSource <= IMAGE_SOURCE.API){      
+      this.imageSource = IMAGE_SOURCE.API
+      imageUrl = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${image.pk}`
     }else{
       imageUrl = noImageUrl;
     }
