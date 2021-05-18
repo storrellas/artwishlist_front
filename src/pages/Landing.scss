@@ -1,3 +1,8 @@
+
+@import "bootstrap/scss/functions"; 
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
 $bg-grey: #DDDDDD;
 $title-grey: #AAAAAA;
 
@@ -78,6 +83,7 @@ $title-grey: #AAAAAA;
 }
 
 .search-input{
+  color: grey;
   display: flex;
   padding: 1em 20% 1em 20%;
   height: 70px;
@@ -90,6 +96,7 @@ $title-grey: #AAAAAA;
   }
 
   input{
+    color: grey;
     flex-grow: 1; 
     background: #DDDDDD; 
     border: 0;
@@ -97,5 +104,16 @@ $title-grey: #AAAAAA;
   }
   input:focus{
     outline: none;
+  }
+}
+
+.detail-painting-img {
+  padding: 0;
+}
+
+
+@include media-breakpoint-up(md){
+  .detail-painting-img {
+    padding: 0 3em 0 3em;
   }
 }

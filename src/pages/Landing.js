@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { InputGroup, FormControl } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import './Landing.scss';

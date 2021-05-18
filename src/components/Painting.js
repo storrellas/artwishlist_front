@@ -64,14 +64,13 @@ class Painting extends React.Component {
 
   render() {
     const { image } = this.state;
-    console.log("image ", image)
     return (
 
       <Row className="painting" style={{ padding: '4em 3em 0 3em'}} >
-        <Col md className="text-center" style={{ minHeight: '70vh' }}>
-          <img alt="painting" src={image}></img>
+        <Col md={6} className="detail-painting-img">
+          <img alt="painting" src={image} style={{ maxHeight: '100%', maxWidth: '100%'}}></img>
         </Col>
-        <Col md style={{ minHeight: '70vh' }}>
+        <Col md={6} style={{ minHeight: '70vh' }}>
           
           <div style={{ color: 'grey' }}>Catalogue Raisonne</div>
           
