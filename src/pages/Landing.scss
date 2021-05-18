@@ -10,8 +10,6 @@ $title-grey: #AAAAAA;
   background-color: $bg-grey;
   width: 100%;
   border-radius: 10px;
-  //margin: 1em;
-  
 }
 
 .animated-list {
@@ -77,4 +75,27 @@ $title-grey: #AAAAAA;
 .painting {
   background-color: $bg-grey;
   border-radius: 10px;
+}
+
+.search-input{
+  display: flex;
+  padding: 1em 20% 1em 20%;
+  height: 70px;
+  div{
+    padding: 0 1em 0 1em;
+    background: #DDDDDD;
+    border-radius: 20px 0 0 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  input{
+    flex-grow: 1; 
+    background: #DDDDDD; 
+    border: 0;
+    border-radius: 0 20px 20px 0;
+  }
+  input:focus{
+    outline: none;
+  }
 }

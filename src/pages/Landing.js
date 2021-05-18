@@ -43,7 +43,7 @@ class Landing extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      qParameter: '',
+      searchPattern: '',
       mode: MODE.SEARCH,
       paintingId: 0,
     }
@@ -55,8 +55,8 @@ class Landing extends React.Component {
   }
 
   performSearch(){
-    const { qParameter } = this.state;
-    this.props.performSearch({mode: MODE.SEARCH, searchPattern: qParameter})
+    const { searchPattern } = this.state;
+    this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern})
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -94,20 +94,15 @@ class Landing extends React.Component {
         <Row>
           <Col style={{ marginTop: '3em'}}>
             
-            <div style={{ padding: '0 20% 0 20%'}}>
-              <InputGroup className="mb-3">
-                <FormControl
-                  placeholder="Search by artist"                  
-                  style={{ borderRadius: '10px 0 0 10px ' }}
-                  onChange={e => this.setState({ qParameter: e.target.value })}
+            <div className="search-input">
+              <div>
+                <FontAwesomeIcon icon={faSearch}
+                              onClick={(e) => this.performSearch()} />
+              </div>
+              <input type="text" 
+                  placeholder="Search by artist"
+                  onChange={e => this.setState({ searchPattern: e.target.value })}
                   onKeyDown={e => this.handleKeyDown(e)} />
-                <InputGroup.Append >
-                  <InputGroup.Text style={{ background: 'white', borderRadius: ' 0 10px 10px 0', cursor: 'pointer'}}>
-                    <FontAwesomeIcon icon={faSearch}
-                            onClick={(e) => this.performSearch()} />
-                  </InputGroup.Text>
-                </InputGroup.Append>
-              </InputGroup>
             </div>
 
           </Col>
