@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom';
 
 import './Landing.scss';
 
-
+// React Select
+import Select from 'react-select';
 
 // Redux
 import { performSearch, MODE, showDetail } from "../redux";
@@ -17,6 +18,8 @@ import factureLogo from '../assets/facture_logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
+// Axios
+import axios from 'axios';
 
 // Project imports
 import Search from '../components/Search'
@@ -45,7 +48,10 @@ class Landing extends React.Component {
       searchPattern: '',
       mode: MODE.SEARCH,
       paintingId: 0,
+      isLoadingArtist: false,
+      artistOptions: []
     }
+    this.typingTimeout = undefined
   }
 
   handleKeyDown(e){    
@@ -74,12 +80,46 @@ class Landing extends React.Component {
     const paintingId = params.id;
     if( paintingId !== undefined )
       this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
-    
+  }
 
+  performSearchArtist(searchPattern){
+    clearTimeout(this.typingTimeout);
+    this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
+  }
+
+  async fillArtist(searchPattern){
+  
+    try{
+      this.setState({isLoadingArtist: true})
+
+      let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_artist_search?q=${searchPattern}`;
+      const response = await axios.get(url)
+
+      // Autocomplete
+      const artistOptions = []
+      for(const item of response.data.results ){
+        artistOptions.push({value: item.pk, label: item.name})
+      }
+      this.setState({artistOptions: artistOptions, isLoadingArtist:false})
+
+    }catch(error){
+      console.log("FAILED", error)
+    }  
+  }
+
+  onInputChangeArtist(searchPattern){
+    const that = this;
+
+    // Clear timeout
+    if ( this.typingTimeout ) {
+      clearTimeout(this.typingTimeout);
+    }
+    this.typingTimeout = 
+      setTimeout(function () {that.fillArtist(searchPattern);}, 1000)
   }
 
   render() {
-    const { mode, paintingId } = this.state;
+    const { mode, paintingId, artistOptions } = this.state;
     console.log("ReRender")
 
     return (
@@ -99,6 +139,21 @@ class Landing extends React.Component {
                   onChange={e => this.setState({ searchPattern: e.target.value })}
                   onKeyDown={e => this.handleKeyDown(e)} />
             </div>
+          </Col>
+        </Row>
+
+        <Row>
+        <Col>
+        <Select isLoading={this.state.isLoadingArtist} isClearable 
+                isSearchable options={artistOptions} 
+                onInputChange={(e) => this.onInputChangeArtist(e)} 
+                onChange={ (e) => this.performSearchArtist(e) }
+                placeholder={'Search by Artist'}
+                styles={{ 
+                  control: (provided) => ({ ...provided, borderTop: 0, borderLeft: 0, borderRight: 0, borderRadius: 0}),
+                  indicatorSeparator: (provided) => ({ backgroundColor: 'white'}) 
+                }}
+                />
           </Col>
         </Row>
 
