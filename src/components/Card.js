@@ -106,7 +106,7 @@ class Card extends React.Component {
                   style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
           </div>
         </div>
-        <div className="p-3" style={{ fontSize: '12px', height: '300px', overflowY: 'hidden'}}>
+        <div className="p-3" style={{ fontSize: '12px', height: '200px', overflowY: 'hidden'}}>
           <div>
             <b>{painting.artist}</b>
           </div>

@@ -84,16 +84,12 @@ class Landing extends React.Component {
 
     return (
       <Container>
-        <Row style={{ marginTop: '3em'}}>
-          <Col className="mt-3">
-            <img height="50" alt="logo" src={factureLogo}></img>
+        <Row style={{ margin: '3em 0 1em 0'}}>
+          <Col md={5}>
+            <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
-        </Row>
-
-        <Row>
-          <Col style={{ marginTop: '3em'}}>
-            
-            <div className="search-input">
+          <Col  md={7} className="d-flex justify-content-center align-items-center">            
+            <div className="search-input mt-3 w-100">
               <div>
                 <FontAwesomeIcon icon={faSearch}
                               onClick={(e) => this.performSearch()} />
@@ -103,10 +99,10 @@ class Landing extends React.Component {
                   onChange={e => this.setState({ searchPattern: e.target.value })}
                   onKeyDown={e => this.handleKeyDown(e)} />
             </div>
-
           </Col>
         </Row>
-        <div style={{ height: '70vh'}}>
+
+        <div style={{ height: '80vh'}}>
           {mode === MODE.SEARCH?
           <Search />
           :

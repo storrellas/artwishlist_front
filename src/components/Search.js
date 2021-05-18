@@ -2,11 +2,18 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
+import './Search.scss';
+
 // Axios
 import axios from 'axios';
 
 // Redux
 import { connect } from "react-redux";
+
+
+// Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 // Assets
 import upload from '../assets/upload.svg';
@@ -250,22 +257,85 @@ class Search extends React.Component {
           <AnimateHeight
             duration={ 500 }
             height={ listShow? '80%': '0%' } // see props documentation below
-            className="d-flex flex-column justify-content-center align-items-center" 
             contentClassName="animated-list"
           >
-            <PerfectScrollbar 
-              className="w-100" 
-              onYReachEnd={(e) => this.onYReachEnd()}
-              style={{ padding: '0 1em 0 1em'}}
-              containerRef={(ref) => this.scrollRef= ref} >
-              <Row>
-                {paintingList.map( (item, id) => 
-                  <Col className="mt-3" key={id} md="3">
-                    <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
-                  </Col>
-                )}
-              </Row>
-            </PerfectScrollbar>
+            <Row className="filtering" style={{ padding: '15px'}}>
+              <Col className="mt-3" md={1}>
+                <div className="title w-100 text-left">Filters</div>
+              </Col>
+              <Col className="mt-3" md={2}>
+                <select>
+                  <option>Category</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+              </Col>
+              <Col className="mt-3" md={2}>              
+                <select>
+                  <option>Source Type</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+              </Col>
+              <Col className="mt-3" md={2}>              
+                <select>
+                  <option>Auction Sales</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+              </Col>
+              <Col className="mt-3" md={2}>              
+                <select>
+                  <option>Other</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                  <option>Option1</option>
+                </select>
+              </Col>
+
+              <Col className="mt-3" md={2}>
+                <div className="filtering-input w-100">
+                  <div>
+                    <FontAwesomeIcon icon={faSearch}
+                                  onClick={(e) => this.performSearch()} />
+                  </div>
+                  <input type="text" 
+                      placeholder="Search by artist"
+                      onChange={e => this.setState({ searchPattern: e.target.value })}
+                      onKeyDown={e => this.handleKeyDown(e)} />
+                </div>
+              </Col>
+
+              <Col className="mt-3" md={2}>
+                <div className="w-100 d-flex">
+                  <div>Sort by</div>
+                  <select>
+                    <option>Price (High to Low)</option>
+                    <option>Price (Low to High)</option>
+                  </select>
+                </div>
+              </Col>
+
+
+            </Row>
+            <div className="h-100">
+              <PerfectScrollbar 
+                className="w-100" 
+                onYReachEnd={(e) => this.onYReachEnd()}
+                style={{ padding: '0 1em 0 1em'}}
+                containerRef={(ref) => this.scrollRef= ref} >
+                <Row>
+                  {paintingList.map( (item, id) => 
+                    <Col className="mt-3" key={id} md="3">
+                      <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
+                    </Col>
+                  )}
+                </Row>
+              </PerfectScrollbar>
+            </div>
           </AnimateHeight>
 
 
