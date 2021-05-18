@@ -39,6 +39,7 @@ class Search extends React.Component {
       searchFull: true,
       listShow: false,
       imagePreviewHover: false,
+      imagesBaseUrl: '',
       paintingList: [],
     }
     this.inputRef = React.createRef();
@@ -70,6 +71,7 @@ class Search extends React.Component {
       this.setState({
           searchFull: false, 
           listShow: true, 
+          imagesBaseUrl: response.data.images_base_url,
           paintingList: paintingList})
     }catch(error){
       console.log("FAILED", error)
@@ -205,7 +207,7 @@ class Search extends React.Component {
   render() {
     
     const { searchFull, listShow, paintingList } = this.state;
-    const { imagePreview } = this.state;
+    const { imagePreview, imagesBaseUrl } = this.state;
 
     // Classes to move icon
     let imgClass = "";
@@ -259,7 +261,7 @@ class Search extends React.Component {
               <Row>
                 {paintingList.map( (item, id) => 
                   <Col className="mt-3" key={id} md="3">
-                    <Card painting={item} />
+                    <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
                   </Col>
                 )}
               </Row>

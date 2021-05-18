@@ -36,12 +36,13 @@ class Card extends React.Component {
   }
 
   getImageUrl(image){
+    const { imagesBaseUrl } = this.props;
     let imageUrl = ''
     if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
-      imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
+      imageUrl = `${imagesBaseUrl}${image.thumbnail}`
       this.imageSource = IMAGE_SOURCE.THUMBNAIL
     }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
-      imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
+      imageUrl = `${imagesBaseUrl}${image.path}`
       this.imageSource = IMAGE_SOURCE.PATH
     }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
       imageUrl = image.url
@@ -54,7 +55,6 @@ class Card extends React.Component {
 
   render(){
     const { painting } = this.props;
-
 
     // Thumbnail
     let imageUrl = noImageUrl;

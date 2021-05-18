@@ -30,25 +30,6 @@ class Painting extends React.Component {
     }
   }
 
-  async getImageUrl(image){
-
-    // let imageUrl = ''
-    // if( image.thumbnail && this.imageSource <= IMAGE_SOURCE.THUMBNAIL){
-    //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.thumbnail}`
-    //   this.imageSource = IMAGE_SOURCE.THUMBNAIL
-    // }else if(image.path && this.imageSource <= IMAGE_SOURCE.PATH){
-    //   imageUrl = `${process.env.REACT_APP_IMAGE_BASE_URL}/${image.path}`
-    //   this.imageSource = IMAGE_SOURCE.PATH
-    // }else if(image.url && this.imageSource <= IMAGE_SOURCE.URL){
-    //   imageUrl = image.url
-    //   this.imageSource = IMAGE_SOURCE.URL
-    // }else{
-    //   this.imageUrl = noImageUrl;
-    // }
-    // return imageUrl
-  }
-
-
   async componentDidMount(){
 
     try{
@@ -83,12 +64,12 @@ class Painting extends React.Component {
 
   render() {
     const { image } = this.state;
-
+    console.log("image ", image)
     return (
 
       <Row className="painting" style={{ padding: '4em 3em 0 3em'}} >
         <Col md className="text-center" style={{ minHeight: '70vh' }}>
-          <img alt="paintin" src={image}></img>
+          <img alt="painting" src={image}></img>
         </Col>
         <Col md style={{ minHeight: '70vh' }}>
           
