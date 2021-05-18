@@ -321,11 +321,11 @@ class Search extends React.Component {
                   </select>
                 </div>
               </Col>
-
-
             </Row>
 
-            <div className="h-100 mt-3">
+
+
+            <div className="mt-3" style={{ height: '80%'}}>
               <PerfectScrollbar 
                 className="w-100" 
                 onYReachEnd={(e) => this.onYReachEnd()}
