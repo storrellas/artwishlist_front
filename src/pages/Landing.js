@@ -138,9 +138,25 @@ class Landing extends React.Component {
                 onChange={ (e) => this.performSearchArtist(e) }
                 placeholder={'Search by Artist'}
                 style={{ width: '100%'}}
-                styles={{                   
-                  control: (provided) => ({ ...provided, border: 0, borderRadius: '20px', background: '#DDDDDD' }),
-                  indicatorSeparator: (provided) => ({ backgroundColor: 'white', width: '0'}) 
+                styles={{      
+                  container: (provided) => ({
+                    ...provided,
+                  }),
+                  control: (provided) => ({ 
+                    ...provided, border: 0, borderRadius: '20px', background: '#DDDDDD',
+                    "&:focus" :{
+                      border: '1px solid black',
+                      outline: 'none'
+                    }
+                  }),
+                  indicatorSeparator: (provided) => ({ backgroundColor: 'white', width: '0'}),
+                  option: (provided) => ({ 
+                    ...provided,
+                    backgroundColor: 'white',
+                    "&:hover" :{
+                      backgroundColor: '#DDDDDD'
+                    } 
+                  }) 
                 }}
                 />
               </div>
