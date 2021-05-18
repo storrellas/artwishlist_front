@@ -124,36 +124,27 @@ class Landing extends React.Component {
 
     return (
       <Container>
+
         <Row style={{ margin: '3em 0 1em 0'}}>
           <Col md={5}>
             <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
-          <Col  md={7} className="d-flex justify-content-center align-items-center">            
-            <div className="search-input mt-3 w-100">
-              <div>
-                <FontAwesomeIcon icon={faSearch}
-                              onClick={(e) => this.performSearch()} />
-              </div>
-              <input type="text" 
-                  placeholder="Search by artist"
-                  onChange={e => this.setState({ searchPattern: e.target.value })}
-                  onKeyDown={e => this.handleKeyDown(e)} />
-            </div>
-          </Col>
-        </Row>
+          <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
 
-        <Row>
-        <Col>
-        <Select isLoading={this.state.isLoadingArtist} isClearable 
+            <div className="w-100">
+            <Select isLoading={this.state.isLoadingArtist} isClearable 
                 isSearchable options={artistOptions} 
                 onInputChange={(e) => this.onInputChangeArtist(e)} 
                 onChange={ (e) => this.performSearchArtist(e) }
                 placeholder={'Search by Artist'}
-                styles={{ 
-                  control: (provided) => ({ ...provided, borderTop: 0, borderLeft: 0, borderRight: 0, borderRadius: 0}),
-                  indicatorSeparator: (provided) => ({ backgroundColor: 'white'}) 
+                style={{ width: '100%'}}
+                styles={{                   
+                  control: (provided) => ({ ...provided, border: 0, borderRadius: '20px', background: '#DDDDDD' }),
+                  indicatorSeparator: (provided) => ({ backgroundColor: 'white', width: '0'}) 
                 }}
                 />
+              </div>
+
           </Col>
         </Row>
 
