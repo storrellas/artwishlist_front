@@ -270,17 +270,31 @@ class Search extends React.Component {
               <Col className="mt-3" md={2}>
                 <select>
                   <option>Category</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
+                  <option>Paintings</option>
+                  <option>Works On Paper</option>
+                  <option>Prints</option>
+
+                  <option>Sculpture</option>
+                  <option>Phtographs</option>
+                  <option>Other</option>
+                  <option>Painting</option>
+
+                  <option>Photography</option>
+                  <option>Design</option>
+                  <option>Drawings</option>
+                  <option>Video</option>
+                  <option>Installation</option>
+                  <option>...</option>
                 </select>
               </Col>
               <Col className="mt-3" md={2}>              
                 <select>
                   <option>Source Type</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
+                  <option>AUCTION</option>
+                  <option>CAT RAIS</option>
+                  <option>ONLINE</option>
+                  <option>MUSEUM</option>
+                  <option>PRIVATE COLLECTION</option>
                 </select>
               </Col>
               <Col className="mt-3" md={2}>              
@@ -318,6 +332,12 @@ class Search extends React.Component {
                   <select>
                     <option>Price (High to Low)</option>
                     <option>Price (Low to High)</option>
+                    <option>Title (High to Low)</option>
+                    <option>Title (Low to High)</option>
+                    <option>Auction Date (High to Low)</option>
+                    <option>Auction Date (Low to High)</option>
+                    <option>Year of work (High to Low)</option>
+                    <option>Year of work (Low to High)</option>
                   </select>
                 </div>
               </Col>
