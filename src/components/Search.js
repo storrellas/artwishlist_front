@@ -36,6 +36,7 @@ const mapStateToProps = (state) => {
   };
 }
 
+export const SEARCH_MODE = { PATTERN: 1, IMAGE: 2 }
 class Search extends React.Component {
 
   constructor(props) {
@@ -48,6 +49,7 @@ class Search extends React.Component {
       imagePreviewHover: false,
       imagesBaseUrl: '',
       paintingList: [],
+      searchMode: undefined
     }
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
@@ -79,7 +81,8 @@ class Search extends React.Component {
           searchFull: false, 
           listShow: true, 
           imagesBaseUrl: response.data.images_base_url,
-          paintingList: paintingList})
+          paintingList: paintingList,
+          searchMode: SEARCH_MODE.PATTERN})
     }catch(error){
       console.log("FAILED", error)
     }  
@@ -98,7 +101,8 @@ class Search extends React.Component {
       imagePreview: URL.createObjectURL(file),
       searchFull: false, 
       listShow: true, 
-      paintingList: response.data.results})
+      paintingList: response.data.results,
+      searchMode: SEARCH_MODE.IMAGE})
   }
 
   handleDragLeave(event){
@@ -117,7 +121,6 @@ class Search extends React.Component {
   handleDragEnter(event){
     event.stopPropagation()
     event.preventDefault()
-
     // If we have an image do not proceed
     if( this.isImageSearch ) return;
     
@@ -220,25 +223,34 @@ class Search extends React.Component {
     console.log("ReRendering Search")
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
+    const { searchMode } = this.state;
 
     // Classes to move icon
     let imgClass = "";
     if( this.isImageSearch ){
       imgClass = "h-100 img-painting-border img-search-left"
     }else{
-      if( searchFull ){
-        imgClass = "h-100 img-search"
-      }else{
+      if( listShow ){
         imgClass = "h-100 img-search img-search-left"
+      }else{
+        imgClass = "h-100 img-search"
       }
       
     }
+
+    let listShowHeightImage = '20%';
+    let listShowHeightResults = '80%';
+    if( searchMode == SEARCH_MODE.PATTERN){
+      listShowHeightImage = '0%';
+      listShowHeightResults = '100%'
+    }
+
 
     return (
         <>
           <AnimateHeight
             duration={ 500 }
-            height={ searchFull? '100%': '20%' } // see props documentation below
+            height={ listShow === false? '100%': listShowHeightImage } // see props documentation below
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search">
               <img className={imgClass}
@@ -261,7 +273,7 @@ class Search extends React.Component {
 
           <AnimateHeight
             duration={ 500 }
-            height={ listShow? '80%': '0%' } // see props documentation below
+            height={ listShow? listShowHeightResults: '0%' } // see props documentation below
             style={{ padding: '0 0 1em 0'}}
             contentClassName="animated-list"
           >
