@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 
 // Assets
 import factureLogo from '../assets/facture_logo.svg';
+import cameraImg from '../assets/camera.svg';
 
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -162,17 +163,17 @@ class Landing extends React.Component {
           <Col md={5}>
             <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
-          <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
+          <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
             <div className="h-100 mr-3">
-              <button className="h-100 font-weight-bold btn-upload" 
-                style={{ borderRadius: '25px', border: 0, width: '150px', padding: '0 1em 0 1em'}}
+              <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
-                <FontAwesomeIcon icon={faCamera}
-                          />
-                <span className="pl-2">UPLOAD</span>
+                <div className="h-100 d-flex justify-content-center align-items-center">
+                <img src={cameraImg} />
+                </div>
+                <div className="pl-2">UPLOAD</div>
               </button>
             </div>
-            <div style={{ flexGrow: 1}}>
+            <div className="h-100" style={{ flexGrow: 1}}>
             <Select isLoading={this.state.isLoadingArtist} 
                 isClearable 
                 isSearchable options={artistOptions} 
@@ -182,11 +183,10 @@ class Landing extends React.Component {
                 onMenuClose={(e) => this.onMenuCloseArtist()}
                 onChange={ (e) => this.performSearchArtist(e) }
                 inputValue={searchPattern}
+                className="searchInput"
+                classNamePrefix="searchInputInner"
                 placeholder={'Search by Artist'}  
                 styles={{      
-                  container: (provided) => ({
-                    ...provided,
-                  }),
                   control: (provided) => ({ 
                     ...provided, 
                     borderRadius: '20px', 
@@ -194,20 +194,13 @@ class Landing extends React.Component {
                     border: searchInputBorder,
                     outline: "none !important",
                     boxShadow: "none !important",
+                    paddingLeft: '1em',
                     "&:focus" :{
                       border: '1px solid black',
                       outline: 'none'
                     }
                   }),
-                  indicatorSeparator: (provided) => ({ backgroundColor: 'white', width: '0'}),
-                  option: (provided) => ({ 
-                    ...provided,
-                    backgroundColor: 'white',
-                    color: 'black',
-                    "&:hover" :{
-                      backgroundColor: '#DDDDDD'
-                    } 
-                  }) 
+
                 }}
                 />
               </div>

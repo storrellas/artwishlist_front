@@ -127,3 +127,19 @@ $title-grey: #AAAAAA;
 .btn-upload:hover {
   background: #f8ee23;
 }
+
+.searchInputInner__indicators{
+  width: 0;
+}
+
+.searchInputInner__indicator{
+  color: transparent !important;
+}
+
+.searchInputInner__option{
+  background-color: white;
+  color: 'black';
+  &:hover{
+    background-color: #DDDDDD
+  }
+}
