@@ -15,8 +15,8 @@ import { connect } from "react-redux";
 import factureLogo from '../assets/facture_logo.svg';
 
 // Font Awesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 // Axios
 import axios from 'axios';
@@ -86,13 +86,14 @@ class Landing extends React.Component {
 
   performSearchArtist(searchPattern){
     clearTimeout(this.typingTimeout);
-    this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
+    if( searchPattern.label.length > 0)
+      this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
   }
 
   async fillArtist(searchPattern){
   
     try{
-      if(searchPattern.length == 0){
+      if(searchPattern.length === 0){
         return
       }
       this.setState({isLoadingArtist: true})
@@ -114,6 +115,7 @@ class Landing extends React.Component {
 
   onInputChangeArtist(searchPattern){
     const that = this;
+    this.setState({searchPattern: searchPattern})
 
 
     // Clear timeout
@@ -138,6 +140,13 @@ class Landing extends React.Component {
     })
   }
 
+  onKeyDownArtist(e){
+    if (e.keyCode === 13){
+      this.performSearch()
+    }
+      
+  }
+
   render() {
     const { mode, paintingId, searchPattern, artistOptions, searchInputBackground, searchInputBorder } = this.state;
     console.log("ReRender", searchInputBackground)
@@ -156,16 +165,21 @@ class Landing extends React.Component {
                 isClearable 
                 isSearchable options={artistOptions} 
                 onInputChange={(e) => this.onInputChangeArtist(e)} 
+                onKeyDown={(e) => this.onKeyDownArtist(e)}
                 onMenuOpen={(e) => this.onMenuOpenArtist()}
                 onMenuClose={(e) => this.onMenuCloseArtist()}
                 onChange={ (e) => this.performSearchArtist(e) }
+                inputValue={searchPattern}
                 placeholder={'Search by Artist'}  
                 styles={{      
                   container: (provided) => ({
                     ...provided,
                   }),
                   control: (provided) => ({ 
-                    ...provided, border: 0, borderRadius: '20px', background: searchInputBackground, border: searchInputBorder,
+                    ...provided, 
+                    borderRadius: '20px', 
+                    background: searchInputBackground, 
+                    border: searchInputBorder,
                     outline: "none !important",
                     boxShadow: "none !important",
                     "&:focus" :{

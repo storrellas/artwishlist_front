@@ -63,7 +63,7 @@ class Search extends React.Component {
 
 
   async performSearchPattern(){
-    try{
+    try{      
       const searchPattern = this.props.searchPattern;
 
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
@@ -193,6 +193,7 @@ class Search extends React.Component {
   componentDidUpdate(prevProps, prevState){
     if( prevProps.searchPattern !== this.props.searchPattern){
       this.offset = 0
+      this.setState({paintingList: []})
       this.performSearchPattern()
     }
     
