@@ -115,7 +115,13 @@ class Search extends React.Component {
     this.isImageSearch = true;
 
     this.props.setMode({ mode: MODE.SEARCH })
-    this.setState({ listShow: true, isLoadingList: true })
+    this.setState({ 
+      listShow: true, 
+      isLoadingList: true, 
+      paintingList: [],
+      imagePreview: URL.createObjectURL(file),      
+      searchMode: SEARCH_MODE.IMAGE
+    })
 
 
     const formData = new FormData();
@@ -125,12 +131,9 @@ class Search extends React.Component {
 
     // Set PaintingList
     this.setState({
-      imagePreview: URL.createObjectURL(file),
-      listShow: true, 
       isLoadingList: false,
       imagesBaseUrl: response.data.images_base_url,
-      paintingList: response.data.results,
-      searchMode: SEARCH_MODE.IMAGE})
+      paintingList: response.data.results})
   }
 
   handleDragLeave(event){
