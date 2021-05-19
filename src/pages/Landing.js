@@ -47,7 +47,7 @@ class Landing extends React.Component {
     super(props)
     this.state = {
       searchPattern: '',
-      mode: MODE.SEARCH,
+      mode: MODE.LANDING,
       paintingId: 0,
       isLoadingArtist: false,
       artistOptions: [],
@@ -162,7 +162,7 @@ class Landing extends React.Component {
     const { mode, paintingId, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     const { triggerUpload } = this.state;
-    console.log("ReRender", searchPattern)
+    console.log("ReRender", searchPattern, mode)
 
     return (
       <Container style={{ height: '100vh'}}>
@@ -172,7 +172,7 @@ class Landing extends React.Component {
             <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className="h-100 mr-3">
+            <div className={mode === MODE.LANDING?"h-100 mr-3":"d-none"}>
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
@@ -217,7 +217,7 @@ class Landing extends React.Component {
         </Row>
 
         <div style={{ height: '80vh'}}>
-          {mode === MODE.SEARCH?
+          {(mode === MODE.SEARCH || mode === MODE.LANDING)?
           <Search triggerUpload={triggerUpload} />
           :
           <Painting paintingId={paintingId} />

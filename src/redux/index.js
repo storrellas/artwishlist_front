@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 
-export const MODE = { SEARCH: 1, DETAIL: 2 }
+export const MODE = { LANDING: 1, SEARCH: 2, DETAIL: 3 }
 
 export const PERFORM_SEARCH = "PERFORM_SEARCH";
 export const SHOW_DETAIL = "SHOW_DETAIL";
@@ -17,7 +17,7 @@ export function performSearch(payload) {
 // Reducers
 // ---------------------
 const initialState = {
-  mode: MODE.SEARCH,
+  mode: MODE.LANDING,
   searchPattern: '',
   paintingId: 0
 };
