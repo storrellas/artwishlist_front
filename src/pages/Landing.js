@@ -115,12 +115,6 @@ class Landing extends React.Component {
   onInputChangeArtist(searchPattern){
     const that = this;
 
-    if(searchPattern.length > 0 ){
-      this.setState({searchInputBackground: 'white', searchInputBorder: '1px solid #DDDDDD'})
-    }else{
-      this.setState({searchInputBackground: '#DDDDDD', searchInputBorder: '0px solid #DDDDDD'})
-    }
-    
 
     // Clear timeout
     if ( this.typingTimeout ) {
@@ -130,8 +124,22 @@ class Landing extends React.Component {
       setTimeout(function () {that.fillArtist(searchPattern);}, 1000)
   }
 
+  onMenuOpenArtist(){
+    this.setState({
+      searchInputBackground: 'white', 
+      searchInputBorder: '1px solid #DDDDDD'
+    })
+  }
+
+  onMenuCloseArtist(){
+    this.setState({
+      searchInputBackground: '#DDDDDD', 
+      searchInputBorder: '0px solid #DDDDDD'
+    })
+  }
+
   render() {
-    const { mode, paintingId, artistOptions, searchInputBackground, searchInputBorder } = this.state;
+    const { mode, paintingId, searchPattern, artistOptions, searchInputBackground, searchInputBorder } = this.state;
     console.log("ReRender", searchInputBackground)
 
     return (
@@ -148,8 +156,10 @@ class Landing extends React.Component {
                 isClearable 
                 isSearchable options={artistOptions} 
                 onInputChange={(e) => this.onInputChangeArtist(e)} 
+                onMenuOpen={(e) => this.onMenuOpenArtist()}
+                onMenuClose={(e) => this.onMenuCloseArtist()}
                 onChange={ (e) => this.performSearchArtist(e) }
-                placeholder={'Search by Artist'}                
+                placeholder={'Search by Artist'}  
                 styles={{      
                   container: (provided) => ({
                     ...provided,
@@ -167,6 +177,7 @@ class Landing extends React.Component {
                   option: (provided) => ({ 
                     ...provided,
                     backgroundColor: 'white',
+                    color: 'black',
                     "&:hover" :{
                       backgroundColor: '#DDDDDD'
                     } 
