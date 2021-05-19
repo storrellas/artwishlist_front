@@ -9,6 +9,7 @@ $title-grey: #AAAAAA;
 .animated-search {
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1em 0 1em 2em;

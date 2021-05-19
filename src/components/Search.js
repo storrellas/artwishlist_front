@@ -266,12 +266,16 @@ class Search extends React.Component {
             height={ listShow === false? '100%': listShowHeightImage } // see props documentation below
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search">
+              <div className={listShow?"w-100 text-left p-1":"d-none"}
+              style={{ color: '#444444', fontWeight: 'bold'}}>
+                Your uploaded image:
+              </div>
               <img className={imgClass}
                 alt="background" src={imagePreview}                               
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
                 onMouseLeave={(e) => this.handleImageMouseLeave()}
                 onClick={ (e) => this.inputRef.current.click()}
-                style={{ maxHeight: "300px", cursor: 'pointer' }}
+                style={{ maxHeight: listShow?"90px":"300px", cursor: 'pointer' }}
                 
                 // DnD
                 onDragEnter={(e) => this.handleDragEnter(e)}
