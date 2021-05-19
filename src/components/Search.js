@@ -44,7 +44,6 @@ class Search extends React.Component {
     this.state = {
       searchPattern: '',
       imagePreview: upload,
-      searchFull: true,
       listShow: false,
       imagePreviewHover: false,
       imagesBaseUrl: '',
@@ -78,7 +77,6 @@ class Search extends React.Component {
       // Set offset for the next time
       this.offset = this.offset + this.size;
       this.setState({
-          searchFull: false, 
           listShow: true, 
           imagesBaseUrl: response.data.images_base_url,
           paintingList: paintingList,
@@ -99,8 +97,8 @@ class Search extends React.Component {
     // Set PaintingList
     this.setState({
       imagePreview: URL.createObjectURL(file),
-      searchFull: false, 
       listShow: true, 
+      imagesBaseUrl: response.data.images_base_url,
       paintingList: response.data.results,
       searchMode: SEARCH_MODE.IMAGE})
   }
@@ -221,7 +219,7 @@ class Search extends React.Component {
 
   render() {
     console.log("ReRendering Search")
-    const { searchFull, listShow, paintingList } = this.state;
+    const { listShow, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
 

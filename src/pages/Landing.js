@@ -87,8 +87,9 @@ class Landing extends React.Component {
 
   performSearchArtist(searchPattern){
     clearTimeout(this.typingTimeout);
-    if( searchPattern.label.length > 0)
-      this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
+    if( searchPattern )
+      if( searchPattern.label.length > 0)
+        this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
   }
 
   async fillArtist(searchPattern){
