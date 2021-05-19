@@ -147,3 +147,12 @@ $title-grey: #AAAAAA;
     background-color: #DDDDDD
   }
 }
+
+.searchInputInner__option--is-focused{
+  background-color: #DDDDDD !important;
+  color: grey !important;
+}
+.searchInputInner__option--is-selected{
+  background-color: #DDDDDD !important;
+  color: grey !important;
+}

@@ -76,7 +76,7 @@ class Card extends React.Component {
     const catRaisList1 = ['K', 'L', 'B', 'E', 'R', 'G', 'J', 'C', ]
     const catRaisList2 = ['O', 'U', 'H', 'I', 'S', 'W', 'M', '0', 'Z', 'JB', 'GL', 'CR']
     const catRaisList = [...catRaisList1, ...catRaisList2]
-    if( catRaisList.includes(painting.source_type) ) source = 'CATALOGUE RAISONNE';
+    if( catRaisList.includes(painting.source_type) ) source = 'CATALOGUE RAISONNÉ';
     
     // Online
     if( ['N', 'Y', 'D'].includes(painting.source_type) ) source = 'ONLINE';
@@ -125,9 +125,9 @@ class Card extends React.Component {
               {painting.sales_prices}
             </div>
           </div>
-          <div className="text-center mt-3" >
+          {/* <div className="text-center mt-3" >
             <a href="/" className="font-weight-bold" style={{ color: 'grey'}}>Download PDF</a>
-          </div>
+          </div> */}
         </div>
       </div>
     )

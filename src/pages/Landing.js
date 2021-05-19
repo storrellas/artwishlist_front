@@ -209,6 +209,10 @@ class Landing extends React.Component {
                     "&:focus" :{
                       border: '1px solid black',
                       outline: 'none'
+                    },
+                    "&:hover" :{
+                      border: '1px solid #DDDDDD',
+                      outline: 'none'
                     }
                   }),
 
