@@ -197,6 +197,11 @@ class Search extends React.Component {
       this.performSearchPattern()
     }
     
+
+    if( prevProps.triggerUpload !== this.props.triggerUpload){
+      this.inputRef.current.click()
+    }
+
   }
 
   onYReachEnd(){
@@ -207,13 +212,12 @@ class Search extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      console.log("launching this")
       this.performSearchPattern() 
     }
   }
 
   render() {
-    
+    console.log("ReRendering Search")
     const { searchFull, listShow, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
 
@@ -346,7 +350,7 @@ class Search extends React.Component {
 
 
 
-            <div className="mt-3" style={{ height: '80%'}}>
+            <div className="mt-3" style={{ height: '85%'}}>
               <PerfectScrollbar 
                 className="w-100" 
                 onYReachEnd={(e) => this.onYReachEnd()}

@@ -15,8 +15,8 @@ import { connect } from "react-redux";
 import factureLogo from '../assets/facture_logo.svg';
 
 // Font Awesome
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 // Axios
 import axios from 'axios';
@@ -51,7 +51,8 @@ class Landing extends React.Component {
       isLoadingArtist: false,
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
-      searchInputBorder: '0px solid #DDDDDD'
+      searchInputBorder: '0px solid #DDDDDD',
+      triggerUpload: 0 // Weird solution
     }
     this.typingTimeout = undefined
   }
@@ -148,19 +149,29 @@ class Landing extends React.Component {
   }
 
   render() {
-    const { mode, paintingId, searchPattern, artistOptions, searchInputBackground, searchInputBorder } = this.state;
-    console.log("ReRender", searchInputBackground)
+    const { mode, paintingId, searchPattern } = this.state;
+    const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
+    const { triggerUpload } = this.state;
+    console.log("ReRender")
 
     return (
-      <Container>
+      <Container style={{ border: '1px solid #938369', height: '100vh'}}>
 
-        <Row style={{ margin: '3em 0 1em 0'}}>
+        <Row className="mb-3" style={{ padding: '3em 1em 1em 1em', background: '#938369'}}>
           <Col md={5}>
             <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
-
-            <div className="w-100">
+            <div className="h-100 mr-3">
+              <button className="h-100 font-weight-bold" 
+                style={{ background: '#f8ee23', borderRadius: '25px', border: 0, width: '120px', padding: '0 1em 0 1em'}}
+                onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
+                <FontAwesomeIcon icon={faArrowUp}
+                          />
+                <span className="pl-2">UPLOAD</span>
+              </button>
+            </div>
+            <div style={{ flexGrow: 1}}>
             <Select isLoading={this.state.isLoadingArtist} 
                 isClearable 
                 isSearchable options={artistOptions} 
@@ -203,9 +214,9 @@ class Landing extends React.Component {
           </Col>
         </Row>
 
-        <div style={{ height: '75vh'}}>
+        <div style={{ height: '80vh'}}>
           {mode === MODE.SEARCH?
-          <Search />
+          <Search triggerUpload={triggerUpload} />
           :
           <Painting paintingId={paintingId} />
           }
