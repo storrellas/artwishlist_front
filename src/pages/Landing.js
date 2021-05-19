@@ -168,11 +168,11 @@ class Landing extends React.Component {
       <Container style={{ height: '100vh'}}>
 
         <Row className="mb-3" style={{ padding: '3em 1em 1em 1em' }}>
-          <Col md={5}>
-            <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
+          <Col md={4}>
+            <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
-          <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className={mode === MODE.LANDING?"h-100 mr-3":"d-none"}>
+          <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
+            <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}>
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
                 <div className="h-100 d-flex justify-content-center align-items-center">

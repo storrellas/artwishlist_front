@@ -294,12 +294,12 @@ class Search extends React.Component {
             style={{ padding: '0 0 1em 0'}}
             contentClassName="animated-list"
           >
-            <Row className="filtering" style={{ padding: '0 15px 0 15px'}}>
+            <Row className="filtering d-none" style={{ padding: '0 15px 0 15px'}}>
               <Col>
                 <div className="title w-100 text-left">Filters</div>
               </Col>
             </Row>
-            <Row className="filtering" style={{ padding: '0 15px 0 15px'}}>
+            <Row className="filtering d-none" style={{ padding: '0 15px 0 15px'}}>
 
               <Col className="mt-3" md={2}>
                 <select>
@@ -379,7 +379,7 @@ class Search extends React.Component {
 
             {paintingList.length===0?<EmptySearch />:''}
             {paintingList.length>0?
-            <div className="mt-3" style={{ height: '85%'}}>
+            <div className="mt-3" style={{ height: '90%'}}>
               <PerfectScrollbar 
                 className="w-100" 
                 onYReachEnd={(e) => this.onYReachEnd()}
