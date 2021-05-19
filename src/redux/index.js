@@ -19,7 +19,7 @@ export function performSearch(payload) {
 const initialState = {
   mode: MODE.LANDING,
   searchPattern: '',
-  paintingId: 0
+  paintingId: -1
 };
 
 export function rootReducer(state = initialState, action) {

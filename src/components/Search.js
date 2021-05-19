@@ -45,6 +45,13 @@ const EmptySearch = (props) => {
   )
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+      //performSearch: (payload) => dispatch(performSearch(payload)),
+  };
+}
+
+
 const mapStateToProps = (state) => {
   return {    
     searchPattern: state.searchPattern,
@@ -252,7 +259,7 @@ class Search extends React.Component {
     
     let listShowHeightImage = '20%';
     let listShowHeightResults = '80%';
-    if( searchMode == SEARCH_MODE.PATTERN){
+    if( searchMode === SEARCH_MODE.PATTERN){
       listShowHeightImage = '0%';
       listShowHeightResults = '100%'
     }

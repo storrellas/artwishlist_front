@@ -76,7 +76,7 @@ class Card extends React.Component {
     const catRaisList1 = ['K', 'L', 'B', 'E', 'R', 'G', 'J', 'C', ]
     const catRaisList2 = ['O', 'U', 'H', 'I', 'S', 'W', 'M', '0', 'Z', 'JB', 'GL', 'CR']
     const catRaisList = [...catRaisList1, ...catRaisList2]
-    if( catRaisList.includes(painting.source_type) ) source = 'CAT RAIS';
+    if( catRaisList.includes(painting.source_type) ) source = 'CATALOGUE RAISONNE';
     
     // Online
     if( ['N', 'Y', 'D'].includes(painting.source_type) ) source = 'ONLINE';
@@ -106,7 +106,7 @@ class Card extends React.Component {
                   style={{ maxWidth: '100%', maxHeight: '100%'}}></img>
           </div>
         </div>
-        <div className="p-3" style={{ fontSize: '12px', height: '200px', overflowY: 'hidden'}}>
+        <div className="mt-3" style={{ fontSize: '12px', height: '200px', overflowY: 'hidden'}}>
           <div>
             <b>{painting.artist}</b>
           </div>

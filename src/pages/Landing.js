@@ -16,8 +16,8 @@ import factureLogo from '../assets/facture_logo.svg';
 import cameraImg from '../assets/camera.svg';
 
 // Font Awesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
 // Axios
 import axios from 'axios';
@@ -48,7 +48,7 @@ class Landing extends React.Component {
     this.state = {
       searchPattern: '',
       mode: MODE.LANDING,
-      paintingId: 0,
+      paintingId: -1,
       isLoadingArtist: false,
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
@@ -159,10 +159,13 @@ class Landing extends React.Component {
   }
 
   render() {
-    const { mode, paintingId, searchPattern } = this.state;
+    const { mode, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     const { triggerUpload } = this.state;
     console.log("ReRender", searchPattern, mode)
+
+    const { match: { params } } = this.props;
+    const paintingId = params.id;
 
     return (
       <Container style={{ height: '100vh'}}>
@@ -176,7 +179,7 @@ class Landing extends React.Component {
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
-                <img src={cameraImg} />
+                <img alt="camera" src={cameraImg} />
                 </div>
                 <div className="pl-2">UPLOAD</div>
               </button>
@@ -217,11 +220,14 @@ class Landing extends React.Component {
         </Row>
 
         <div style={{ height: '80vh'}}>
-          {(mode === MODE.SEARCH || mode === MODE.LANDING)?
-          <Search triggerUpload={triggerUpload} />
-          :
-          <Painting paintingId={paintingId} />
-          }
+          <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
+            <Search triggerUpload={triggerUpload} />
+          </div>
+          <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
+
+            <Painting paintingId={paintingId} />
+          </div>
+          
         </div>
       </Container>
     );

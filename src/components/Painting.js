@@ -30,11 +30,19 @@ class Painting extends React.Component {
     }
   }
 
-  async componentDidMount(){
-
+  async componentDidUpdate(prevProps, prevState){
+    if( prevProps.paintingId === this.props.paintingId){
+      return
+    }
+    // Nothing to show
+    if( this.props.paintingId === -1){
+      return
+    } 
     try{
       // Grab paintingId
       const id = this.props.paintingId;
+      console.log("id ", id)
+      
 
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/${id}`;
       const response = await axios.get(url)
@@ -64,6 +72,7 @@ class Painting extends React.Component {
 
   render() {
     const { image } = this.state;
+    console.log("REndering detail")
     return (
 
       <Row className="painting" style={{ padding: '4em 3em 0 3em'}} >
