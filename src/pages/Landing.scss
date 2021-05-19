@@ -115,3 +115,15 @@ $title-grey: #AAAAAA;
     padding: 0 3em 0 3em;
   }
 }
+
+.btn-upload {
+  background: $bg-grey;
+  border-radius: 25px; 
+  border: 0;
+  width: 150px;
+  padding: 0 1em 0 1em;
+}
+
+.btn-upload:hover {
+  background: #f8ee23;
+}

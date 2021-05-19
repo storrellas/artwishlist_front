@@ -164,8 +164,8 @@ class Landing extends React.Component {
           </Col>
           <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
             <div className="h-100 mr-3">
-              <button className="h-100 font-weight-bold" 
-                style={{ background: '#f8ee23', borderRadius: '25px', border: 0, width: '150px', padding: '0 1em 0 1em'}}
+              <button className="h-100 font-weight-bold btn-upload" 
+                style={{ borderRadius: '25px', border: 0, width: '150px', padding: '0 1em 0 1em'}}
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
                 <FontAwesomeIcon icon={faCamera}
                           />
