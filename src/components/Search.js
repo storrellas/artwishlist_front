@@ -233,7 +233,6 @@ class Search extends React.Component {
   }
 
   render() {
-    console.log("ReRendering Search")
     const { listShow, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;

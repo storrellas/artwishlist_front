@@ -50,16 +50,17 @@ $title-grey: #AAAAAA;
 
 
 .card-title{
-  background: $title-grey;
-  color: white; 
+  color: black; 
   padding: 0.5em 0 0.5em 0;
   border-radius: 5px 5px 0 0;
   margin: 0 !important;
+  padding-left: 0.5em;
+  border-bottom: 1px solid $title-grey;
 }
 
 .card-container{
-  border: 1px solid $title-grey;
-  border-radius: 5px;
+  // border: 1px solid $title-grey;
+  // border-radius: 5px;
 }
 
 .card-painting{

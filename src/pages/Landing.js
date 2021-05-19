@@ -86,11 +86,18 @@ class Landing extends React.Component {
       this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
   }
 
-  performSearchArtist(searchPattern){
+  performSearchArtist(searchObj){
+    let pattern = ''
+    if( searchObj ){
+      pattern = searchObj.label
+    }else{
+      pattern = this.state.searchPattern;
+    }
+    this.setState({searchPattern: searchObj.label})
     clearTimeout(this.typingTimeout);
-    if( searchPattern )
-      if( searchPattern.label.length > 0)
-        this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern.label})
+    if( searchObj )
+      if( searchObj.label.length > 0)
+        this.props.performSearch({mode: MODE.SEARCH, searchPattern: pattern})
   }
 
   async fillArtist(searchPattern){
@@ -183,8 +190,7 @@ class Landing extends React.Component {
                 onMenuOpen={(e) => this.onMenuOpenArtist()}
                 onMenuClose={(e) => this.onMenuCloseArtist(searchPattern)}
                 onChange={ (e) => this.performSearchArtist(e) }
-                onFocus={ (e) => console.log("onFcosu")}
-                inputValue={searchPattern}
+                //inputValue={searchPattern}
                 className="searchInput"
                 classNamePrefix="searchInputInner"
                 placeholder={'Search by Artist'}  

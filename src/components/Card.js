@@ -93,7 +93,7 @@ class Card extends React.Component {
 
     return (
       <div className="card-container">
-        <div className="text-center card-title font-weight-bold">
+        <div className="card-title font-weight-bold">
             {source}
         </div>
         <div className="card-painting" 
