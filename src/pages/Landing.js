@@ -16,7 +16,7 @@ import factureLogo from '../assets/facture_logo.svg';
 
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
 // Axios
 import axios from 'axios';
@@ -156,18 +156,18 @@ class Landing extends React.Component {
     console.log("ReRender")
 
     return (
-      <Container style={{ border: '1px solid #938369', height: '100vh'}}>
+      <Container style={{ height: '100vh'}}>
 
-        <Row className="mb-3" style={{ padding: '3em 1em 1em 1em', background: '#938369'}}>
+        <Row className="mb-3" style={{ padding: '3em 1em 1em 1em' }}>
           <Col md={5}>
             <img height="50" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={7} className="d-flex justify-content-center align-items-center" style={{ padding: '2% 0 2% 0' }}>            
             <div className="h-100 mr-3">
               <button className="h-100 font-weight-bold" 
-                style={{ background: '#f8ee23', borderRadius: '25px', border: 0, width: '120px', padding: '0 1em 0 1em'}}
+                style={{ background: '#f8ee23', borderRadius: '25px', border: 0, width: '150px', padding: '0 1em 0 1em'}}
                 onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
-                <FontAwesomeIcon icon={faArrowUp}
+                <FontAwesomeIcon icon={faCamera}
                           />
                 <span className="pl-2">UPLOAD</span>
               </button>
