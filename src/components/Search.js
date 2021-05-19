@@ -8,6 +8,7 @@ import './Search.scss';
 import axios from 'axios';
 
 // Redux
+import { setMode, MODE } from "../redux";
 import { connect } from "react-redux";
 
 
@@ -47,7 +48,7 @@ const EmptySearch = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      //performSearch: (payload) => dispatch(performSearch(payload)),
+      setMode: (payload) => dispatch(setMode(payload)),
   };
 }
 
@@ -67,6 +68,7 @@ class Search extends React.Component {
       searchPattern: '',
       imagePreview: upload,
       listShow: false,
+      isLoadingList: true,
       imagePreviewHover: false,
       imagesBaseUrl: '',
       paintingList: [],
@@ -112,14 +114,20 @@ class Search extends React.Component {
     // Mark we are searching
     this.isImageSearch = true;
 
+    this.props.setMode({ mode: MODE.SEARCH })
+    this.setState({ listShow: true, isLoadingList: true })
+
+
     const formData = new FormData();
     formData.append('upload', file);
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+
 
     // Set PaintingList
     this.setState({
       imagePreview: URL.createObjectURL(file),
       listShow: true, 
+      isLoadingList: false,
       imagesBaseUrl: response.data.images_base_url,
       paintingList: response.data.results,
       searchMode: SEARCH_MODE.IMAGE})
@@ -240,7 +248,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const { listShow, paintingList } = this.state;
+    const { listShow, isLoadingList, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
 
@@ -383,8 +391,10 @@ class Search extends React.Component {
                 </div>
               </Col>
             </Row>
-
-            {paintingList.length===0?<EmptySearch />:''}
+            {isLoadingList?
+            <div className="w-100 text-center mt-3">Loading ...</div>
+            :''}
+            {paintingList.length===0&&isLoadingList===false?<EmptySearch />:''}
             {paintingList.length>0?
             <div className="mt-3" style={{ height: '90%'}}>
               <PerfectScrollbar 
@@ -409,4 +419,4 @@ class Search extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, null)(withRouter(Search));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search));
