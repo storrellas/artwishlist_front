@@ -28,7 +28,22 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // Project imports
 import Card from '../components/Card';
 
+const EmptySearch = (props) => {
 
+  return (
+    <Row className="mt-3" style={{ padding: '0 15px 0 15px'}}>
+      <Col>
+        <h2 className="w-100 text-left">
+          No artwork was found
+        </h2>
+        <h5 className="w-100 text-left">
+          Please try again by cropping the image or alternatively use the textual search
+        </h5>
+      </Col>
+    </Row>
+
+  )
+}
 
 const mapStateToProps = (state) => {
   return {    
@@ -233,9 +248,9 @@ class Search extends React.Component {
       }else{
         imgClass = "h-100 img-search"
       }
-      
     }
 
+    
     let listShowHeightImage = '20%';
     let listShowHeightResults = '80%';
     if( searchMode == SEARCH_MODE.PATTERN){
@@ -267,6 +282,7 @@ class Search extends React.Component {
                 ref={this.imgPreviewRef} />
               <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview(e)}/>
           </AnimateHeight>
+
 
 
           <AnimateHeight
@@ -358,8 +374,8 @@ class Search extends React.Component {
               </Col>
             </Row>
 
-
-
+            {paintingList.length===0?<EmptySearch />:''}
+            {paintingList.length>0?
             <div className="mt-3" style={{ height: '85%'}}>
               <PerfectScrollbar 
                 className="w-100" 
@@ -375,6 +391,7 @@ class Search extends React.Component {
                 </Row>
               </PerfectScrollbar>
             </div>
+            :''}
           </AnimateHeight>
         </>
 

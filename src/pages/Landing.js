@@ -136,10 +136,11 @@ class Landing extends React.Component {
     })
   }
 
-  onMenuCloseArtist(){
+  onMenuCloseArtist(searchPattern){
     this.setState({
       searchInputBackground: '#DDDDDD', 
-      searchInputBorder: '0px solid #DDDDDD'
+      searchInputBorder: '0px solid #DDDDDD',
+      searchPattern: searchPattern
     })
   }
 
@@ -154,7 +155,7 @@ class Landing extends React.Component {
     const { mode, paintingId, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     const { triggerUpload } = this.state;
-    console.log("ReRender")
+    console.log("ReRender", searchPattern)
 
     return (
       <Container style={{ height: '100vh'}}>
@@ -180,8 +181,9 @@ class Landing extends React.Component {
                 onInputChange={(e) => this.onInputChangeArtist(e)} 
                 onKeyDown={(e) => this.onKeyDownArtist(e)}
                 onMenuOpen={(e) => this.onMenuOpenArtist()}
-                onMenuClose={(e) => this.onMenuCloseArtist()}
+                onMenuClose={(e) => this.onMenuCloseArtist(searchPattern)}
                 onChange={ (e) => this.performSearchArtist(e) }
+                onFocus={ (e) => console.log("onFcosu")}
                 inputValue={searchPattern}
                 className="searchInput"
                 classNamePrefix="searchInputInner"
