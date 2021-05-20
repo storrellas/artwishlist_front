@@ -138,7 +138,6 @@ class SearchResult extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      console.log("In Here", this.state.searchMode)
       if( this.state.searchMode === SEARCH_MODE.PATTERN && this.state.isLoadingList == false ) {
         // Move it a bit top to avoid researching
         this.scrollRef.scrollTop = this.scrollRef.scrollTop * 0.7;
