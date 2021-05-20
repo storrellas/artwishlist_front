@@ -92,7 +92,7 @@ class SearchResult extends React.Component {
       this.setState({ 
         //listShow: true, 
         isLoadingList: true, 
-        paintingList: [],
+        //paintingList: [],
         searchMode: SEARCH_MODE.PATTERN
       })
 
@@ -262,7 +262,10 @@ class SearchResult extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      if( SEARCH_MODE.PATTERN ){
+      if( SEARCH_MODE.PATTERN ) {
+        // Move it a bit top to avoid researching
+        this.scrollRef.scrollTop = this.scrollRef - 50;
+
         this.performSearchPattern(this.props.launchSearchPattern) 
       }else{
         // Do nothing
@@ -295,6 +298,7 @@ class SearchResult extends React.Component {
     //   else listShowHeightImage = '20%';
     // }
 
+    
 
     return (
         <>

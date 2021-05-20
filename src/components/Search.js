@@ -338,7 +338,7 @@ class Search extends React.Component {
               className="w-100" 
               onYReachEnd={(e) => this.onYReachEnd()}
               style={{ padding: '0 1em 0 1em'}}
-              containerRef={(ref) => this.scrollRef= ref} >
+              containerRef={(ref) => this.scrollRef = ref} >
               <Row>
                 {paintingList.map( (item, id) => 
                   <Col className="mt-3" key={id} md="3">
