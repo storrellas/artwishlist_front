@@ -11,7 +11,6 @@ import './Landing.scss';
 import Select from 'react-select';
 
 // Redux
-import { MODE, showDetail } from "../redux";
 import { connect } from "react-redux";
 
 // Assets
@@ -37,16 +36,14 @@ import Painting from '../components/Painting';
 
 const mapStateToProps = (state) => {
   return {
-    mode: state.mode,
+    //mode: state.mode,
     //paintingId: state.paintingId,
   };
 }
 
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-      showDetail: (payload) => dispatch(showDetail(payload))
-  };
+  return {};
 }
 
 export const SEARCH_MODE = { LANDING: 1, PATTERN: 2, IMAGE: 3 }
@@ -56,8 +53,6 @@ class Landing extends React.Component {
     super(props)
     this.state = {
       searchPattern: '',
-      mode: MODE.LANDING,
-      //paintingId: -1,
       isLoadingArtist: false,
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
@@ -74,25 +69,9 @@ class Landing extends React.Component {
   }
 
 
-  componentDidUpdate(prevProps, prevState){
-    if( prevProps.mode !== this.props.mode){
-      this.setState({
-        //paintingId: this.props.paintingId,
-        mode: this.props.mode
-      })
-    }
-  }
+  componentDidUpdate(prevProps, prevState){}
 
-  componentDidMount(){
-
-    // // Grab ME oid
-    // const { match: { params } } = this.props;
-    // const paintingId = params.id;
-    // if( paintingId !== undefined )
-    //   this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
-  }
-
-
+  componentDidMount(){}
 
   async fillArtist(searchPattern){
   
@@ -147,14 +126,13 @@ class Landing extends React.Component {
 
   onKeyDownArtist(e){
     if (e.keyCode === 13){
-      const { searchPattern } = this.state;
+      // const { searchPattern } = this.state;
 
-      this.setState({
-        searchPattern: searchPattern, 
-        mode: MODE.SEARCH,
-        launchSearchPattern: searchPattern,
-        searchMode: SEARCH_MODE.PATTERN
-      })
+      // this.setState({
+      //   searchPattern: searchPattern, 
+      //   launchSearchPattern: searchPattern,
+      //   searchMode: SEARCH_MODE.PATTERN
+      // })
 
     }      
   }
@@ -166,7 +144,6 @@ class Landing extends React.Component {
     const pattern = searchObj?searchObj.label:this.state.searchPattern;
     this.setState({
       searchPattern: pattern, 
-      mode: MODE.SEARCH,
       launchSearchPattern: pattern,
       searchMode: SEARCH_MODE.PATTERN
     })
@@ -196,9 +173,11 @@ class Landing extends React.Component {
   }
 
   render() {
-    const { mode, searchPattern, searchMode } = this.state;
+    const { searchPattern, searchMode } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
-    console.log("ReRender", searchPattern, mode, this.state.searchMode)
+    console.log("ReRender", searchPattern, searchMode)
+
+    const { imagePreview } = this.state;
 
     let listShowHeightImage = '';
     switch(this.state.searchMode){
@@ -212,8 +191,10 @@ class Landing extends React.Component {
         listShowHeightImage ='100%'
     }
 
+    
     let showUploadButton = false;
-    if( mode === MODE.DETAIL ){
+    const isDetail = this.props.location.pathname.includes('painting');
+    if( isDetail ){
       showUploadButton = true;
     }else{
       if( searchMode === SEARCH_MODE.PATTERN 
@@ -292,12 +273,11 @@ class Landing extends React.Component {
                         contentClassName="animated-search">
                         <SearchImage 
                           onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
-                          imagePreview={this.state.imagePreview} />
+                          imagePreview={imagePreview} />
                       </AnimateHeight>
                       <SearchResult
-                        imagePreview={this.state.imagePreview}
-                        launchSearchPattern={this.state.launchSearchPattern}
-                        mode={mode} />
+                        imagePreview={imagePreview}
+                        launchSearchPattern={this.state.launchSearchPattern}/>
                     </div>
                   )} />
 

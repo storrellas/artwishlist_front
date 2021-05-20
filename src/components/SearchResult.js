@@ -8,7 +8,6 @@ import './Search.scss';
 import axios from 'axios';
 
 // Redux
-import { setMode, MODE } from "../redux";
 import { connect } from "react-redux";
 
 // Perfect scrollbar
@@ -37,7 +36,6 @@ const EmptySearch = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      setMode: (payload) => dispatch(setMode(payload)),
   };
 }
 
@@ -81,7 +79,7 @@ class SearchResult extends React.Component {
       const response = await axios.get(url)
 
       // Append to existing paintingList
-      let paintingList = this.state.searchMode===SEARCH_MODE.PATTERN?this.state.paintingList:[]
+      let paintingList = reset?[]:this.state.paintingList
       paintingList = paintingList.concat(response.data.results)
 
       // Set offset for the next time
@@ -96,7 +94,6 @@ class SearchResult extends React.Component {
   }
 
   async performSearchImage(file){
-    this.props.setMode({ mode: MODE.SEARCH })
     this.setState({ 
       isLoadingList: true, 
       paintingList: [],
@@ -142,9 +139,9 @@ class SearchResult extends React.Component {
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
       console.log("In Here", this.state.searchMode)
-      if( this.state.searchMode === SEARCH_MODE.PATTERN ) {
+      if( this.state.searchMode === SEARCH_MODE.PATTERN && this.state.isLoadingList == false ) {
         // Move it a bit top to avoid researching
-        this.scrollRef.scrollTop = this.scrollRef.scrollTop * 0.9;
+        this.scrollRef.scrollTop = this.scrollRef.scrollTop * 0.7;
 
         this.performSearchPattern(this.props.launchSearchPattern) 
       }else{
@@ -158,6 +155,10 @@ class SearchResult extends React.Component {
     const { isLoadingList, paintingList } = this.state;
     const { imagesBaseUrl } = this.state;
 
+    const showEmptySearch = paintingList.length===0&&
+                            isLoadingList===false&&
+                            this.state.searchMode!==SEARCH_MODE.LANDING;
+
     return (
         <>
           <div className="d-none">
@@ -166,7 +167,7 @@ class SearchResult extends React.Component {
           {isLoadingList?
           <div className="w-100 text-center mt-3">Loading ...</div>
           :''}
-          {paintingList.length===0&&isLoadingList===false&&this.props.mode!==MODE.LANDING?<EmptySearch />:''}
+          {showEmptySearch?<EmptySearch />:''}
           {paintingList.length>0?
           <div className="mt-3" style={{ height: '90%'}}>
             <PerfectScrollbar 
