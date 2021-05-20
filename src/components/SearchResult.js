@@ -46,7 +46,7 @@ const mapStateToProps = (state) => {
   return {};
 }
 
-export const SEARCH_MODE = { PATTERN: 1, IMAGE: 2 }
+export const SEARCH_MODE = { LANDING: 1, PATTERN: 2, IMAGE: 3 }
 class SearchResult extends React.Component {
 
   constructor(props) {
@@ -55,7 +55,8 @@ class SearchResult extends React.Component {
       isLoadingList: false,
       imagePreviewHover: false,
       imagesBaseUrl: '',
-      paintingList: [],      
+      paintingList: [],  
+      searchMode: SEARCH_MODE.LANDING,    
     }
 
     this.scrollRef = React.createRef();
@@ -67,11 +68,10 @@ class SearchResult extends React.Component {
   }
 
 
-  async performSearchPattern(searchPattern){
-    try{            
+  async performSearchPattern(searchPattern, reset = false){
+    try{
       this.setState({ 
         isLoadingList: true, 
-        searchMode: SEARCH_MODE.PATTERN
       })
 
       // Launch request
@@ -79,9 +79,10 @@ class SearchResult extends React.Component {
       url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
       const response = await axios.get(url)
 
-
       // Append to existing paintingList
-      const paintingList = this.state.paintingList.concat(response.data.results)
+      let paintingList = this.state.searchMode===SEARCH_MODE.PATTERN?this.state.paintingList:[]
+      paintingList = paintingList.concat(response.data.results)
+
       // Set offset for the next time
       this.offset = this.offset + this.size;
       this.setState({ 
@@ -97,8 +98,7 @@ class SearchResult extends React.Component {
     this.props.setMode({ mode: MODE.SEARCH })
     this.setState({ 
       isLoadingList: true, 
-      paintingList: [],
-      searchMode: SEARCH_MODE.IMAGE
+      paintingList: []
     })
 
     const formData = new FormData();
@@ -127,7 +127,7 @@ class SearchResult extends React.Component {
     }
 
     if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
-      this.performSearchPattern(this.props.launchSearchPattern)      
+      this.performSearchPattern(this.props.launchSearchPattern, true)      
     }
   }
 
@@ -139,7 +139,7 @@ class SearchResult extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      if( SEARCH_MODE.PATTERN ) {
+      if( this.state.searchMode == SEARCH_MODE.PATTERN ) {
         // Move it a bit top to avoid researching
         this.scrollRef.scrollTop = this.scrollRef - 50;
 

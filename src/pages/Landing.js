@@ -63,7 +63,7 @@ class Landing extends React.Component {
       
       imagePreview: undefined,
 
-      searchMode: undefined
+      searchMode: SEARCH_MODE.LANDING
     }
     this.typingTimeout = undefined
 
@@ -175,7 +175,6 @@ class Landing extends React.Component {
 
     if( imagePreview ){
       // raised by SearchImage
-      console.log("In Here")
       this.setState({
         imagePreview: imagePreview, 
         searchMode: SEARCH_MODE.IMAGE
@@ -191,20 +190,17 @@ class Landing extends React.Component {
       this.inputRef.current.value = "";
 
     }
-
-
-
   }
 
   render() {
     const { mode, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
-    console.log("ReRender", searchPattern, mode)
+    console.log("ReRender", searchPattern, mode, this.state.searchMode)
 
     const { match: { params } } = this.props;
     const paintingId = params.id;
 
-    
+
     let listShowHeightImage = '';
     switch(this.state.searchMode){
       case SEARCH_MODE.IMAGE:
