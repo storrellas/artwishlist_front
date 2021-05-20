@@ -164,6 +164,7 @@ class Landing extends React.Component {
   
   handleImagePreview(imagePreview){
 
+
     this.props.history.push('/search/')
     if( imagePreview ){
       // raised by SearchImage
@@ -184,21 +185,6 @@ class Landing extends React.Component {
     }
     
   }
-
-  fileInputClicked(event){
-    let file = event.target.files[0];
-    console.log("File is Selected", file);
-    window.removeEventListener('focus', this.handleFocusBack);
-}
-
-handleFocusBack(){
-console.log('focus-back');
-window.removeEventListener('focus', this.handleFocusBack);
-}
-
-clickedFileInput(){
-window.addEventListener('focus', this.handleFocusBack);
-}
 
 
   render() {
@@ -237,7 +223,7 @@ window.addEventListener('focus', this.handleFocusBack);
 
     return (
       <main className="d-flex flex-column" style={{ height: '100vh' }}>
-        <div className={showOverlay?'artwishlist-overlay':''}></div>
+        {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
 
         <Navbar expand="md" style={{ padding: '3em' }}>
           <Navbar.Brand className="mt-3 text-center" href="#home" style={{ position:'absolute', width: '25%'}}>
@@ -257,8 +243,10 @@ window.addEventListener('focus', this.handleFocusBack);
                     </div>
                     <div className="pl-2">UPLOAD</div>
                   </button>
-                  <input className="d-none" type="file" 
-                    ref={this.inputRef} onChange={(e) => this.handleImagePreview()}/>
+                  <input id="test" value="" className="d-none" type="file" 
+                    ref={this.inputRef} 
+                    onChange={(e) => this.handleImagePreview(e)}
+                    onclick="console.log('test')" onfocus="console.log('test')" onblur="console.log('test')"/>
                 </div>
               </Nav>
 
@@ -303,7 +291,7 @@ window.addEventListener('focus', this.handleFocusBack);
 
         </Navbar>
 
-        <section style={{ background: '#F3F3F3', flexGrow: 1 }}>
+        <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>
           
           <Container style={{ padding: 0 }}>  
             <Route path="/painting/:id" exact

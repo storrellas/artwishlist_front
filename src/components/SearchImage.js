@@ -149,7 +149,7 @@ class SearchImage extends React.Component {
 
     return (
       <>
-        <div className={showOverlay?'artwishlist-overlay':''}></div>
+        {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
         <div 
           className={containerClass}>
           <div className={imageSelected?"w-100 text-left p-1":"d-none"}
