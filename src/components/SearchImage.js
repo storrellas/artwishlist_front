@@ -85,6 +85,11 @@ class SearchImage extends React.Component {
     }
   };
 
+  onUploadClick(){
+    this.inputRef.current.click()
+    this.setState({ showOverlay: true })
+  }
+
   async handleImagePreview(e){
     const [file] = this.inputRef.current.files;
     if(file){
@@ -94,7 +99,7 @@ class SearchImage extends React.Component {
       // Send image to service
       //this.performSearchImage(file)
       this.props.onImageChanged( imagePreview )
-      this.setState({ imageSelected: true })
+      this.setState({ imageSelected: true, showOverlay: false })
     }
       
   }
@@ -136,29 +141,39 @@ class SearchImage extends React.Component {
                     "h-100 img-painting-border img-search-left":
                     "h-100 img-search";
 
+    const containerClass = imageSelected?
+        "w-100 h-100 img-search-container p-3":
+        'w-100 d-flex justify-content-center p-3 mt-3'
+    const { showOverlay } = this.state;
+
+
     return (
       <>
-        <div className={imageSelected?"w-100 text-left p-1":"d-none"}
-        style={{ color: '#444444', fontWeight: 'bold'}}>
-          Your uploaded image:
+        <div className={showOverlay?'artwishlist-overlay':''}></div>
+        <div 
+          className={containerClass}>
+          <div className={imageSelected?"w-100 text-left p-1":"d-none"}
+            style={{ color: '#444444', fontWeight: 'bold'}}>
+            Your uploaded image:
+          </div>
+          <img className={imgClass}
+            alt="background" src={imagePreview}                               
+            onMouseEnter={(e) => this.handleImageMouseEnter() } 
+            onMouseLeave={(e) => this.handleImageMouseLeave()}
+            onClick={ (e) => this.onUploadClick()}
+            style={{ maxHeight: imageSelected?"70px":"300px", cursor: 'pointer' }}
+            
+            // DnD
+            onDragEnter={(e) => this.handleDragEnter(e)}
+            onDragLeave={(e) => this.handleDragLeave(e)}
+            onDragOver={(e) => this.handleDragOver(e)}
+            onDrop={(e) => this.handleDrop (e)} 
+            
+            ref={this.imgPreviewRef} />
+          <input className="d-none" type="file" 
+            ref={this.inputRef} 
+            onChange={(e) => this.handleImagePreview(e)}/>
         </div>
-        <img className={imgClass}
-          alt="background" src={imagePreview}                               
-          onMouseEnter={(e) => this.handleImageMouseEnter() } 
-          onMouseLeave={(e) => this.handleImageMouseLeave()}
-          onClick={ (e) => this.inputRef.current.click()}
-          style={{ maxHeight: imageSelected?"90px":"300px", cursor: 'pointer' }}
-          
-          // DnD
-          onDragEnter={(e) => this.handleDragEnter(e)}
-          onDragLeave={(e) => this.handleDragLeave(e)}
-          onDragOver={(e) => this.handleDragOver(e)}
-          onDrop={(e) => this.handleDrop (e)} 
-          
-          ref={this.imgPreviewRef} />
-        <input className="d-none" type="file" 
-          ref={this.inputRef} 
-          onChange={(e) => this.handleImagePreview(e)}/>
       </>
     );
   }

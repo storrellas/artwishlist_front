@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 
 // React Router
 import { Route } from "react-router-dom";
@@ -55,13 +56,14 @@ class Landing extends React.Component {
       searchPattern: '',
       isLoadingArtist: false,
       artistOptions: [],
-      searchInputBackground: '#DDDDDD',
-      searchInputBorder: '0px solid #DDDDDD',
+      searchInputBackground: '#F3F3F3',
+      searchInputBorder: '0px solid #F3F3F3',
       launchSearchPattern: '',
       
       imagePreview: undefined,
 
-      searchMode: SEARCH_MODE.LANDING
+      searchMode: SEARCH_MODE.LANDING,
+      showOverlay: false
     }
     this.typingTimeout = undefined
 
@@ -85,10 +87,11 @@ class Landing extends React.Component {
       const response = await axios.get(url)
 
       // Autocomplete
-      const artistOptions = []
+      let artistOptions = []
       for(const item of response.data.results ){
         artistOptions.push({value: item.pk, label: item.name})
       }
+      artistOptions = artistOptions.slice(0,7)
       this.setState({artistOptions: artistOptions, isLoadingArtist:false})
 
     }catch(error){
@@ -151,6 +154,12 @@ class Landing extends React.Component {
         
   }
 
+  onUploadClick(){
+    this.inputRef.current.click()
+    this.setState({ showOverlay: true })
+  }
+    
+
   handleImagePreview(imagePreview){
 
     if( imagePreview ){
@@ -168,8 +177,9 @@ class Landing extends React.Component {
         this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
       }
       this.inputRef.current.value = "";
-
+      this.setState({ showOverlay: false })
     }
+    
   }
 
   render() {
@@ -203,70 +213,77 @@ class Landing extends React.Component {
       }
     }
 
+    const { showOverlay } = this.state;
     return (
       <>
-      <Container style={{ height: '90vh'}}>
+      <div className={showOverlay?'artwishlist-overlay':''}></div>
+      <Navbar expand="md" style={{ padding: '3em' }}>
+        <Navbar.Brand className="mt-3 text-center" href="#home" style={{ position:'absolute', width: '25%'}}>
+          <img height="40" alt="logo" src={factureLogo}></img>
+        </Navbar.Brand>
 
-        <Row className="mb-3" style={{ padding: '3em 1em 1em 1em' }}>
-          <Col md={4}>
-            <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
-          </Col>
-          <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className={showUploadButton?"h-100 mr-3":"invisible"}>
-              <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
-                onClick={(e) => this.inputRef.current.click()} >
-                <div className="h-100 d-flex justify-content-center align-items-center">
-                <img alt="camera" src={cameraImg} />
-                </div>
-                <div className="pl-2">UPLOAD</div>
-              </button>
-              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview()}/>
-
-            </div>
-            <div className="h-100" style={{ flexGrow: 1}}>
-            <Select isLoading={this.state.isLoadingArtist} 
-                isClearable 
-                isSearchable options={artistOptions} 
-                onInputChange={(e) => this.onInputChangeArtist(e)} 
-                onKeyDown={(e) => this.onKeyDownArtist(e)}
-                onMenuOpen={(e) => this.onMenuOpenArtist()}
-                onMenuClose={(e) => this.onMenuCloseArtist(searchPattern)}
-                onChange={ (e) => this.performSearchArtist(e) }
-                //inputValue={searchPattern}
-                className="searchInput"
-                classNamePrefix="searchInputInner"
-                placeholder={'Search by Artist'}  
-                styles={{      
-                  control: (provided) => ({ 
-                    ...provided, 
-                    borderRadius: '20px', 
-                    background: searchInputBackground, 
-                    border: searchInputBorder,
-                    outline: "none !important",
-                    boxShadow: "none !important",
-                    paddingLeft: '1em',
-                    "&:focus" :{
-                      border: '1px solid black',
-                      outline: 'none'
-                    },
-                    "&:hover" :{
-                      border: '1px solid #DDDDDD',
-                      outline: 'none'
-                    }
-                  }),
-
-                }}
-                />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" style={{ }} />
+          
+          <Navbar.Collapse className="h-100" id="responsive-navbar-nav">          
+            <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '25%'}}></Nav>
+            <Nav className="mr-auto mt-3 justify-content-end" style={{ height: '40px', width: '25%'}}>
+              <div className={showUploadButton?"h-100 mr-3":"invisible"}>
+                <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
+                  onClick={(e) => this.onUploadClick()} >
+                  <div className="h-100 d-flex justify-content-center align-items-center">
+                    <img alt="camera" src={cameraImg} />
+                  </div>
+                  <div className="pl-2">UPLOAD</div>
+                </button>
+                <input className="d-none" type="file" 
+                  ref={this.inputRef} onChange={(e) => this.handleImagePreview()}/>
               </div>
+            </Nav>
 
-          </Col>
-        </Row>
-        <div style={{ height: '70vh'}}>         
-          <Route path={`${this.props.match.path}`} exact
-                  render={(props) => 
-                  (
-                    <div className='h-100'>
-                      <AnimateHeight
+            <Nav className="mr-auto mt-3" style={{ width: '35%',}}>
+              <Select isLoading={this.state.isLoadingArtist} 
+                        isClearable 
+                        isSearchable options={artistOptions} 
+                        onInputChange={(e) => this.onInputChangeArtist(e)} 
+                        onKeyDown={(e) => this.onKeyDownArtist(e)}
+                        onMenuOpen={(e) => this.onMenuOpenArtist()}
+                        onMenuClose={(e) => this.onMenuCloseArtist(searchPattern)}
+                        onChange={ (e) => this.performSearchArtist(e) }
+                        //inputValue={searchPattern}
+                        className="searchInput"
+                        classNamePrefix="searchInputInner"
+                        placeholder={'Search by Artist'}  
+                        styles={{      
+                          control: (provided) => ({ 
+                            ...provided, 
+                            borderRadius: '20px', 
+                            background: searchInputBackground, 
+                            border: searchInputBorder,
+                            outline: "none !important",
+                            boxShadow: "none !important",
+                            paddingLeft: '1em',
+                            "&:focus" :{
+                              border: '1px solid black',
+                              outline: 'none'
+                            },
+                            "&:hover" :{
+                              border: '1px solid #EDEDED',
+                              outline: 'none'
+                            }
+                          }),
+
+                        }}
+                        />
+            </Nav>
+            <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '15%'}}></Nav>
+
+        </Navbar.Collapse>
+
+      </Navbar>
+  
+      <section style={{ background: '#F3F3F3' }}>
+      <Container style={{ padding: 0, height: '90vh' }}>
+      <AnimateHeight
                         duration={ 500 }
                         height={ listShowHeightImage }
                         className="d-flex justify-content-center align-items-center" 
@@ -275,6 +292,13 @@ class Landing extends React.Component {
                           onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
                           imagePreview={imagePreview} />
                       </AnimateHeight>
+
+        <div style={{ height: '85vh'}}>         
+          <Route path={`${this.props.match.path}`} exact
+                  render={(props) => 
+                  (
+                    <div className='h-100'>
+
                       <SearchResult
                         imagePreview={imagePreview}
                         launchSearchPattern={this.state.launchSearchPattern}/>
@@ -286,6 +310,7 @@ class Landing extends React.Component {
                   render={(props) => (<Painting />)} />
         </div>
       </Container>
+      </section>
       </>
     );
   }

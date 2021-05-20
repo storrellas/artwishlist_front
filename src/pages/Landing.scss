@@ -3,7 +3,7 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 
-$bg-grey: #DDDDDD;
+$bg-grey: #F3F3F3;
 $title-grey: #AAAAAA;
 
 .animated-search {
@@ -12,10 +12,9 @@ $title-grey: #AAAAAA;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1em 0 1em 2em;
+  //padding: 1em 0 1em 2em;
   background-color: $bg-grey;
   width: 100%;
-  border-radius: 10px;
 }
 
 .animated-list {
@@ -26,6 +25,12 @@ $title-grey: #AAAAAA;
   border-radius: 10px;
   border: 1px solid $bg-grey;
   overflow: hidden;
+}
+
+.img-search-container{
+  padding: 1em 2em 1em 2em;
+  background-color: white;
+
 }
 
 .img-search{
@@ -64,7 +69,7 @@ $title-grey: #AAAAAA;
 }
 
 .card-painting{
-  background-color: $bg-grey;
+  background-color: #EDEDED;
   padding: 1em 20% 1em 20%;
   border-top: 1px solid $title-grey;
   border-bottom: 1px solid $title-grey;
@@ -91,7 +96,7 @@ $title-grey: #AAAAAA;
   height: 70px;
   div{
     padding: 0 1em 0 1em;
-    background: #DDDDDD;
+    background: $bg-grey;
     border-radius: 20px 0 0 20px;
     display: flex;
     align-items: center;
@@ -100,7 +105,7 @@ $title-grey: #AAAAAA;
   input{
     color: grey;
     flex-grow: 1; 
-    background: #DDDDDD; 
+    background: $bg-grey; 
     border: 0;
     border-radius: 0 20px 20px 0;
   }
@@ -132,6 +137,14 @@ $title-grey: #AAAAAA;
   background: #f8ee23;
 }
 
+.searchInput {
+  width: 100%;
+}
+
+.searchInputInner__menu {
+  border-radius: 20px;
+}
+
 .searchInputInner__indicators{
   width: 0;
 }
@@ -144,15 +157,33 @@ $title-grey: #AAAAAA;
   background-color: white;
   color: 'black';
   &:hover{
-    background-color: #DDDDDD
+    background-color: $bg-grey
   }
 }
 
 .searchInputInner__option--is-focused{
-  background-color: #DDDDDD !important;
+  background-color: $bg-grey !important;
   color: grey !important;
 }
 .searchInputInner__option--is-selected{
-  background-color: #DDDDDD !important;
+  background-color: $bg-grey !important;
   color: grey !important;
+}
+
+.artwishlist-overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: block; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 3000; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+.inspire-wrapper.toggled .inspire-overlay {
+  display: block; /* Hidden by default */
 }
