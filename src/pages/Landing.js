@@ -53,6 +53,7 @@ class Landing extends React.Component {
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
       searchInputBorder: '0px solid #DDDDDD',
+      launchSearchPattern: '',
       
       imagePreview: undefined
     }
@@ -61,15 +62,6 @@ class Landing extends React.Component {
     this.inputRef = React.createRef();
   }
 
-  handleKeyDown(e){    
-    if (e.keyCode === 13)
-      this.performSearch()    
-  }
-
-  performSearch(){
-    const { searchPattern } = this.state;
-    this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern})
-  }
 
   componentDidUpdate(prevProps, prevState){
     if( prevProps.mode !== this.props.mode){
@@ -89,19 +81,7 @@ class Landing extends React.Component {
       this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
   }
 
-  performSearchArtist(searchObj){
-    let pattern = ''
-    if( searchObj ){
-      pattern = searchObj.label
-    }else{
-      pattern = this.state.searchPattern;
-    }
-    this.setState({searchPattern: searchObj.label})
-    clearTimeout(this.typingTimeout);
-    if( searchObj )
-      if( searchObj.label.length > 0)
-        this.props.performSearch({mode: MODE.SEARCH, searchPattern: pattern})
-  }
+
 
   async fillArtist(searchPattern){
   
@@ -156,9 +136,34 @@ class Landing extends React.Component {
 
   onKeyDownArtist(e){
     if (e.keyCode === 13){
-      this.performSearch()
-    }
+      const { searchPattern } = this.state;
+      //this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern})
+
+      this.setState({
+        searchPattern: searchPattern, 
+        mode: MODE.SEARCH,
+        launchSearchPattern: searchPattern
+      })
+
+    }      
+  }
+
+  performSearchArtist(searchObj){
+    // Select where pattern comes from
+    const pattern = searchObj?searchObj.label:this.state.searchPattern;
+
+    //this.setState({searchPattern: pattern})
+    this.setState({
+      searchPattern: pattern, 
+      mode: MODE.SEARCH,
+      launchSearchPattern: pattern
+    })
+    clearTimeout(this.typingTimeout);
+    // if( searchObj && searchObj.label.length > 0){      
+    //   this.props.performSearch({mode: MODE.SEARCH, searchPattern: pattern})
+    // }
       
+        
   }
 
   handleImagePreview(e){
@@ -189,8 +194,7 @@ class Landing extends React.Component {
             <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            {/* <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}> */}
-            <div className="h-100 mr-3">
+            <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}>
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.inputRef.current.click()} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
@@ -244,6 +248,7 @@ class Landing extends React.Component {
             <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
               <Search 
                 imagePreview={this.state.imagePreview} 
+                launchSearchPattern={this.state.launchSearchPattern}
                 mode={mode} />
             </div>
             <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>

@@ -55,9 +55,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 const mapStateToProps = (state) => {
-  return {    
-    searchPattern: state.searchPattern,
-  };
+  return {};
 }
 
 export const SEARCH_MODE = { PATTERN: 1, IMAGE: 2 }
@@ -66,7 +64,6 @@ class Search extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchPattern: '',
       imagePreview: upload,
       listShow: false,
       isLoadingList: false,
@@ -88,10 +85,16 @@ class Search extends React.Component {
   }
 
 
-  async performSearchPattern(){
-    try{      
-      const searchPattern = this.props.searchPattern;
+  async performSearchPattern(searchPattern){
+    try{            
+      this.setState({ 
+        listShow: true, 
+        isLoadingList: true, 
+        paintingList: [],
+        searchMode: SEARCH_MODE.PATTERN
+      })
 
+      // Launch request
       let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
       url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
       const response = await axios.get(url)
@@ -101,11 +104,10 @@ class Search extends React.Component {
       const paintingList = this.state.paintingList.concat(response.data.results)
       // Set offset for the next time
       this.offset = this.offset + this.size;
-      this.setState({
-          listShow: true, 
+      this.setState({ 
+          isLoadingList: false, 
           imagesBaseUrl: response.data.images_base_url,
-          paintingList: paintingList,
-          searchMode: SEARCH_MODE.PATTERN})
+          paintingList: paintingList})
     }catch(error){
       console.log("FAILED", error)
     }  
@@ -237,14 +239,15 @@ class Search extends React.Component {
   } 
 
   async componentDidUpdate(prevProps, prevState){
-    if( prevProps.searchPattern !== this.props.searchPattern){
-      this.offset = 0
-      this.setState({paintingList: []})
-      this.performSearchPattern()
-    }
     
     if( prevProps.imagePreview !== this.props.imagePreview ){
       this.handleImagePreviewUpdate()
+    }
+
+    if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
+      console.log("Required to search pattern")
+      this.performSearchPattern(this.props.launchSearchPattern)
+      
     }
 
   }
@@ -257,7 +260,7 @@ class Search extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      this.performSearchPattern() 
+      this.performSearchPattern(this.props.launchSearchPattern)
     }
   }
 
