@@ -169,6 +169,7 @@ class Landing extends React.Component {
       const imagePreview = URL.createObjectURL(file)
       this.setState({imagePreview: imagePreview})
     }
+    this.inputRef.current.value = "";
 
   }
 
@@ -193,8 +194,8 @@ class Landing extends React.Component {
             {/* <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}> */}
             <div className="h-100 mr-3">
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
-                onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} 
-                // onClick={(e) => this.inputRef.current.click()} 
+                // onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} 
+                onClick={(e) => this.inputRef.current.click()} 
                 >
                 <div className="h-100 d-flex justify-content-center align-items-center">
                 <img alt="camera" src={cameraImg} />

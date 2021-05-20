@@ -225,7 +225,7 @@ class Search extends React.Component {
     }
   } 
 
-  componentDidUpdate(prevProps, prevState){
+  async componentDidUpdate(prevProps, prevState){
     if( prevProps.searchPattern !== this.props.searchPattern){
       this.offset = 0
       this.setState({paintingList: []})
@@ -234,6 +234,24 @@ class Search extends React.Component {
     
     if( prevProps.triggerUpload !== this.props.triggerUpload){
       this.inputRef.current.click()
+    }
+
+    if( prevProps.imagePreview !== this.props.imagePreview ){
+      this.imgPreviewRef.current.src = this.props.imagePreview
+
+      this.setState({ 
+        listShow: true, 
+        isLoadingList: true, 
+        paintingList: [],
+        imagePreview: this.props.imagePreview,      
+        searchMode: SEARCH_MODE.IMAGE
+      })
+
+      let file = await fetch(this.props.imagePreview).then(r => r.blob());
+
+      // Send image to service
+      this.performSearchImage(file)
+
     }
 
   }
@@ -254,8 +272,6 @@ class Search extends React.Component {
     const { listShow, isLoadingList, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
-
-    console.log("render search")
 
     // Classes to move icon
     let imgClass = "";
