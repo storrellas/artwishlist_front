@@ -185,7 +185,7 @@ class Landing extends React.Component {
       const [file] = this.inputRef.current.files;
       if(file){
         const imagePreview = URL.createObjectURL(file)
-        this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE, mode: MODE.IMAGE})
+        this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
       }
       this.inputRef.current.value = "";
 
