@@ -6,17 +6,17 @@ export const SET_MODE = "SET_MODE";
 export const PERFORM_SEARCH = "PERFORM_SEARCH";
 export const SHOW_DETAIL = "SHOW_DETAIL";
 
-export function setMode(payload) {
-  return { type: SET_MODE, payload }
-};
+// export function setMode(payload) {
+//   return { type: SET_MODE, payload }
+// };
 
-export function showDetail(payload) {
-  return { type: SHOW_DETAIL, payload }
-};
+// export function showDetail(payload) {
+//   return { type: SHOW_DETAIL, payload }
+// };
 
-export function performSearch(payload) {
-  return { type: PERFORM_SEARCH, payload }
-};
+// export function performSearch(payload) {
+//   return { type: PERFORM_SEARCH, payload }
+// };
 
 // Reducers
 // ---------------------

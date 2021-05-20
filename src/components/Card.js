@@ -2,15 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router-dom'
 
 // Redux
-import { showDetail } from "../redux";
-//import { MODE } from "../redux";
 import { connect } from "react-redux";
 
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-      showDetail: (payload) => dispatch(showDetail(payload))
-  };
+  return {};
 }
 
 const noImageUrl = 

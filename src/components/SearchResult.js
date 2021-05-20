@@ -2,6 +2,9 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
+import { useParams } from "react-router-dom";
+
+
 import './Search.scss';
 
 // Axios
@@ -70,7 +73,8 @@ class SearchResult extends React.Component {
     try{
       this.setState({ 
         isLoadingList: true, 
-        searchMode: SEARCH_MODE.PATTERN
+        searchMode: SEARCH_MODE.PATTERN,
+        searchPattern: ''
       })
 
       // Launch request
@@ -130,6 +134,21 @@ class SearchResult extends React.Component {
     }
   }
 
+  async componentDidMount(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const pattern = urlParams.get('pattern')
+    if( pattern ){
+      this.performSearchPattern(pattern) 
+      this.setState({searchPattern: pattern})
+    }else if( this.props.imagePreview ){
+      this.handleImagePreviewUpdate()
+    }else{
+      this.props.history.push('/')
+    }
+    
+  }
+
   onYReachEnd(){
     // const scrollTop = this.scrollRef.scrollTop;
     // let docHeight = this.scrollRef.scrollHeight;
@@ -141,8 +160,11 @@ class SearchResult extends React.Component {
       if( this.state.searchMode === SEARCH_MODE.PATTERN && this.state.isLoadingList === false ) {
         // Move it a bit top to avoid researching
         this.scrollRef.scrollTop = this.scrollRef.scrollTop * 0.7;
+        
+        const pattern = this.props.launchSearchPattern?
+                        this.props.launchSearchPattern:this.searchPattern;
 
-        this.performSearchPattern(this.props.launchSearchPattern) 
+        this.performSearchPattern(pattern) 
       }else{
         // Do nothing
       }
@@ -158,8 +180,42 @@ class SearchResult extends React.Component {
                             isLoadingList===false&&
                             this.state.searchMode!==SEARCH_MODE.LANDING;
 
+    const imagePreview = this.props.imagePreview?
+                    this.props.imagePreview:this.state.imagePreview;
+
+    // Classes to move icon    
+    const imageSelected = this.state.imageSelected || this.props.imagePreview !== undefined; 
+    let imgClass = imageSelected?
+                    "h-100 img-painting-border img-search-left":
+                    "h-100 img-search";
+
+    const containerClass = imageSelected?
+        "w-100 h-100 img-search-container p-3":
+        'w-100 d-flex justify-content-center p-3 mt-3'
+    const { showOverlay } = this.state;
+
+    console.log("Showing SearchResult")
+
     return (
         <>
+
+          {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
+          <div className={containerClass}>
+            <div className={imageSelected?"w-100 text-left p-1":"d-none"}
+              style={{ color: '#444444', fontWeight: 'bold'}}>
+              Your uploaded image:
+            </div>
+            <img className={imgClass}
+              alt="background" src={imagePreview}                               
+              onClick={ (e) => this.onUploadClick()}
+              style={{ maxHeight: imageSelected?"70px":"300px", cursor: 'pointer' }}             
+              ref={this.imgPreviewRef} />
+            <input className="d-none" type="file" 
+              ref={this.inputRef} 
+              onChange={(e) => this.handleImagePreview(e)}/>
+          </div>
+
+
           <div className="d-none">
             <Filtering />
           </div>
@@ -168,7 +224,7 @@ class SearchResult extends React.Component {
           :''}
           {showEmptySearch?<EmptySearch />:''}
           {paintingList.length>0?
-          <div className="mt-3" style={{ height: '90%'}}>
+          <div className="mt-3" style={{ height: '75vh' }}>
             <PerfectScrollbar 
               className="w-100" 
               onYReachEnd={(e) => this.onYReachEnd()}
