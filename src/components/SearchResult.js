@@ -59,21 +59,23 @@ const mapStateToProps = (state) => {
 }
 
 export const SEARCH_MODE = { PATTERN: 1, IMAGE: 2 }
-class Search extends React.Component {
+class SearchResult extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      imagePreview: upload,
-      listShow: false,
+      //imagePreview: upload,
+      //listShow: false,
+      //searchMode: undefined,
+
       isLoadingList: false,
       imagePreviewHover: false,
       imagesBaseUrl: '',
       paintingList: [],
-      searchMode: undefined
+      
     }
-    this.inputRef = React.createRef();
-    this.imgPreviewRef = React.createRef();
+    // this.inputRef = React.createRef();
+    // this.imgPreviewRef = React.createRef();
 
     this.scrollRef = React.createRef();
 
@@ -88,7 +90,7 @@ class Search extends React.Component {
   async performSearchPattern(searchPattern){
     try{            
       this.setState({ 
-        listShow: true, 
+        //listShow: true, 
         isLoadingList: true, 
         paintingList: [],
         searchMode: SEARCH_MODE.PATTERN
@@ -119,13 +121,13 @@ class Search extends React.Component {
 
     this.props.setMode({ mode: MODE.SEARCH })
     this.setState({ 
-      listShow: true, 
+      //listShow: true, 
       isLoadingList: true, 
       paintingList: [],
-      imagePreview: URL.createObjectURL(file),      
+      //imagePreview: URL.createObjectURL(file),      
       searchMode: SEARCH_MODE.IMAGE
     })
-    this.inputRef.current.value = "";
+    //this.inputRef.current.value = "";
 
     const formData = new FormData();
     formData.append('upload', file);
@@ -139,71 +141,71 @@ class Search extends React.Component {
       paintingList: response.data.results})
   }
 
-  handleDragLeave(event){
-    event.stopPropagation()
-    event.preventDefault()
-    // If we have an image do not proceed
-    if( this.isImageSearch ) return;
+  // handleDragLeave(event){
+  //   event.stopPropagation()
+  //   event.preventDefault()
+  //   // If we have an image do not proceed
+  //   if( this.isImageSearch ) return;
       
-    // Set upload back to normal
-    this.setState({ imagePreview: upload})
-  };
-  handleDragOver(event){
-    event.stopPropagation()
-    event.preventDefault()
-  };
-  handleDragEnter(event){
-    event.stopPropagation()
-    event.preventDefault()
-    // If we have an image do not proceed
-    if( this.isImageSearch ) return;
+  //   // Set upload back to normal
+  //   this.setState({ imagePreview: upload})
+  // };
+  // handleDragOver(event){
+  //   event.stopPropagation()
+  //   event.preventDefault()
+  // };
+  // handleDragEnter(event){
+  //   event.stopPropagation()
+  //   event.preventDefault()
+  //   // If we have an image do not proceed
+  //   if( this.isImageSearch ) return;
     
-    // Set upload hover
-    this.setState({ imagePreview: uploadHover})
-  };
+  //   // Set upload hover
+  //   this.setState({ imagePreview: uploadHover})
+  // };
 
-  async handleDrop(event){
-    event.stopPropagation()
-    event.preventDefault()
+  // async handleDrop(event){
+  //   event.stopPropagation()
+  //   event.preventDefault()
 
 
-    let fileList = []
-    if (event.dataTransfer.items) {
-      // Use DataTransferItemList interface to access the file(s)
-      for(const item of event.dataTransfer.items){
-        if (item.kind === 'file') {
-          const file = item.getAsFile();
-          fileList.push(file)
-        }
-      }
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      for(const file of event.dataTransfer.files ){
-        fileList.push(file)
-      }
-    }
+  //   let fileList = []
+  //   if (event.dataTransfer.items) {
+  //     // Use DataTransferItemList interface to access the file(s)
+  //     for(const item of event.dataTransfer.items){
+  //       if (item.kind === 'file') {
+  //         const file = item.getAsFile();
+  //         fileList.push(file)
+  //       }
+  //     }
+  //   } else {
+  //     // Use DataTransfer interface to access the file(s)
+  //     for(const file of event.dataTransfer.files ){
+  //       fileList.push(file)
+  //     }
+  //   }
 
-    // Image search
-    if( fileList.length > 0 ){
-      const file = fileList[0]      
-      this.imgPreviewRef.current.src = URL.createObjectURL(file)
-      this.performSearchImage(file)
-    }
-  };
+  //   // Image search
+  //   if( fileList.length > 0 ){
+  //     const file = fileList[0]      
+  //     this.imgPreviewRef.current.src = URL.createObjectURL(file)
+  //     this.performSearchImage(file)
+  //   }
+  // };
 
-  async handleImagePreview(e){
-    const [file] = this.inputRef.current.files;
-    if(file){
-      this.imgPreviewRef.current.src = URL.createObjectURL(file)
+  // async handleImagePreview(e){
+  //   const [file] = this.inputRef.current.files;
+  //   if(file){
+  //     this.imgPreviewRef.current.src = URL.createObjectURL(file)
 
-      // Send image to service
-      this.performSearchImage(file)
-    }
+  //     // Send image to service
+  //     this.performSearchImage(file)
+  //   }
       
-  }
+  // }
 
   async handleImagePreviewUpdate(){
-    this.imgPreviewRef.current.src = this.props.imagePreview
+    //this.imgPreviewRef.current.src = this.props.imagePreview
 
     // Get file locally
     const file = await fetch(this.props.imagePreview).then(r => r.blob());
@@ -274,30 +276,29 @@ class Search extends React.Component {
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
 
-    // Classes to move icon
-    let imgClass = "";
-    if( this.isImageSearch ){
-      imgClass = "h-100 img-painting-border img-search-left"
-    }else{
-      if( listShow ){
-        imgClass = "h-100 img-search img-search-left"
-      }else{
-        imgClass = "h-100 img-search"
-      }
-    }
+    // // Classes to move icon
+    // let imgClass = "";
+    // if( this.isImageSearch ){
+    //   imgClass = "h-100 img-painting-border img-search-left"
+    // }else{
+    //   if( listShow ){
+    //     imgClass = "h-100 img-search img-search-left"
+    //   }else{
+    //     imgClass = "h-100 img-search"
+    //   }
+    // }
 
     
-    let listShowHeightImage = '100%';
-    if( listShow ){
-      if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
-      else listShowHeightImage = '20%';
-    }
+    // let listShowHeightImage = '100%';
+    // if( listShow ){
+    //   if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
+    //   else listShowHeightImage = '20%';
+    // }
 
-    console.log(" isLoadingList ", isLoadingList)
 
     return (
         <>
-          <AnimateHeight
+          {/* <AnimateHeight
             duration={ 500 }
             height={ listShowHeightImage }
             className="d-flex justify-content-center align-items-center" 
@@ -323,7 +324,7 @@ class Search extends React.Component {
               <input className="d-none" type="file" 
                 ref={this.inputRef} 
                 onChange={(e) => this.handleImagePreview(e)}/>
-          </AnimateHeight>
+          </AnimateHeight> */}
 
           <div className="d-none">
             <Filtering />
@@ -356,4 +357,4 @@ class Search extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchResult));

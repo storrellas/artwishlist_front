@@ -59,85 +59,87 @@ const mapStateToProps = (state) => {
 }
 
 export const SEARCH_MODE = { PATTERN: 1, IMAGE: 2 }
-class Search extends React.Component {
+class SearchImage extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       imagePreview: upload,
       listShow: false,
-      isLoadingList: false,
-      imagePreviewHover: false,
-      imagesBaseUrl: '',
-      paintingList: [],
-      searchMode: undefined
+      searchMode: undefined,
+
+      // isLoadingList: false,
+      // imagePreviewHover: false,
+      // imagesBaseUrl: '',
+      // paintingList: [],
+
     }
     this.inputRef = React.createRef();
     this.imgPreviewRef = React.createRef();
 
-    this.scrollRef = React.createRef();
+    // this.scrollRef = React.createRef();
 
-    this.isImageSearch = false;
-    this.scrollTopMax = 0;
+    // this.isImageSearch = false;
+    // this.scrollTopMax = 0;
 
-    this.offset = 0;
-    this.size = 8;
+    // this.offset = 0;
+    // this.size = 8;
   }
 
 
-  async performSearchPattern(searchPattern){
-    try{            
-      this.setState({ 
-        listShow: true, 
-        isLoadingList: true, 
-        paintingList: [],
-        searchMode: SEARCH_MODE.PATTERN
-      })
+  // async performSearchPattern(searchPattern){
+  //   try{            
+  //     this.setState({ 
+  //       listShow: true, 
+  //       isLoadingList: true, 
+  //       paintingList: [],
+  //       searchMode: SEARCH_MODE.PATTERN
+  //     })
 
-      // Launch request
-      let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
-      url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
-      const response = await axios.get(url)
-
-
-      // Append to existing paintingList
-      const paintingList = this.state.paintingList.concat(response.data.results)
-      // Set offset for the next time
-      this.offset = this.offset + this.size;
-      this.setState({ 
-          isLoadingList: false, 
-          imagesBaseUrl: response.data.images_base_url,
-          paintingList: paintingList})
-    }catch(error){
-      console.log("FAILED", error)
-    }  
-  }
-
-  async performSearchImage(file){
-    // Mark we are searching
-    this.isImageSearch = true;
-
-    this.props.setMode({ mode: MODE.SEARCH })
-    this.setState({ 
-      listShow: true, 
-      isLoadingList: true, 
-      paintingList: [],
-      imagePreview: URL.createObjectURL(file),      
-      searchMode: SEARCH_MODE.IMAGE
-    })
-    this.inputRef.current.value = "";
-
-    const formData = new FormData();
-    formData.append('upload', file);
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+  //     // Launch request
+  //     let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/_search?`;
+  //     url = `${url}q=${searchPattern}&size=${this.size}&offset=${this.offset}`; 
+  //     const response = await axios.get(url)
 
 
-    // Set PaintingList
-    this.setState({
-      isLoadingList: false,
-      imagesBaseUrl: response.data.images_base_url,
-      paintingList: response.data.results})
-  }
+  //     // Append to existing paintingList
+  //     const paintingList = this.state.paintingList.concat(response.data.results)
+  //     // Set offset for the next time
+  //     this.offset = this.offset + this.size;
+  //     this.setState({ 
+  //         isLoadingList: false, 
+  //         imagesBaseUrl: response.data.images_base_url,
+  //         paintingList: paintingList})
+  //   }catch(error){
+  //     console.log("FAILED", error)
+  //   }  
+  // }
+
+  // async performSearchImage(file){
+  //   // Mark we are searching
+  //   this.isImageSearch = true;
+
+  //   this.props.setMode({ mode: MODE.SEARCH })
+  //   this.setState({ 
+  //     listShow: true, 
+  //     isLoadingList: true, 
+  //     paintingList: [],
+  //     imagePreview: URL.createObjectURL(file),      
+  //     searchMode: SEARCH_MODE.IMAGE
+  //   })
+  //   this.inputRef.current.value = "";
+
+  //   const formData = new FormData();
+  //   formData.append('upload', file);
+  //   const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/aw_lots/_image_search`, formData, {})
+
+
+  //   // Set PaintingList
+  //   this.setState({
+  //     isLoadingList: false,
+  //     imagesBaseUrl: response.data.images_base_url,
+  //     paintingList: response.data.results})
+  // }
 
   handleDragLeave(event){
     event.stopPropagation()
@@ -146,7 +148,7 @@ class Search extends React.Component {
     if( this.isImageSearch ) return;
       
     // Set upload back to normal
-    this.setState({ imagePreview: upload})
+    this.setState({ imagePreview: upload })
   };
   handleDragOver(event){
     event.stopPropagation()
@@ -186,31 +188,37 @@ class Search extends React.Component {
     // Image search
     if( fileList.length > 0 ){
       const file = fileList[0]      
-      this.imgPreviewRef.current.src = URL.createObjectURL(file)
-      this.performSearchImage(file)
+      const imagePreview = URL.createObjectURL(file);
+      this.imgPreviewRef.current.src = imagePreview
+      //this.performSearchImage(file)
+      this.props.onImageChanged( imagePreview )
+      this.setState({ listShow: true })
     }
   };
 
   async handleImagePreview(e){
     const [file] = this.inputRef.current.files;
     if(file){
+      const imagePreview = URL.createObjectURL(file);
       this.imgPreviewRef.current.src = URL.createObjectURL(file)
 
       // Send image to service
-      this.performSearchImage(file)
+      //this.performSearchImage(file)
+      this.props.onImageChanged( imagePreview )
+      this.setState({ listShow: true })
     }
       
   }
 
-  async handleImagePreviewUpdate(){
-    this.imgPreviewRef.current.src = this.props.imagePreview
+  // async handleImagePreviewUpdate(){
+  //   this.imgPreviewRef.current.src = this.props.imagePreview
 
-    // Get file locally
-    const file = await fetch(this.props.imagePreview).then(r => r.blob());
+  //   // Get file locally
+  //   const file = await fetch(this.props.imagePreview).then(r => r.blob());
 
-    // Send image to service
-    this.performSearchImage(file)
-  }
+  //   // Send image to service
+  //   this.performSearchImage(file)
+  // }
 
   
   handleImageMouseEnter(){
@@ -240,68 +248,72 @@ class Search extends React.Component {
 
   async componentDidUpdate(prevProps, prevState){
     
-    if( prevProps.imagePreview !== this.props.imagePreview ){
-      this.handleImagePreviewUpdate()
-    }
+    // if( prevProps.imagePreview !== this.props.imagePreview ){
+    //   this.handleImagePreviewUpdate()
+    // }
 
-    if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
-      console.log("Required to search pattern")
-      this.performSearchPattern(this.props.launchSearchPattern)
+    // if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
+    //   console.log("Required to search pattern")
+    //   this.performSearchPattern(this.props.launchSearchPattern)
       
-    }
+    // }
 
   }
 
-  onYReachEnd(){
-    // const scrollTop = this.scrollRef.scrollTop;
-    // let docHeight = this.scrollRef.scrollHeight;
-    // let clientHeight = this.scrollRef.clientHeight;
-    // let scrollPercent = scrollTop *100 / (docHeight - clientHeight);
+  // onYReachEnd(){
+  //   // const scrollTop = this.scrollRef.scrollTop;
+  //   // let docHeight = this.scrollRef.scrollHeight;
+  //   // let clientHeight = this.scrollRef.clientHeight;
+  //   // let scrollPercent = scrollTop *100 / (docHeight - clientHeight);
 
-    // Grab next page
-    if( this.scrollRef.scrollTop > 0){
-      if( SEARCH_MODE.PATTERN ){
-        this.performSearchPattern(this.props.launchSearchPattern) 
-      }else{
-        // Do nothing
-      }
+  //   // Grab next page
+  //   if( this.scrollRef.scrollTop > 0){
+  //     if( SEARCH_MODE.PATTERN ){
+  //       this.performSearchPattern(this.props.launchSearchPattern) 
+  //     }else{
+  //       // Do nothing
+  //     }
         
-    }
-  }
+  //   }
+  // }
 
   render() {
     const { listShow, isLoadingList, paintingList } = this.state;
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
 
+
     // Classes to move icon
     let imgClass = "";
-    if( this.isImageSearch ){
+    // if( this.isImageSearch ){
+    //   imgClass = "h-100 img-painting-border img-search-left"
+    // }else{
+    //   if( listShow ){
+    //     imgClass = "h-100 img-painting-border img-search-left"
+    //   }else{
+    //     imgClass = "h-100 img-search"
+    //   }
+    // }
+
+    if( listShow ){
       imgClass = "h-100 img-painting-border img-search-left"
     }else{
-      if( listShow ){
-        imgClass = "h-100 img-search img-search-left"
-      }else{
-        imgClass = "h-100 img-search"
-      }
+      imgClass = "h-100 img-search"
     }
-
     
-    let listShowHeightImage = '100%';
-    if( listShow ){
-      if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
-      else listShowHeightImage = '20%';
-    }
-
-    console.log(" isLoadingList ", isLoadingList)
+    // let listShowHeightImage = '100%';
+    // if( listShow ){
+    //   if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
+    //   else listShowHeightImage = '20%';
+    // }
 
     return (
         <>
-          <AnimateHeight
+          {/* <AnimateHeight
             duration={ 500 }
             height={ listShowHeightImage }
             className="d-flex justify-content-center align-items-center" 
-            contentClassName="animated-search">
+            contentClassName="animated-search"> */}
               <div className={listShow?"w-100 text-left p-1":"d-none"}
               style={{ color: '#444444', fontWeight: 'bold'}}>
                 Your uploaded image:
@@ -323,9 +335,9 @@ class Search extends React.Component {
               <input className="d-none" type="file" 
                 ref={this.inputRef} 
                 onChange={(e) => this.handleImagePreview(e)}/>
-          </AnimateHeight>
+          {/* </AnimateHeight> */}
 
-          <div className="d-none">
+          {/* <div className="d-none">
             <Filtering />
           </div>
           {isLoadingList?
@@ -348,7 +360,7 @@ class Search extends React.Component {
               </Row>
             </PerfectScrollbar>
           </div>
-          :''}
+          :''} */}
 
         </>
 
@@ -356,4 +368,4 @@ class Search extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchImage));

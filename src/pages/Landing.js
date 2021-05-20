@@ -8,7 +8,7 @@ import './Landing.scss';
 import Select from 'react-select';
 
 // Redux
-import { performSearch, MODE, showDetail } from "../redux";
+import { MODE, showDetail } from "../redux";
 import { connect } from "react-redux";
 
 // Assets
@@ -19,11 +19,17 @@ import cameraImg from '../assets/camera.svg';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
+// AnimateHeight
+import AnimateHeight from 'react-animate-height';
+
 // Axios
 import axios from 'axios';
 
 // Project imports
-import Search from '../components/Search'
+import Search from '../components/Search';
+import SearchResult from '../components/SearchResult';
+import SearchImage from '../components/SearchImage';
+
 import Painting from '../components/Painting';
 
 const mapStateToProps = (state) => {
@@ -36,11 +42,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      performSearch: (payload) => dispatch(performSearch(payload)),
       showDetail: (payload) => dispatch(showDetail(payload))
   };
 }
 
+export const SEARCH_MODE = { LANDING: 0, PATTERN: 1, IMAGE: 2 }
 class Landing extends React.Component {
 
   constructor(props) {
@@ -55,7 +61,9 @@ class Landing extends React.Component {
       searchInputBorder: '0px solid #DDDDDD',
       launchSearchPattern: '',
       
-      imagePreview: undefined
+      imagePreview: undefined,
+
+      searchMode: undefined
     }
     this.typingTimeout = undefined
 
@@ -137,31 +145,28 @@ class Landing extends React.Component {
   onKeyDownArtist(e){
     if (e.keyCode === 13){
       const { searchPattern } = this.state;
-      //this.props.performSearch({mode: MODE.SEARCH, searchPattern: searchPattern})
 
       this.setState({
         searchPattern: searchPattern, 
         mode: MODE.SEARCH,
-        launchSearchPattern: searchPattern
+        launchSearchPattern: searchPattern,
+        searchMode: SEARCH_MODE.PATTERN
       })
 
     }      
   }
 
   performSearchArtist(searchObj){
+    clearTimeout(this.typingTimeout);
+
     // Select where pattern comes from
     const pattern = searchObj?searchObj.label:this.state.searchPattern;
-
-    //this.setState({searchPattern: pattern})
     this.setState({
       searchPattern: pattern, 
       mode: MODE.SEARCH,
-      launchSearchPattern: pattern
+      launchSearchPattern: pattern,
+      searchMode: SEARCH_MODE.PATTERN
     })
-    clearTimeout(this.typingTimeout);
-    // if( searchObj && searchObj.label.length > 0){      
-    //   this.props.performSearch({mode: MODE.SEARCH, searchPattern: pattern})
-    // }
       
         
   }
@@ -184,6 +189,24 @@ class Landing extends React.Component {
 
     const { match: { params } } = this.props;
     const paintingId = params.id;
+
+    // let listShowHeightImage = '100%';
+    // if( listShow ){
+    //   if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
+    //   else listShowHeightImage = '20%';
+    // }
+
+    let listShowHeightImage = '';
+    switch(this.state.searchMode){
+      case SEARCH_MODE.IMAGE:
+        listShowHeightImage ='20%'
+        break;
+      case SEARCH_MODE.PATTERN:
+        listShowHeightImage ='0%'
+        break;        
+      default:
+        listShowHeightImage ='100%'
+    }
 
     return (
       <>
@@ -246,13 +269,24 @@ class Landing extends React.Component {
         <div style={{ height: '70vh'}}>
           
             <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
-              <Search 
+              {/* <Search 
                 imagePreview={this.state.imagePreview} 
                 launchSearchPattern={this.state.launchSearchPattern}
-                mode={mode} />
+                mode={mode} /> */}
+                <AnimateHeight
+                  duration={ 500 }
+                  height={ listShowHeightImage }
+                  className="d-flex justify-content-center align-items-center" 
+                  contentClassName="animated-search">
+                  <SearchImage 
+                    onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} />
+                </AnimateHeight>
+                <SearchResult
+                  imagePreview={this.state.imagePreview} 
+                  launchSearchPattern={this.state.launchSearchPattern}
+                  mode={mode} />
             </div>
             <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
-
               <Painting paintingId={paintingId} />
             </div>
             
