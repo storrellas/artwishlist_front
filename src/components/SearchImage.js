@@ -278,10 +278,10 @@ class SearchImage extends React.Component {
   // }
 
   render() {
-    const { listShow, isLoadingList, paintingList } = this.state;
-    const { imagePreview, imagesBaseUrl } = this.state;
-    const { searchMode } = this.state;
-
+    const { listShow } = this.state;
+    //const { imagePreview } = this.state;
+    
+    const imagePreview = this.props.imagePreview?this.props.imagePreview:this.state.imagePreview;
 
     // Classes to move icon
     let imgClass = "";
@@ -294,8 +294,8 @@ class SearchImage extends React.Component {
     //     imgClass = "h-100 img-search"
     //   }
     // }
-
-    if( listShow ){
+    const imageSelected = listShow || this.props.imagePreview !== undefined; 
+    if( imageSelected ){
       imgClass = "h-100 img-painting-border img-search-left"
     }else{
       imgClass = "h-100 img-search"
@@ -314,7 +314,7 @@ class SearchImage extends React.Component {
             height={ listShowHeightImage }
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search"> */}
-              <div className={listShow?"w-100 text-left p-1":"d-none"}
+              <div className={imageSelected?"w-100 text-left p-1":"d-none"}
               style={{ color: '#444444', fontWeight: 'bold'}}>
                 Your uploaded image:
               </div>
@@ -323,7 +323,7 @@ class SearchImage extends React.Component {
                 onMouseEnter={(e) => this.handleImageMouseEnter() } 
                 onMouseLeave={(e) => this.handleImageMouseLeave()}
                 onClick={ (e) => this.inputRef.current.click()}
-                style={{ maxHeight: listShow?"90px":"300px", cursor: 'pointer' }}
+                style={{ maxHeight: imageSelected?"90px":"300px", cursor: 'pointer' }}
                 
                 // DnD
                 onDragEnter={(e) => this.handleDragEnter(e)}

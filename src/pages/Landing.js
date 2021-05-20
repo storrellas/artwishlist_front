@@ -176,7 +176,7 @@ class Landing extends React.Component {
     const [file] = this.inputRef.current.files;
     if(file){
       const imagePreview = URL.createObjectURL(file)
-      this.setState({imagePreview: imagePreview})
+      this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
     }
     this.inputRef.current.value = "";
 
@@ -279,10 +279,11 @@ class Landing extends React.Component {
                   className="d-flex justify-content-center align-items-center" 
                   contentClassName="animated-search">
                   <SearchImage 
-                    onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} />
+                    onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} 
+                    imagePreview={this.state.imagePreview} />
                 </AnimateHeight>
                 <SearchResult
-                  imagePreview={this.state.imagePreview} 
+                  imagePreview={this.state.imagePreview}
                   launchSearchPattern={this.state.launchSearchPattern}
                   mode={mode} />
             </div>
