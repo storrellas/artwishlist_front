@@ -98,6 +98,8 @@ class SearchResult extends React.Component {
   }
 
   async performSearchImage(file){
+    console.log("performSearchImage ")
+
     this.setState({ 
       isLoadingList: true, 
       paintingList: [],
@@ -124,23 +126,27 @@ class SearchResult extends React.Component {
     this.performSearchImage(file)
   }
 
-  async componentDidUpdate(prevProps, prevState){    
-    if( prevProps.imagePreview !== this.props.imagePreview ){
+  async componentDidUpdate(prevProps, prevState){  
+        if( prevProps.imagePreview !== this.props.imagePreview ){
+      console.log("imagePreview ")
       this.handleImagePreviewUpdate()
     }
 
     if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
+      console.log("launchSearchPattern ")
       this.performSearchPattern(this.props.launchSearchPattern, true)      
     }
+
   }
 
   async componentDidMount(){
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const pattern = urlParams.get('pattern')
     if( pattern ){
       this.performSearchPattern(pattern) 
-      this.setState({searchPattern: pattern, searchMode: SEARCH_MODE.PATTERN})
+      this.setState({searchPattern: pattern, searchMode: SEARCH_MODE.PATTERN, painting: []})
     }else if( this.props.imagePreview ){
       this.handleImagePreviewUpdate()
     }else{
@@ -173,7 +179,7 @@ class SearchResult extends React.Component {
   }
 
   render() {
-    const { isLoadingList, paintingList } = this.state;
+    let { isLoadingList, paintingList } = this.state;
     const { imagesBaseUrl } = this.state;
 
     const showEmptySearch = paintingList.length===0&&
@@ -184,7 +190,7 @@ class SearchResult extends React.Component {
                     this.props.imagePreview:this.state.imagePreview;
 
     // Classes to move icon    
-    const imageSelected = this.state.imageSelected || this.props.imagePreview !== undefined; 
+    const imageSelected = this.props.imagePreview !== undefined && this.state.searchMode == SEARCH_MODE.IMAGE; 
     let imgClass = imageSelected?
                     "h-100 img-painting-border img-search-left":
                     "h-100 img-search";
@@ -194,7 +200,7 @@ class SearchResult extends React.Component {
         'd-none'
     const { showOverlay } = this.state;
 
-
+    const heightResult = this.state.searchMode == SEARCH_MODE.PATTERN?'75vh':'60vh'
 
     return (
         <>
@@ -224,7 +230,7 @@ class SearchResult extends React.Component {
           :''}
           {showEmptySearch?<EmptySearch />:''}
           {paintingList.length>0?
-          <div className="mt-3" style={{ height: '75vh' }}>
+          <div className="mt-3" style={{ height: heightResult }}>
             <PerfectScrollbar 
               className="w-100" 
               onYReachEnd={(e) => this.onYReachEnd()}

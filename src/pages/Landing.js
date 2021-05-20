@@ -164,8 +164,11 @@ class Landing extends React.Component {
   
   handleImagePreview(imagePreview){
 
-
-    this.props.history.push('/search/')
+    const isSearch = this.props.location.pathname.includes('search');
+    if( isSearch == false){
+      this.props.history.push('/search/') 
+    }
+      
     if( imagePreview ){
       // raised by SearchImage
       this.setState({
@@ -181,7 +184,7 @@ class Landing extends React.Component {
         this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
       }
       this.inputRef.current.value = "";
-      this.setState({ showOverlay: false })
+      //this.setState({ showOverlay: false })
     }
     
   }
@@ -219,6 +222,8 @@ class Landing extends React.Component {
       }
     }
 
+
+    console.log("Landing Render")
     const { showOverlay } = this.state;
 
     return (
@@ -245,8 +250,7 @@ class Landing extends React.Component {
                   </button>
                   <input id="test" value="" className="d-none" type="file" 
                     ref={this.inputRef} 
-                    onChange={(e) => this.handleImagePreview(e)}
-                    onclick="console.log('test')" onfocus="console.log('test')" onblur="console.log('test')"/>
+                    onChange={(e) => this.handleImagePreview()}/>
                 </div>
               </Nav>
 
