@@ -139,7 +139,7 @@ class SearchResult extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
-      if( this.state.searchMode == SEARCH_MODE.PATTERN ) {
+      if( this.state.searchMode === SEARCH_MODE.PATTERN ) {
         // Move it a bit top to avoid researching
         this.scrollRef.scrollTop = this.scrollRef - 50;
 

@@ -1,5 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+
+// React Router
+import { Route } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
 
 import './Landing.scss';
@@ -35,7 +38,7 @@ import Painting from '../components/Painting';
 const mapStateToProps = (state) => {
   return {
     mode: state.mode,
-    paintingId: state.paintingId,
+    //paintingId: state.paintingId,
   };
 }
 
@@ -54,7 +57,7 @@ class Landing extends React.Component {
     this.state = {
       searchPattern: '',
       mode: MODE.LANDING,
-      paintingId: -1,
+      //paintingId: -1,
       isLoadingArtist: false,
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
@@ -74,7 +77,7 @@ class Landing extends React.Component {
   componentDidUpdate(prevProps, prevState){
     if( prevProps.mode !== this.props.mode){
       this.setState({
-        paintingId: this.props.paintingId,
+        //paintingId: this.props.paintingId,
         mode: this.props.mode
       })
     }
@@ -82,11 +85,11 @@ class Landing extends React.Component {
 
   componentDidMount(){
 
-    // Grab ME oid
-    const { match: { params } } = this.props;
-    const paintingId = params.id;
-    if( paintingId !== undefined )
-      this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
+    // // Grab ME oid
+    // const { match: { params } } = this.props;
+    // const paintingId = params.id;
+    // if( paintingId !== undefined )
+    //   this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
   }
 
 
@@ -197,10 +200,6 @@ class Landing extends React.Component {
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     console.log("ReRender", searchPattern, mode, this.state.searchMode)
 
-    const { match: { params } } = this.props;
-    const paintingId = params.id;
-
-
     let listShowHeightImage = '';
     switch(this.state.searchMode){
       case SEARCH_MODE.IMAGE:
@@ -222,7 +221,6 @@ class Landing extends React.Component {
             showUploadButton = true;
       }
     }
-
 
     return (
       <>
@@ -283,24 +281,29 @@ class Landing extends React.Component {
           </Col>
         </Row>
         <div style={{ height: '70vh'}}>         
-          <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
-              <AnimateHeight
-                duration={ 500 }
-                height={ listShowHeightImage }
-                className="d-flex justify-content-center align-items-center" 
-                contentClassName="animated-search">
-                <SearchImage 
-                  onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
-                  imagePreview={this.state.imagePreview} />
-              </AnimateHeight>
-              <SearchResult
-                imagePreview={this.state.imagePreview}
-                launchSearchPattern={this.state.launchSearchPattern}
-                mode={mode} />
-          </div>
-          <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
-            <Painting paintingId={paintingId} />
-          </div>          
+          <Route path={`${this.props.match.path}`} exact
+                  render={(props) => 
+                  (
+                    <div className='h-100'>
+                      <AnimateHeight
+                        duration={ 500 }
+                        height={ listShowHeightImage }
+                        className="d-flex justify-content-center align-items-center" 
+                        contentClassName="animated-search">
+                        <SearchImage 
+                          onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
+                          imagePreview={this.state.imagePreview} />
+                      </AnimateHeight>
+                      <SearchResult
+                        imagePreview={this.state.imagePreview}
+                        launchSearchPattern={this.state.launchSearchPattern}
+                        mode={mode} />
+                    </div>
+                  )} />
+
+
+          <Route path={`${this.props.match.path}painting/:id`} exact
+                  render={(props) => (<Painting />)} />
         </div>
       </Container>
       </>

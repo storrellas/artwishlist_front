@@ -30,21 +30,53 @@ class Painting extends React.Component {
     }
   }
 
-  async componentDidUpdate(prevProps, prevState){
-    if( prevProps.paintingId === this.props.paintingId){
-      return
-    }
-    // Nothing to show
-    if( this.props.paintingId === -1){
-      return
-    } 
-    try{
-      // Grab paintingId
-      const id = this.props.paintingId;
-      console.log("id ", id)
+  // async componentDidUpdate(prevProps, prevState){
+  //   if( prevProps.paintingId === this.props.paintingId){
+  //     return
+  //   }
+  //   // Nothing to show
+  //   if( this.props.paintingId === -1){
+  //     return
+  //   } 
+  //   try{
+  //     // Grab paintingId
+  //     const id = this.props.paintingId;
+  //     console.log("id ", id)
       
 
-      let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/${id}`;
+  //     let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/${id}`;
+  //     const response = await axios.get(url)
+  //     const data = response.data;
+
+
+  //     // Get Image from API
+  //     let image = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${data.images[0].pk}`
+  //     const size = `${data.size_height} x ${data.size_width} (${data.size_unit})`
+  //     this.setState({ 
+  //       title: data.title,
+  //       artist: data.artist,
+  //       image: image,
+  //       size: size,
+  //       materials: data.materials,
+  //       url: data.url,
+  //       signature: data.misc,
+  //       collection: data.collection,
+  //       description: data.description
+  //     })
+  //   }catch(error){
+  //     console.log("FAILED", error)
+  //   }  
+  // }
+
+  async componentDidMount(){
+
+    try{
+
+      // Grab paintingId
+      const { match: { params } } = this.props;
+      const paintingId = params.id;
+
+      let url = `${process.env.REACT_APP_API_URL}/api/aw_lots/${paintingId}`;
       const response = await axios.get(url)
       const data = response.data;
 
@@ -63,12 +95,11 @@ class Painting extends React.Component {
         collection: data.collection,
         description: data.description
       })
+
     }catch(error){
       console.log("FAILED", error)
-
     }  
   }
-
 
   render() {
     const { image } = this.state;

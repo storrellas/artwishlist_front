@@ -25,8 +25,7 @@ class Card extends React.Component {
   }
 
   onClick(paintingId){
-    //this.props.showDetail({mode: MODE.DETAIL, paintingId: paintingId})
-    window.open(`/${paintingId}`)
+    window.open(`/painting/${paintingId}`)
   }
 
   onLoadImageError(){
