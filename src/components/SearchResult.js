@@ -140,7 +140,7 @@ class SearchResult extends React.Component {
     const pattern = urlParams.get('pattern')
     if( pattern ){
       this.performSearchPattern(pattern) 
-      this.setState({searchPattern: pattern})
+      this.setState({searchPattern: pattern, searchMode: SEARCH_MODE.PATTERN})
     }else if( this.props.imagePreview ){
       this.handleImagePreviewUpdate()
     }else{
@@ -191,17 +191,17 @@ class SearchResult extends React.Component {
 
     const containerClass = imageSelected?
         "w-100 h-100 img-search-container p-3":
-        'w-100 d-flex justify-content-center p-3 mt-3'
+        'd-none'
     const { showOverlay } = this.state;
 
-    console.log("Showing SearchResult")
+
 
     return (
         <>
 
           {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
           <div className={containerClass}>
-            <div className={imageSelected?"w-100 text-left p-1":"d-none"}
+            <div className="w-100 text-left p-1"
               style={{ color: '#444444', fontWeight: 'bold'}}>
               Your uploaded image:
             </div>
