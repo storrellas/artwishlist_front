@@ -72,6 +72,7 @@ class SearchResult extends React.Component {
     try{
       this.setState({ 
         isLoadingList: true, 
+        searchMode: SEARCH_MODE.PATTERN
       })
 
       // Launch request
@@ -98,7 +99,8 @@ class SearchResult extends React.Component {
     this.props.setMode({ mode: MODE.SEARCH })
     this.setState({ 
       isLoadingList: true, 
-      paintingList: []
+      paintingList: [],
+      searchMode: SEARCH_MODE.IMAGE
     })
 
     const formData = new FormData();
@@ -139,9 +141,10 @@ class SearchResult extends React.Component {
 
     // Grab next page
     if( this.scrollRef.scrollTop > 0){
+      console.log("In Here", this.state.searchMode)
       if( this.state.searchMode === SEARCH_MODE.PATTERN ) {
         // Move it a bit top to avoid researching
-        this.scrollRef.scrollTop = this.scrollRef - 50;
+        this.scrollRef.scrollTop = this.scrollRef.scrollTop * 0.9;
 
         this.performSearchPattern(this.props.launchSearchPattern) 
       }else{
