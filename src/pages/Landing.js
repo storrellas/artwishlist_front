@@ -193,7 +193,7 @@ class Landing extends React.Component {
   }
 
   render() {
-    const { mode, searchPattern } = this.state;
+    const { mode, searchPattern, searchMode } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     console.log("ReRender", searchPattern, mode, this.state.searchMode)
 
@@ -213,6 +213,17 @@ class Landing extends React.Component {
         listShowHeightImage ='100%'
     }
 
+    let showUploadButton = false;
+    if( mode === MODE.DETAIL ){
+      showUploadButton = true;
+    }else{
+      if( searchMode === SEARCH_MODE.PATTERN 
+          || searchMode === SEARCH_MODE.IMAGE ){
+            showUploadButton = true;
+      }
+    }
+
+
     return (
       <>
       <Container style={{ height: '90vh'}}>
@@ -222,7 +233,7 @@ class Landing extends React.Component {
             <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className={this.state.searchMode !== SEARCH_MODE.LANDING?"h-100 mr-3":"invisible"}>
+            <div className={showUploadButton?"h-100 mr-3":"invisible"}>
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.inputRef.current.click()} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
@@ -271,33 +282,25 @@ class Landing extends React.Component {
 
           </Col>
         </Row>
-        <div style={{ height: '70vh'}}>
-          
-            <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
-              {/* <Search 
-                imagePreview={this.state.imagePreview} 
+        <div style={{ height: '70vh'}}>         
+          <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
+              <AnimateHeight
+                duration={ 500 }
+                height={ listShowHeightImage }
+                className="d-flex justify-content-center align-items-center" 
+                contentClassName="animated-search">
+                <SearchImage 
+                  onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
+                  imagePreview={this.state.imagePreview} />
+              </AnimateHeight>
+              <SearchResult
+                imagePreview={this.state.imagePreview}
                 launchSearchPattern={this.state.launchSearchPattern}
-                mode={mode} /> */}
-                <AnimateHeight
-                  duration={ 500 }
-                  height={ listShowHeightImage }
-                  className="d-flex justify-content-center align-items-center" 
-                  contentClassName="animated-search">
-                  <SearchImage 
-                    //onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} 
-                    onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
-                    imagePreview={this.state.imagePreview} />
-                </AnimateHeight>
-                <SearchResult
-                  imagePreview={this.state.imagePreview}
-                  launchSearchPattern={this.state.launchSearchPattern}
-                  mode={mode} />
-            </div>
-            <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
-              <Painting paintingId={paintingId} />
-            </div>
-            
-          
+                mode={mode} />
+          </div>
+          <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
+            <Painting paintingId={paintingId} />
+          </div>          
         </div>
       </Container>
       </>
