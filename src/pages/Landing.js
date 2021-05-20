@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Navbar, NavDropdown, Form, FormControl, Button, Nav } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import './Landing.scss';
@@ -53,9 +53,13 @@ class Landing extends React.Component {
       artistOptions: [],
       searchInputBackground: '#DDDDDD',
       searchInputBorder: '0px solid #DDDDDD',
-      triggerUpload: 0 // Weird solution
+      
+      triggerUpload: 0, // Weird solution
+      imagePreview: undefined
     }
     this.typingTimeout = undefined
+
+    this.inputRef = React.createRef();
   }
 
   handleKeyDown(e){    
@@ -158,6 +162,16 @@ class Landing extends React.Component {
       
   }
 
+  handleImagePreview(e){
+
+    const [file] = this.inputRef.current.files;
+    if(file){
+      const imagePreview = URL.createObjectURL(file)
+      this.setState({imagePreview: imagePreview})
+    }
+
+  }
+
   render() {
     const { mode, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
@@ -168,21 +182,27 @@ class Landing extends React.Component {
     const paintingId = params.id;
 
     return (
-      <Container style={{ height: '100vh'}}>
+      <>
+      <Container style={{ height: '90vh'}}>
 
         <Row className="mb-3" style={{ padding: '3em 1em 1em 1em' }}>
           <Col md={4}>
             <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}>
+            {/* <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}> */}
+            <div className="h-100 mr-3">
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
-                onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} >
+                onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} 
+                // onClick={(e) => this.inputRef.current.click()} 
+                >
                 <div className="h-100 d-flex justify-content-center align-items-center">
                 <img alt="camera" src={cameraImg} />
                 </div>
                 <div className="pl-2">UPLOAD</div>
               </button>
+              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview(e)}/>
+
             </div>
             <div className="h-100" style={{ flexGrow: 1}}>
             <Select isLoading={this.state.isLoadingArtist} 
@@ -222,18 +242,23 @@ class Landing extends React.Component {
 
           </Col>
         </Row>
+        <div style={{ height: '70vh'}}>
+          
+            <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
+              <Search 
+                triggerUpload={triggerUpload} 
+                imagePreview={this.state.imagePreview} 
+                mode={mode} />
+            </div>
+            <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
 
-        <div style={{ height: '80vh'}}>
-          <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
-            <Search triggerUpload={triggerUpload} />
-          </div>
-          <div className={(mode === MODE.DETAIL)?'h-100':'d-none'}>
-
-            <Painting paintingId={paintingId} />
-          </div>
+              <Painting paintingId={paintingId} />
+            </div>
+            
           
         </div>
       </Container>
+      </>
     );
   }
 }

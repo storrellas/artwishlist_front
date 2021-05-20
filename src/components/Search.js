@@ -28,6 +28,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // Project imports
 import Card from '../components/Card';
+import Filtering from '../components/Filtering';
 
 const EmptySearch = (props) => {
 
@@ -68,7 +69,7 @@ class Search extends React.Component {
       searchPattern: '',
       imagePreview: upload,
       listShow: false,
-      isLoadingList: true,
+      isLoadingList: false,
       imagePreviewHover: false,
       imagesBaseUrl: '',
       paintingList: [],
@@ -122,7 +123,7 @@ class Search extends React.Component {
       imagePreview: URL.createObjectURL(file),      
       searchMode: SEARCH_MODE.IMAGE
     })
-
+    this.inputRef.current.value = "";
 
     const formData = new FormData();
     formData.append('upload', file);
@@ -231,7 +232,6 @@ class Search extends React.Component {
       this.performSearchPattern()
     }
     
-
     if( prevProps.triggerUpload !== this.props.triggerUpload){
       this.inputRef.current.click()
     }
@@ -255,6 +255,8 @@ class Search extends React.Component {
     const { imagePreview, imagesBaseUrl } = this.state;
     const { searchMode } = this.state;
 
+    console.log("render search")
+
     // Classes to move icon
     let imgClass = "";
     if( this.isImageSearch ){
@@ -268,19 +270,19 @@ class Search extends React.Component {
     }
 
     
-    let listShowHeightImage = '20%';
-    let listShowHeightResults = '80%';
-    if( searchMode === SEARCH_MODE.PATTERN){
-      listShowHeightImage = '0%';
-      listShowHeightResults = '100%'
+    let listShowHeightImage = '100%';
+    if( listShow ){
+      if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
+      else listShowHeightImage = '20%';
     }
 
+    console.log(" isLoadingList ", isLoadingList)
 
     return (
         <>
           <AnimateHeight
             duration={ 500 }
-            height={ listShow === false? '100%': listShowHeightImage } // see props documentation below
+            height={ listShowHeightImage }
             className="d-flex justify-content-center align-items-center" 
             contentClassName="animated-search">
               <div className={listShow?"w-100 text-left p-1":"d-none"}
@@ -301,121 +303,36 @@ class Search extends React.Component {
                 onDrop={(e) => this.handleDrop (e)} 
                 
                 ref={this.imgPreviewRef} />
-              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview(e)}/>
+              <input className="d-none" type="file" 
+                ref={this.inputRef} 
+                onChange={(e) => this.handleImagePreview(e)}/>
           </AnimateHeight>
 
+          <div className="d-none">
+            <Filtering />
+          </div>
+          {isLoadingList?
+          <div className="w-100 text-center mt-3">Loading ...</div>
+          :''}
+          {paintingList.length===0&&isLoadingList===false&&this.props.mode!==MODE.LANDING?<EmptySearch />:''}
+          {paintingList.length>0?
+          <div className="mt-3" style={{ height: '90%'}}>
+            <PerfectScrollbar 
+              className="w-100" 
+              onYReachEnd={(e) => this.onYReachEnd()}
+              style={{ padding: '0 1em 0 1em'}}
+              containerRef={(ref) => this.scrollRef= ref} >
+              <Row>
+                {paintingList.map( (item, id) => 
+                  <Col className="mt-3" key={id} md="3">
+                    <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
+                  </Col>
+                )}
+              </Row>
+            </PerfectScrollbar>
+          </div>
+          :''}
 
-
-          <AnimateHeight
-            duration={ 500 }
-            height={ listShow? listShowHeightResults: '0%' } // see props documentation below
-            style={{ padding: '0 0 1em 0'}}
-            contentClassName="animated-list"
-          >
-            <Row className="filtering d-none" style={{ padding: '0 15px 0 15px'}}>
-              <Col>
-                <div className="title w-100 text-left">Filters</div>
-              </Col>
-            </Row>
-            <Row className="filtering d-none" style={{ padding: '0 15px 0 15px'}}>
-
-              <Col className="mt-3" md={2}>
-                <select>
-                  <option>Category</option>
-                  <option>Paintings</option>
-                  <option>Works On Paper</option>
-                  <option>Prints</option>
-
-                  <option>Sculpture</option>
-                  <option>Phtographs</option>
-                  <option>Other</option>
-                  <option>Painting</option>
-
-                  <option>Photography</option>
-                  <option>Design</option>
-                  <option>Drawings</option>
-                  <option>Video</option>
-                  <option>Installation</option>
-                  <option>...</option>
-                </select>
-              </Col>
-              <Col className="mt-3" md={2}>              
-                <select>
-                  <option>Source Type</option>
-                  <option>AUCTION</option>
-                  <option>CAT RAIS</option>
-                  <option>ONLINE</option>
-                  <option>MUSEUM</option>
-                  <option>PRIVATE COLLECTION</option>
-                </select>
-              </Col>
-              <Col className="mt-3" md={2}>              
-                <select>
-                  <option>Auction Sales</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                </select>
-              </Col>
-              <Col className="mt-3" md={2}>              
-                <select>
-                  <option>Other</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                  <option>Option1</option>
-                </select>
-              </Col>
-
-              <Col className="mt-3" md={2}>
-                <div className="filtering-input w-100">
-                  <div>
-                    <FontAwesomeIcon icon={faSearch}
-                                  onClick={(e) => this.performSearch()} />
-                  </div>
-                  <input type="text" 
-                      placeholder="Search by artist"
-                      onChange={e => this.setState({ searchPattern: e.target.value })}
-                      onKeyDown={e => this.handleKeyDown(e)} />
-                </div>
-              </Col>
-
-              <Col className="mt-3" md={2}>
-                <div className="w-100 d-flex">
-                  <select>
-                    <option>Price (High to Low)</option>
-                    <option>Price (Low to High)</option>
-                    <option>Title (High to Low)</option>
-                    <option>Title (Low to High)</option>
-                    <option>Auction Date (High to Low)</option>
-                    <option>Auction Date (Low to High)</option>
-                    <option>Year of work (High to Low)</option>
-                    <option>Year of work (Low to High)</option>
-                  </select>
-                </div>
-              </Col>
-            </Row>
-            {isLoadingList?
-            <div className="w-100 text-center mt-3">Loading ...</div>
-            :''}
-            {paintingList.length===0&&isLoadingList===false?<EmptySearch />:''}
-            {paintingList.length>0?
-            <div className="mt-3" style={{ height: '90%'}}>
-              <PerfectScrollbar 
-                className="w-100" 
-                onYReachEnd={(e) => this.onYReachEnd()}
-                style={{ padding: '0 1em 0 1em'}}
-                containerRef={(ref) => this.scrollRef= ref} >
-                <Row>
-                  {paintingList.map( (item, id) => 
-                    <Col className="mt-3" key={id} md="3">
-                      <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
-                    </Col>
-                  )}
-                </Row>
-              </PerfectScrollbar>
-            </div>
-            :''}
-          </AnimateHeight>
         </>
 
     );
