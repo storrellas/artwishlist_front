@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Navbar, NavDropdown, Form, FormControl, Button, Nav } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import './Landing.scss';
@@ -26,7 +26,7 @@ import AnimateHeight from 'react-animate-height';
 import axios from 'axios';
 
 // Project imports
-import Search from '../components/Search';
+//import Search from '../components/Search';
 import SearchResult from '../components/SearchResult';
 import SearchImage from '../components/SearchImage';
 

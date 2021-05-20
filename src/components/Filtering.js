@@ -3,8 +3,6 @@ import { withRouter } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap';
 
 // Redux
-import { showDetail } from "../redux";
-//import { MODE } from "../redux";
 import { connect } from "react-redux";
 
 // Font Awesome
@@ -12,9 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-
-  };
+  return {};
 }
 
 
@@ -118,4 +114,4 @@ class Filtering extends React.Component {
 }
 
 
-export default connect(null, null)(withRouter(Filtering));
+export default connect(null, mapDispatchToProps)(withRouter(Filtering));
