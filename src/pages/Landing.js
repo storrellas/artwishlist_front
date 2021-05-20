@@ -54,7 +54,6 @@ class Landing extends React.Component {
       searchInputBackground: '#DDDDDD',
       searchInputBorder: '0px solid #DDDDDD',
       
-      triggerUpload: 0, // Weird solution
       imagePreview: undefined
     }
     this.typingTimeout = undefined
@@ -176,7 +175,6 @@ class Landing extends React.Component {
   render() {
     const { mode, searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
-    const { triggerUpload } = this.state;
     console.log("ReRender", searchPattern, mode)
 
     const { match: { params } } = this.props;
@@ -194,9 +192,7 @@ class Landing extends React.Component {
             {/* <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}> */}
             <div className="h-100 mr-3">
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
-                // onClick={(e) => this.setState({triggerUpload: triggerUpload + 1 })} 
-                onClick={(e) => this.inputRef.current.click()} 
-                >
+                onClick={(e) => this.inputRef.current.click()} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
                 <img alt="camera" src={cameraImg} />
                 </div>
@@ -247,7 +243,6 @@ class Landing extends React.Component {
           
             <div className={(mode === MODE.SEARCH || mode === MODE.LANDING)?'h-100':'d-none'}>
               <Search 
-                triggerUpload={triggerUpload} 
                 imagePreview={this.state.imagePreview} 
                 mode={mode} />
             </div>
