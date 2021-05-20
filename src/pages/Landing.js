@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export const SEARCH_MODE = { LANDING: 0, PATTERN: 1, IMAGE: 2 }
+export const SEARCH_MODE = { LANDING: 1, PATTERN: 2, IMAGE: 3 }
 class Landing extends React.Component {
 
   constructor(props) {
@@ -171,14 +171,28 @@ class Landing extends React.Component {
         
   }
 
-  handleImagePreview(e){
+  handleImagePreview(imagePreview){
 
-    const [file] = this.inputRef.current.files;
-    if(file){
-      const imagePreview = URL.createObjectURL(file)
-      this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
+    if( imagePreview ){
+      // raised by SearchImage
+      console.log("In Here")
+      this.setState({
+        imagePreview: imagePreview, 
+        searchMode: SEARCH_MODE.IMAGE
+      })
+
+    }else{
+      // raised by Upload Button
+      const [file] = this.inputRef.current.files;
+      if(file){
+        const imagePreview = URL.createObjectURL(file)
+        this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE, mode: MODE.IMAGE})
+      }
+      this.inputRef.current.value = "";
+
     }
-    this.inputRef.current.value = "";
+
+
 
   }
 
@@ -190,12 +204,7 @@ class Landing extends React.Component {
     const { match: { params } } = this.props;
     const paintingId = params.id;
 
-    // let listShowHeightImage = '100%';
-    // if( listShow ){
-    //   if( searchMode === SEARCH_MODE.PATTERN ) listShowHeightImage = '0%';
-    //   else listShowHeightImage = '20%';
-    // }
-
+    
     let listShowHeightImage = '';
     switch(this.state.searchMode){
       case SEARCH_MODE.IMAGE:
@@ -217,7 +226,7 @@ class Landing extends React.Component {
             <img height="40" alt="logo" className="mt-3" src={factureLogo}></img>
           </Col>
           <Col  md={8} className="d-flex justify-content-center align-items-center" style={{ margin: '2% 0 2% 0', height: '40px' }}>            
-            <div className={mode !== MODE.LANDING?"h-100 mr-3":"invisible"}>
+            <div className={this.state.searchMode !== SEARCH_MODE.LANDING?"h-100 mr-3":"invisible"}>
               <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                 onClick={(e) => this.inputRef.current.click()} >
                 <div className="h-100 d-flex justify-content-center align-items-center">
@@ -225,7 +234,7 @@ class Landing extends React.Component {
                 </div>
                 <div className="pl-2">UPLOAD</div>
               </button>
-              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview(e)}/>
+              <input className="d-none" type="file" ref={this.inputRef} onChange={(e) => this.handleImagePreview()}/>
 
             </div>
             <div className="h-100" style={{ flexGrow: 1}}>
@@ -279,7 +288,8 @@ class Landing extends React.Component {
                   className="d-flex justify-content-center align-items-center" 
                   contentClassName="animated-search">
                   <SearchImage 
-                    onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} 
+                    //onImageChanged={(imagePreview) => this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})} 
+                    onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
                     imagePreview={this.state.imagePreview} />
                 </AnimateHeight>
                 <SearchResult

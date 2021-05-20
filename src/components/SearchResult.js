@@ -122,6 +122,10 @@ class SearchResult extends React.Component {
   }
 
   async componentDidUpdate(prevProps, prevState){    
+    if( prevProps.imagePreview !== this.props.imagePreview ){
+      this.handleImagePreviewUpdate()
+    }
+
     if( prevProps.launchSearchPattern !== this.props.launchSearchPattern ){
       this.performSearchPattern(this.props.launchSearchPattern)      
     }
