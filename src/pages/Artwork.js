@@ -53,11 +53,9 @@ class Painting extends React.Component {
         sales_prices = `${parseInt(data.sales_prices[0][0]).toLocaleString()} ${data.sales_prices[0][1]}`
       }
       let sales_estimate = ''
-      if( data.sales_estimate && data.sales_estimate.length >= 3){
-        sales_estimate = `Est. ${data.sales_estimate[0]}-${data.sales_estimate[1]} ${data.sales_estimate[2]}`
+      if( data.estimate && data.estimate.length >= 1){
+        sales_estimate = `Est. ${data.estimate[0][1]}-${data.estimate[0][1]} ${data.estimate[0][2]}`
       }
-
-      console.log("sales_prices ", sales_prices)
 
       this.setState({ 
         title: data.title,
@@ -96,7 +94,7 @@ class Painting extends React.Component {
     return (
       <section className="img-search-section top" 
         style={{ flexGrow: 1 }}>
-        <Container style={{ padding: 0 }}>
+        <Container style={{ padding: 0, paddingBottom: '1em' }}>
           <Row className="painting" style={{ padding: '4em 3em 0 3em' }} >
             <Col md={6} className="detail-painting-img">
               <img alt="painting" src={image} style={{ maxHeight: '100%', maxWidth: '100%' }}></img>
@@ -123,31 +121,60 @@ class Painting extends React.Component {
 
               <div>{this.state.collection}</div>
 
-              <div className="mt-3" style={{ fontSize: '12px' }}>
+              <div className="mt-3 text-justify" style={{ fontSize: '12px' }}>
                 {/* <div className="mt-3" style={{ color: 'grey' }}>Signature</div>
                 <div>{this.state.signature}</div> */}
 
-                <div className="mt-3" style={{ color: 'grey' }}>Inscriptions</div>
-                <div>{this.state.inscriptions}</div>
+                {this.state.inscriptions?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Inscriptions</div>
+                    <div>{this.state.inscriptions}</div>
+                  </>
+                :''}
+                {this.state.description?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Description</div>
+                    <div>{this.state.description}</div>
+                  </>
+                :''}
 
-                <div className="mt-3" style={{ color: 'grey' }}>Description</div>
-                <div>{this.state.description}</div>
+                {this.state.provenance?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Provenance</div>
+                    <div>{this.state.provenance}</div>
+                  </>
+                :''}
 
-                <div className="mt-3" style={{ color: 'grey' }}>Provenance</div>
-                <div>{this.state.provenance}</div>
-
-                <div className="mt-3" style={{ color: 'grey' }}>Literature</div>
-                <div>{this.state.literature}</div>
+                {this.state.literature?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Literature</div>
+                    <div>{this.state.literature}</div>
+                  </>
+                :''}
 
               </div>
 
-              {source === ARTWORK_TYPE.AUCTION?'':
+              {source === ARTWORK_TYPE.AUCTION?
                 <div  style={{ fontSize: '12px' }}>
-                  <div className="mt-3" style={{ color: 'grey' }}>Source</div>
+                  {/* <div className="mt-3" style={{ color: 'grey' }}>Source</div> */}
                   <div className="mt-3" style={{ color: 'grey' }}>URL</div>
                   <div>{this.state.url}</div>
                 </div>
-              }
+              :''}
+
+              {source === ARTWORK_TYPE.CATALOGUE_RAISSONE?
+                <div  style={{ fontSize: '12px' }}>
+                  {/* <div className="mt-3" style={{ color: 'grey' }}>Source</div> */}
+                  <div className="mt-3" style={{ color: 'grey' }}>URL</div>
+                  <div>{this.state.url}</div>
+                </div>
+              :''}
+
+              {source === ARTWORK_TYPE.ONLINE?
+                <div  style={{ fontSize: '12px' }}>
+                  {/* <div className="mt-3" style={{ color: 'grey' }}>Source</div> */}
+                </div>
+              :''}
 
             </Col>
           </Row>
