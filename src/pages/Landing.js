@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 }
 
-export const SEARCH_MODE = { LANDING: 1, PATTERN: 2, IMAGE: 3 }
+
 class Landing extends React.Component {
 
   constructor(props) {
@@ -62,7 +62,6 @@ class Landing extends React.Component {
       
       imagePreview: undefined,
 
-      searchMode: SEARCH_MODE.LANDING,
     }
     this.typingTimeout = undefined
 
@@ -133,7 +132,6 @@ class Landing extends React.Component {
       // this.setState({
       //   searchPattern: searchPattern, 
       //   launchSearchPattern: searchPattern,
-      //   searchMode: SEARCH_MODE.PATTERN
       // })
 
     }      
@@ -147,7 +145,6 @@ class Landing extends React.Component {
     this.setState({
       searchPattern: pattern, 
       launchSearchPattern: pattern,
-      searchMode: SEARCH_MODE.PATTERN
     })
 
     this.props.history.push(`/search?pattern=${pattern}`);
@@ -168,7 +165,6 @@ class Landing extends React.Component {
       // raised by SearchImage
       this.setState({
         imagePreview: imagePreview, 
-        searchMode: SEARCH_MODE.IMAGE
       })
 
     }else{
@@ -176,7 +172,7 @@ class Landing extends React.Component {
       const [file] = this.inputRef.current.files;
       if(file){
         const imagePreview = URL.createObjectURL(file)
-        this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
+        this.setState({imagePreview: imagePreview})
       }
       this.inputRef.current.value = "";
     }
@@ -185,23 +181,12 @@ class Landing extends React.Component {
 
 
   render() {
-    const { searchPattern, searchMode } = this.state;
+    const { searchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
-    console.log("ReRender", searchPattern, searchMode)
+    console.log("ReRender", searchPattern )
 
     const { imagePreview } = this.state;
 
-    let listShowHeightImage = '';
-    switch(this.state.searchMode){
-      case SEARCH_MODE.IMAGE:
-        listShowHeightImage ='20%'
-        break;
-      case SEARCH_MODE.PATTERN:
-        listShowHeightImage ='0%'
-        break;        
-      default:
-        listShowHeightImage ='100%'
-    }
 
     
     let showUploadButton = false;
@@ -209,11 +194,6 @@ class Landing extends React.Component {
     const isSearch = this.props.location.pathname.includes('search');
     if( isDetail || isSearch){
       showUploadButton = true;
-    }else{
-      if( searchMode === SEARCH_MODE.PATTERN 
-          || searchMode === SEARCH_MODE.IMAGE ){
-            showUploadButton = true;
-      }
     }
 
 
