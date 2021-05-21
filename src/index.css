@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'ArtWishList';
+  src: local('ArtWishList'), url(./assets/fonts/untitled-sans-web-regular.woff) format('woff');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+body{
+  font-family: 'ArtWishList', sans-serif;
+}
+
