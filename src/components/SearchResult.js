@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import { useParams } from "react-router-dom";
@@ -179,74 +179,81 @@ class SearchResult extends React.Component {
   }
 
   render() {
-    let { isLoadingList, paintingList } = this.state;
+    let { isLoadingList, paintingList, searchMode } = this.state;
     const { imagesBaseUrl } = this.state;
 
     const showEmptySearch = paintingList.length===0&&
                             isLoadingList===false&&
-                            this.state.searchMode!==SEARCH_MODE.LANDING;
+                            searchMode!==SEARCH_MODE.LANDING;
 
     const imagePreview = this.props.imagePreview?
                     this.props.imagePreview:this.state.imagePreview;
 
     // Classes to move icon    
-    const imageSelected = this.props.imagePreview !== undefined && this.state.searchMode == SEARCH_MODE.IMAGE; 
+    const imageSelected = this.props.imagePreview !== undefined && 
+                          searchMode == SEARCH_MODE.IMAGE; 
     let imgClass = imageSelected?
                     "h-100 img-painting-border img-search-left":
                     "h-100 img-search";
 
     const containerClass = imageSelected?
-        "w-100 h-100 img-search-container p-3":
+        "w-100 img-search-container p-3":
         'd-none'
-    const { showOverlay } = this.state;
+
 
     const heightResult = this.state.searchMode == SEARCH_MODE.PATTERN?'75vh':'60vh'
 
     return (
-        <>
+      <>
+      <section className={imageSelected?"img-search-section top bottom":"img-search-section top"}>
+        <Container className="h-100" style={{ padding: 0 }}>
 
-          {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
-          <div className={containerClass}>
-            <div className="w-100 text-left p-1"
-              style={{ color: '#444444', fontWeight: 'bold'}}>
-              Your uploaded image:
+            <div className={containerClass}>
+              <div className="w-100 text-left p-1"
+                style={{ color: '#444444', fontWeight: 'bold' }}>
+                Your uploaded image:
+              </div>
+              <img className={imgClass}
+                alt="background" src={imagePreview}
+                onClick={(e) => this.onUploadClick()}
+                style={{ maxHeight: imageSelected ? "70px" : "300px", cursor: 'pointer' }}
+                ref={this.imgPreviewRef} />
+              <input className="d-none" type="file"
+                ref={this.inputRef}
+                onChange={(e) => this.handleImagePreview(e)} />
             </div>
-            <img className={imgClass}
-              alt="background" src={imagePreview}                               
-              onClick={ (e) => this.onUploadClick()}
-              style={{ maxHeight: imageSelected?"70px":"300px", cursor: 'pointer' }}             
-              ref={this.imgPreviewRef} />
-            <input className="d-none" type="file" 
-              ref={this.inputRef} 
-              onChange={(e) => this.handleImagePreview(e)}/>
-          </div>
-
-
-          <div className="d-none">
-            <Filtering />
-          </div>
-          {isLoadingList?
-          <div className="w-100 text-center mt-3">Loading ...</div>
-          :''}
-          {showEmptySearch?<EmptySearch />:''}
-          {paintingList.length>0?
-          <div className="mt-3" style={{ height: heightResult }}>
-            <PerfectScrollbar 
-              className="w-100" 
-              onYReachEnd={(e) => this.onYReachEnd()}
-              style={{ padding: '0 1em 0 1em'}}
-              containerRef={(ref) => this.scrollRef= ref} >
-              <Row>
-                {paintingList.map( (item, id) => 
-                  <Col className="mt-3" key={id} md="3">
-                    <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
-                  </Col>
-                )}
-              </Row>
-            </PerfectScrollbar>
-          </div>
-          :''}
-        </>
+            </Container>
+      </section>          
+      <section style={{ background: '#F3F3F3', flexGrow: 1 }}>
+        <Container style={{ padding: 0 }}>
+            <div className="d-none">
+              <Filtering />
+            </div>
+            {isLoadingList ?
+              <div className="w-100 text-center mt-3">Loading ...</div>
+              : ''}
+            {showEmptySearch ? <EmptySearch /> : ''}
+            {paintingList.length > 0 ?
+              <div className="mt-3" style={{ height: heightResult }}>
+                <PerfectScrollbar
+                  className="w-100"
+                  onYReachEnd={(e) => this.onYReachEnd()}
+                  style={{ padding: '0 1em 0 1em' }}
+                  containerRef={(ref) => this.scrollRef = ref} >
+                  <Row>
+                    {paintingList.map((item, id) =>
+                      <Col className="mt-3" key={id} md="3">
+                        <Card imagesBaseUrl={imagesBaseUrl} painting={item} />
+                      </Col>
+                    )}
+                  </Row>
+                </PerfectScrollbar>
+              </div>
+              : ''}
+          
+        </Container>
+      </section>
+      </>
     );
   }
 }

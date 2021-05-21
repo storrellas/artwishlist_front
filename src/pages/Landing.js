@@ -295,26 +295,33 @@ class Landing extends React.Component {
 
         </Navbar>
 
-        <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>
-          
-          <Container style={{ padding: 0 }}>  
+
             <Route path="/painting/:id" exact
-                    render={(props) => (<Painting />)} />
+                    render={(props) => (
+                      <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>          
+                        <Container style={{ padding: 0 }}>  
+                          <Painting />
+                        </Container>
+                      </section>
+
+                    )} />
 
             <Route path="/search/" exact
                     render={(props) => 
                     (
-                      <div className='h-100'>
+
                         <SearchResult
                           imagePreview={imagePreview}
-                          launchSearchPattern={this.state.launchSearchPattern}/>
-                      </div>
+                          launchSearchPattern={this.state.launchSearchPattern} ></SearchResult>
+
                     )} />
 
         
             <Route path="/" exact
                     render={(props) => 
                     (
+                      <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>          
+                      <Container style={{ padding: 0 }}>  
                       <div className='h-100' style={{ background: 'blue'}}>
                         
                         <div className="animated-search" style={{ height: '75vh'}}>
@@ -323,10 +330,10 @@ class Landing extends React.Component {
                             imagePreview={imagePreview} />
                         </div>
                       </div>
+                      </Container>
+                      </section>
                     )} />
 
-          </Container>
-        </section>
       </main>
     )
   }

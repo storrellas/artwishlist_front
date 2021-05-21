@@ -27,11 +27,19 @@ $title-grey: #AAAAAA;
   overflow: hidden;
 }
 
+.img-search-section{
+  background: white;
+  &.top{
+    border-top: 1px solid #adadad;
+  }
+  &.bottom{
+    border-bottom: 1px solid #adadad;
+  }
+}
+
 .img-search-container{
   padding: 1em 2em 1em 2em;
   background-color: white;
-  border: 1px solid #adadad;
-  border-top: 0;
 }
 
 .img-search{
