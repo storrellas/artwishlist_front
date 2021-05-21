@@ -29,11 +29,9 @@ import cameraImg from '../assets/camera.svg';
 import axios from 'axios';
 
 // Project imports
-//import Search from '../components/Search';
-import SearchResult from '../components/SearchResult';
-import SearchImage from '../components/SearchImage';
-
-import Painting from '../components/Painting';
+import SearchResult from '../pages/SearchResult';
+import SearchImage from '../pages/SearchImage';
+import Painting from '../pages/Painting';
 
 const mapStateToProps = (state) => {
   return {
