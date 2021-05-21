@@ -115,10 +115,10 @@ class Painting extends React.Component {
     const sourceStr = getSourceStr(source)
 
     return (
-      <section className="img-search-section top" 
+      <section className="img-search-section top bottom" 
         style={{ flexGrow: 1 }}>
         <Container style={{ padding: 0, paddingBottom: '1em' }}>
-          <Row className="painting" style={{ padding: '4em 3em 0 3em' }} >
+          <Row style={{ padding: '4em 3em 0 3em' }} >
             <Col md={6} className="detail-painting-img">
               <img alt="painting" src={image} style={{ maxHeight: '100%', maxWidth: '100%' }}></img>
             </Col>
