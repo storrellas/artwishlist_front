@@ -63,7 +63,6 @@ class Landing extends React.Component {
       imagePreview: undefined,
 
       searchMode: SEARCH_MODE.LANDING,
-      showOverlay: false
     }
     this.typingTimeout = undefined
 
@@ -157,18 +156,14 @@ class Landing extends React.Component {
 
   onUploadClick(){
     this.inputRef.current.click()
-    this.setState({ showOverlay: true })
   }
     
 
   
   handleImagePreview(imagePreview){
 
-    const isSearch = this.props.location.pathname.includes('search');
-    if( isSearch == false){
-      this.props.history.push('/search/') 
-    }
-      
+
+    this.props.history.push('/search') 
     if( imagePreview ){
       // raised by SearchImage
       this.setState({
@@ -184,7 +179,6 @@ class Landing extends React.Component {
         this.setState({imagePreview: imagePreview, searchMode: SEARCH_MODE.IMAGE})
       }
       this.inputRef.current.value = "";
-      //this.setState({ showOverlay: false })
     }
     
   }
@@ -224,11 +218,9 @@ class Landing extends React.Component {
 
 
     console.log("Landing Render")
-    const { showOverlay } = this.state;
 
     return (
       <main className="d-flex flex-column" style={{ height: '100vh' }}>
-        {/* <div className={showOverlay?'artwishlist-overlay':''}></div> */}
 
         <Navbar expand="md" style={{ padding: '3em' }}>
           <Navbar.Brand className="mt-3 text-center" href="#home" style={{ position:'absolute', width: '25%'}}>
@@ -296,43 +288,33 @@ class Landing extends React.Component {
         </Navbar>
 
 
-            <Route path="/painting/:id" exact
-                    render={(props) => (
-                      <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>          
-                        <Container style={{ padding: 0 }}>  
-                          <Painting />
-                        </Container>
-                      </section>
+        <Route path="/painting/:id" exact
+                render={(props) => (
 
-                    )} />
+                      <Painting />
 
-            <Route path="/search/" exact
-                    render={(props) => 
-                    (
+                )} />
 
-                        <SearchResult
-                          imagePreview={imagePreview}
-                          launchSearchPattern={this.state.launchSearchPattern} ></SearchResult>
+        <Route path="/search/" exact
+                render={(props) => 
+                (
 
-                    )} />
+                    <SearchResult
+                      imagePreview={imagePreview}
+                      launchSearchPattern={this.state.launchSearchPattern} ></SearchResult>
 
-        
-            <Route path="/" exact
-                    render={(props) => 
-                    (
-                      <section style={{ background: '#F3F3F3', flexGrow: 1, borderTop: '1px solid #adadad' }}>          
-                      <Container style={{ padding: 0 }}>  
-                      <div className='h-100' style={{ background: 'blue'}}>
-                        
-                        <div className="animated-search" style={{ height: '75vh'}}>
-                          <SearchImage 
-                            onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
-                            imagePreview={imagePreview} />
-                        </div>
-                      </div>
-                      </Container>
-                      </section>
-                    )} />
+                )} />
+
+    
+        <Route path="/" exact
+                render={(props) => 
+                (
+
+                      <SearchImage 
+                        onImageChanged={(imagePreview) => this.handleImagePreview(imagePreview)} 
+                        imagePreview={imagePreview} />
+
+                )} />
 
       </main>
     )

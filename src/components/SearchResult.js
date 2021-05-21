@@ -206,7 +206,7 @@ class SearchResult extends React.Component {
     return (
       <>
       <section className={imageSelected?"img-search-section top bottom":"img-search-section top"}>
-        <Container className="h-100" style={{ padding: 0 }}>
+        <Container style={{ padding: 0 }}>
 
             <div className={containerClass}>
               <div className="w-100 text-left p-1"

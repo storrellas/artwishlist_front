@@ -27,13 +27,14 @@ $title-grey: #AAAAAA;
   overflow: hidden;
 }
 
-.img-search-section{
-  background: white;
+.img-search-section{  
   &.top{
     border-top: 1px solid #adadad;
+    background: #F3F3F3;
   }
   &.bottom{
     border-bottom: 1px solid #adadad;
+    background: white;
   }
 }
 
