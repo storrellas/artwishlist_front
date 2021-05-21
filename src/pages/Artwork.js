@@ -54,15 +54,15 @@ class Painting extends React.Component {
       // Compute sales
       let sales_prices = ''
       if( data.sales_prices && data.sales_prices.length > 0){
-        const price = parseInt(data.sales_prices[0][0]).toLocaleString()
+        const price = parseInt(data.sales_prices[0][0]).toLocaleString().replaceAll('.', ',')
         const currency = data.sales_prices[0][1]
         sales_prices = ` ${currency=='USD'?'$':currency} ${price}`
       }
       let sales_estimate = ''
       if( data.estimate && data.estimate.length >= 1){
-        const priceLow = parseInt(data.estimate[0][0]).toLocaleString()
-        const priceHigh = parseInt(data.estimate[0][1]).toLocaleString()
-        const currency = data.sales_prices[0][1]
+        const priceLow = parseInt(data.estimate[0][0]).toLocaleString().replaceAll('.', ',')
+        const priceHigh = parseInt(data.estimate[0][1]).toLocaleString().replaceAll('.', ',')
+        const currency = data.estimate[0][2]
         sales_estimate = `Est. ${currency=='USD'?'$':currency} ${priceLow}-${priceHigh}`
       }
 

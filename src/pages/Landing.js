@@ -50,10 +50,12 @@ const mapDispatchToProps = (dispatch) => {
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
+
   return <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
-            onClick={(e) => this.loginWithRedirect()} >
+            onClick={(e) => loginWithRedirect()} >
             <div className="pl-2">Login</div>
           </button>
+        
 };
 
 class Landing extends React.Component {
