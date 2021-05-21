@@ -13,7 +13,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 ReactDOM.render(
   <Auth0Provider
   domain="facture-1.eu.auth0.com"
-  clientId="D4s6fZxV8vohLZmSc1iEzUUdkZronajW"
+  clientId={process.env.REACT_APP_AUTH0_CLIENT}
   redirectUri={process.env.REACT_APP_REDIRECT_URL}>
   <BrowserRouter>
     <Provider store={store}>
