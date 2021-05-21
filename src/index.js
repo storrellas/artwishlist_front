@@ -6,14 +6,21 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./redux";
 import { Provider } from 'react-redux';
+import { Auth0Provider } from "@auth0/auth0-react";
+
 
 
 ReactDOM.render(
+  <Auth0Provider
+  domain="facture-1.eu.auth0.com"
+  clientId="D4s6fZxV8vohLZmSc1iEzUUdkZronajW"
+  redirectUri={process.env.REACT_APP_REDIRECT_URL}>
   <BrowserRouter>
     <Provider store={store}>
       <App />
     </Provider>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </Auth0Provider>,
   document.getElementById('root')
 );
 

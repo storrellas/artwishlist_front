@@ -17,6 +17,8 @@ import { connect } from "react-redux";
 // Assets
 import factureLogo from '../assets/facture_logo.svg';
 import cameraImg from '../assets/camera.svg';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 // Font Awesome
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -45,6 +47,14 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 }
 
+const LoginButton = () => {
+  const { loginWithRedirect } = useAuth0();
+
+  return <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
+            onClick={(e) => this.loginWithRedirect()} >
+            <div className="pl-2">Login</div>
+          </button>
+};
 
 class Landing extends React.Component {
 
@@ -185,7 +195,6 @@ class Landing extends React.Component {
 
     const { imagePreview } = this.state;
 
-
     
     let showUploadButton = false;
     const isDetail = this.props.location.pathname.includes('artwork');
@@ -232,7 +241,7 @@ class Landing extends React.Component {
                 </div>
               </Nav>
 
-              <Nav className="mr-auto" style={{ marginTop: '2.5rem', width: '50%'}}>
+              <Nav className="mr-auto" style={{ marginTop: '2.5rem', width: '25%'}}>
                 <Select isLoading={this.state.isLoadingArtist} 
                           isClearable 
                           isSearchable options={artistOptions} 
@@ -268,7 +277,11 @@ class Landing extends React.Component {
                           />
               </Nav>
               {/* <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '15%'}}></Nav> */}
-
+              
+              <Nav className="mr-auto justify-content-end align-items-center" 
+                style={{ height: '40px', marginTop: '2.5rem', width: '25%'}}>
+                <LoginButton />
+              </Nav>
           </Navbar.Collapse>
 
         </Navbar>

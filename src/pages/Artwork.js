@@ -41,20 +41,38 @@ class Painting extends React.Component {
       let image = ''
       if(data.images && data.images.length > 0)
         image = `${process.env.REACT_APP_API_URL}/api/aw_lots/image/${data.images[0].pk}`
-      let size = ''
+      
 
       // Compute size
-      if(data.size_height && data.size_width && data.size_unit)
-        size = `${data.size_height} x ${data.size_width} (${data.size_unit})`
+      let size = ''
+      if(data.size_height && data.size_width && data.size_unit){
+        const unit = (data.size_unit == 'in'?'inches':data.size_unit)
+        size = `${data.size_height} x ${data.size_width} ${unit}`
+      }
+        
 
       // Compute sales
       let sales_prices = ''
       if( data.sales_prices && data.sales_prices.length > 0){
-        sales_prices = `${parseInt(data.sales_prices[0][0]).toLocaleString()} ${data.sales_prices[0][1]}`
+        const price = parseInt(data.sales_prices[0][0]).toLocaleString()
+        const currency = data.sales_prices[0][1]
+        sales_prices = ` ${currency=='USD'?'$':currency} ${price}`
       }
       let sales_estimate = ''
       if( data.estimate && data.estimate.length >= 1){
-        sales_estimate = `Est. ${data.estimate[0][0]}-${data.estimate[0][1]} ${data.estimate[0][2]}`
+        const priceLow = parseInt(data.estimate[0][0]).toLocaleString()
+        const priceHigh = parseInt(data.estimate[0][1]).toLocaleString()
+        const currency = data.sales_prices[0][1]
+        sales_estimate = `Est. ${currency=='USD'?'$':currency} ${priceLow}-${priceHigh}`
+      }
+
+      let date = null;
+      if( data.date ){
+        const dateObj = new Date(data.date)
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        date = `${dateObj.getDate()}  ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`
       }
 
       this.setState({ 
@@ -71,8 +89,8 @@ class Painting extends React.Component {
         year_of_work_verbose: data.year_of_work_verbose,
         sales_prices: sales_prices,
         sales_estimate: sales_estimate,
-        sales_house: data.house || '',
-        sales_date: data.date || '',
+        sales_house: data.house,
+        sales_date: date,
         provenance: data.provenance,
         inscriptions: data.inscriptions,
         literature: data.literature,
@@ -111,16 +129,16 @@ class Painting extends React.Component {
               <div style={{ fontSize: '24px' }}>
                 {this.state.artist}
               </div>
-              <div>{this.state.title} {this.state.year_of_work_verbose}</div>
+              <div>{this.state.title}, {this.state.year_of_work_verbose}</div>
               <div className="mt-3">{this.state.materials}</div>
-              
+              <div>{this.state.size}</div>
 
               <div className="mt-3 font-weight-bold">
                 <div style={{ fontSize: '18px'}}>{this.state.sales_prices}</div>
-                <div>{this.state.size}</div>
+                
                 <div>{this.state.sales_estimate}</div>
-                <div>{this.state.house}</div>
-                <div>{this.state.date}</div>
+                <div>{this.state.sales_house}</div>
+                <div>{this.state.sales_date}</div>
               </div>
 
 
