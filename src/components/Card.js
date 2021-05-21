@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
 
 // Project imports
-import { getSource } from '../shared/utils'
+import { getSourceStr, getSource, ARTWORK_TYPE } from '../shared/utils'
 
 const mapDispatchToProps = (dispatch) => {
   return {};
@@ -64,13 +64,13 @@ class Card extends React.Component {
 
   
     // Get Source
-    let source = getSource(painting.source_type)
+    let source = getSource(painting.source_type)    
+    const sourceStr = getSourceStr(source)
 
     return (
       <div className="card-container">
-        <div className="card-title font-weight-bold">
-            {source}
-        </div>
+        <div className="card-title font-weight-bold">{sourceStr}</div>
+
         <div className="card-painting" 
           onClick={(e) => this.onClick(painting.pk)} 
           style={{ height: '200px'}}>
