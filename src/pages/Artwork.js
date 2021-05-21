@@ -54,7 +54,7 @@ class Painting extends React.Component {
       }
       let sales_estimate = ''
       if( data.estimate && data.estimate.length >= 1){
-        sales_estimate = `Est. ${data.estimate[0][1]}-${data.estimate[0][1]} ${data.estimate[0][2]}`
+        sales_estimate = `Est. ${data.estimate[0][0]}-${data.estimate[0][1]} ${data.estimate[0][2]}`
       }
 
       this.setState({ 
