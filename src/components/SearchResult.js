@@ -2,9 +2,6 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
-import { useParams } from "react-router-dom";
-
-
 import './Search.scss';
 
 // Axios
@@ -191,7 +188,7 @@ class SearchResult extends React.Component {
 
     // Classes to move icon    
     const imageSelected = this.props.imagePreview !== undefined && 
-                          searchMode == SEARCH_MODE.IMAGE; 
+                          searchMode === SEARCH_MODE.IMAGE; 
     let imgClass = imageSelected?
                     "h-100 img-painting-border img-search-left":
                     "h-100 img-search";
@@ -201,7 +198,7 @@ class SearchResult extends React.Component {
         'd-none'
 
 
-    const heightResult = this.state.searchMode == SEARCH_MODE.PATTERN?'75vh':'60vh'
+    const heightResult = this.state.searchMode === SEARCH_MODE.PATTERN?'75vh':'60vh'
 
     return (
       <>

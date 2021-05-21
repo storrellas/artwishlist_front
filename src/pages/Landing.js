@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+// import { Container } from 'react-bootstrap';
 import { Navbar, Nav } from 'react-bootstrap';
 
 // React Router
@@ -23,7 +23,7 @@ import cameraImg from '../assets/camera.svg';
 // import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
 // AnimateHeight
-import AnimateHeight from 'react-animate-height';
+// import AnimateHeight from 'react-animate-height';
 
 // Axios
 import axios from 'axios';
