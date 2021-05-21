@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 // Redux
 import { connect } from "react-redux";
 
+// Project imports
+import { getSource } from '../shared/utils'
 
 const mapDispatchToProps = (dispatch) => {
   return {};
@@ -21,7 +23,7 @@ class Card extends React.Component {
   }
 
   onClick(paintingId){
-    window.open(`/painting/${paintingId}`)
+    window.open(`/artwork/${paintingId}`)
   }
 
   onLoadImageError(){
@@ -61,30 +63,8 @@ class Card extends React.Component {
     }
 
   
-    // Devil's logic
-    let source = ''
-
-    // Auction
-    if( ['A', 'P', 'YY', 'NN'].includes(painting.source_type) ) source = 'AUCTION';
-
-    // CatRais
-    const catRaisList1 = ['K', 'L', 'B', 'E', 'R', 'G', 'J', 'C', ]
-    const catRaisList2 = ['O', 'U', 'H', 'I', 'S', 'W', 'M', '0', 'Z', 'JB', 'GL', 'CR']
-    const catRaisList = [...catRaisList1, ...catRaisList2]
-    if( catRaisList.includes(painting.source_type) ) source = 'CATALOGUE RAISONNÉ';
-    
-    // Online
-    if( ['N', 'Y', 'D'].includes(painting.source_type) ) source = 'ONLINE';
-    
-    // Museum
-    const museumList = ['X', 'F', '9', '8', '7', '6', 'RM', 'MT', 'AR', 'NG'];
-    if( museumList.includes(painting.source_type) ) source = 'MUSEUM';
-
-    // Private Collection
-    const pcList1 = ['T', 'V', '2', 'TD', 'EC', 'BA', 'HA', 'CD', 'AP', 'FB', 'SG', 'TB', 'BF']
-    const pcList2 = ['49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59']
-    const pcList = [...pcList1, ...pcList2]
-    if( pcList.includes(painting.source_type) ) source = 'PRIVATE COLLECTION';
+    // Get Source
+    let source = getSource(painting.source_type)
 
     return (
       <div className="card-container">

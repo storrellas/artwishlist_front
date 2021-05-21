@@ -31,7 +31,7 @@ import axios from 'axios';
 // Project imports
 import SearchResult from '../pages/SearchResult';
 import SearchImage from '../pages/SearchImage';
-import Painting from '../pages/Painting';
+import Artwork from '../pages/Artwork';
 
 const mapStateToProps = (state) => {
   return {
@@ -179,7 +179,7 @@ class Landing extends React.Component {
 
 
   render() {
-    const { searchPattern } = this.state;
+    const { searchPattern, launchSearchPattern } = this.state;
     const { artistOptions, searchInputBackground, searchInputBorder } = this.state;
     console.log("ReRender", searchPattern )
 
@@ -188,7 +188,7 @@ class Landing extends React.Component {
 
     
     let showUploadButton = false;
-    const isDetail = this.props.location.pathname.includes('painting');
+    const isDetail = this.props.location.pathname.includes('artwork');
     const isSearch = this.props.location.pathname.includes('search');
     if( isDetail || isSearch){
       showUploadButton = true;
@@ -202,14 +202,14 @@ class Landing extends React.Component {
 
         <Navbar expand="md" style={{ padding: '3em', justifyContent: 'flex-end' }}>
           <div 
-            style={{ padding: '3em', position:'absolute', 
+            style={{ padding: '3em 3em', position:'absolute', 
                   width: '100%', zIndex: -1, height: '100%', background: 'transparent', 
                   top:0, left: 0}}>
-          <Navbar.Brand href="#home" className="brand-margin">
-              
-            <img height="40" alt="logo" src={factureLogo}></img>
-
-          </Navbar.Brand>
+            <div  style={{ maxWidth: '960px', margin: '0 auto' }}>
+              <Navbar.Brand href="#home" className="brand-margin">
+                <img height="40" alt="logo" src={factureLogo}></img>
+              </Navbar.Brand>
+            </div>
           </div>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
@@ -274,22 +274,11 @@ class Landing extends React.Component {
         </Navbar>
 
 
-        <Route path="/painting/:id" exact
-                render={(props) => (
-
-                      <Painting />
-
-                )} />
-
+        <Route path="/artwork/:id" exact
+                render={(props) => ( <Artwork /> )} />
         <Route path="/search/" exact
-                render={(props) => 
-                (
-
-                    <SearchResult
-                      imagePreview={imagePreview}
-                      launchSearchPattern={this.state.launchSearchPattern} ></SearchResult>
-
-                )} />
+                render={(props) => (
+                    <SearchResult imagePreview={imagePreview} launchSearchPattern={launchSearchPattern} />)} />
 
     
         <Route path="/" exact
