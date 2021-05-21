@@ -75,7 +75,12 @@ class Painting extends React.Component {
         sales_date: data.date || '',
         provenance: data.provenance,
         inscriptions: data.inscriptions,
-        literature: data.literature
+        literature: data.literature,
+        lot_number: data.lot_number,
+        info: data.info,
+        edition: data.edition,
+        publisher: data.publisher,
+        misc: data.misc
       })
 
     }catch(error){
@@ -125,18 +130,56 @@ class Painting extends React.Component {
                 {/* <div className="mt-3" style={{ color: 'grey' }}>Signature</div>
                 <div>{this.state.signature}</div> */}
 
+                {this.state.lot_number?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Lot Number</div>
+                    <div>{this.state.lot_number}</div>
+                  </>
+                :''}
+
+                {this.state.info?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Sale</div>
+                    <div>{this.state.info}</div>
+                  </>
+                :''}
+
+
                 {this.state.inscriptions?
                   <>
                     <div className="mt-3" style={{ color: 'grey' }}>Inscriptions</div>
                     <div>{this.state.inscriptions}</div>
                   </>
                 :''}
+
                 {this.state.description?
                   <>
                     <div className="mt-3" style={{ color: 'grey' }}>Description</div>
                     <div>{this.state.description}</div>
                   </>
                 :''}
+
+                {this.state.edition?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Edition</div>
+                    <div>{this.state.edition}</div>
+                  </>
+                :''}
+
+                {this.state.publisher?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Publisher</div>
+                    <div>{this.state.publisher}</div>
+                  </>
+                :''}
+
+                {this.state.misc?
+                  <>
+                    <div className="mt-3" style={{ color: 'grey' }}>Miscellaneous</div>
+                    <div>{this.state.misc}</div>
+                  </>
+                :''}
+
 
                 {this.state.provenance?
                   <>
