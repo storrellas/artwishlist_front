@@ -200,18 +200,26 @@ class Landing extends React.Component {
     console.log("Landing Render")
 
     return (
-      <main className="d-flex flex-column" style={{ height: '100vh' }}>
+      <main className="d-flex flex-column" style={{ height: '100vh',  }}>
 
-        <Navbar expand="md" style={{ padding: '3em' }}>
-          <Navbar.Brand className="mt-3 text-center" href="#home" style={{ position:'absolute', width: '25%'}}>
+        <Navbar expand="md" style={{ padding: '3em', justifyContent: 'flex-end' }}>
+          <div 
+            style={{ padding: '3em', position:'absolute', 
+                  width: '100%', zIndex: -1, height: '100%', background: 'transparent', 
+                  top:0, left: 0}}>
+          <Navbar.Brand href="#home" className="brand-margin">
+              
             <img height="40" alt="logo" src={factureLogo}></img>
-          </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" style={{ }} />
+          </Navbar.Brand>
+          </div>
+
+          <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
             
             <Navbar.Collapse className="h-100" id="responsive-navbar-nav">          
-              <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '25%'}}></Nav>
-              <Nav className="mr-auto mt-3 justify-content-end" style={{ height: '40px', width: '25%'}}>
+              {/* <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '25%'}}></Nav> */}
+              <Nav className="mr-auto justify-content-end align-items-center" 
+                style={{ height: '40px', marginTop: '2.5rem', width: '50%'}}>
                 <div className={showUploadButton?"h-100 mr-3":"invisible"}>
                   <button className="h-100 font-weight-bold btn-upload d-flex justify-content-center align-items-center" 
                     onClick={(e) => this.onUploadClick()} >
@@ -226,7 +234,7 @@ class Landing extends React.Component {
                 </div>
               </Nav>
 
-              <Nav className="mr-auto mt-3" style={{ width: '35%',}}>
+              <Nav className="mr-auto" style={{ marginTop: '2.5rem', width: '50%'}}>
                 <Select isLoading={this.state.isLoadingArtist} 
                           isClearable 
                           isSearchable options={artistOptions} 
@@ -261,7 +269,7 @@ class Landing extends React.Component {
                           }}
                           />
               </Nav>
-              <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '15%'}}></Nav>
+              {/* <Nav className="mr-auto mt-3 justify-content-end" style={{ width: '15%'}}></Nav> */}
 
           </Navbar.Collapse>
 

@@ -135,6 +135,16 @@ $title-grey: #AAAAAA;
   }
 }
 
+.brand-margin{
+  margin-top: 0;
+}
+
+@include media-breakpoint-up(md){
+  .brand-margin {
+    margin-top: 2.5rem;
+  }
+}
+
 .btn-upload {
   background: $bg-grey;
   border-radius: 25px; 
@@ -148,7 +158,7 @@ $title-grey: #AAAAAA;
 }
 
 .searchInput {
-  width: 100%;
+  min-width: 300px;
 }
 
 .searchInputInner__menu {
